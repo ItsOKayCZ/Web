@@ -1,0 +1,54 @@
+:root{
+    --background-color: #6da5f9;
+}
+
+#content{
+    display: flex;
+    flex-flow: column;
+}
+
+.content_with_projects{
+    flex-grow: 1;
+
+    display: flex;
+    flex-flow: row;
+}
+
+.content_Projects{
+    width: 200px;
+    min-width: 200px;
+    height: 100%;
+
+    border-radius: 5px;
+
+    margin-right: 10px;
+
+    background-color: var(--background-color);
+}
+.content_Projects p{
+    margin-left: 5px;
+}
+.content_Projects h2{
+    padding-bottom: 5px;
+    text-align: center;
+}
+.content_Projects p:hover{
+    color: white;
+    cursor: pointer;
+}
+
+.content_viewer{
+    flex-grow: 1;
+
+    margin-left: 10px;
+}
+
+.content_viewer ul li{
+  margin-left: 20px;
+}
+.content_viewer ul ul{
+  margin-left: 30px;
+}
+.content_viewer ol li{
+  margin-left: 20px;
+}

@@ -1,0 +1,93 @@
+*{
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+/* The header DIV */
+#header{
+	margin-bottom: 0px;
+
+	background-color: #ff9b84;
+	height: 80px;
+
+	text-align: center;
+
+	border-bottom: 1px solid black;
+}
+
+/* The header text */
+.headerText{
+	padding-top: 15px;
+
+	padding-bottom: 0px;
+}
+
+
+/* The content DIV */
+#content{
+	background-color: #ececec;
+
+	height: calc(100% - 81px);
+	width: 100%;
+}
+
+/* The files DIV */
+#files{
+	position: absolute;
+
+	border: 1px solid black;
+
+	background-color: white;
+
+	margin-left: 10px;
+	margin-top: 10px;
+
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+
+	height: calc(100% - 81px - 22px - 22px);
+	width: calc(100% - 22px - 22px);
+}
+
+/* The files names */
+a{
+	text-decoration: none;
+	color: black;
+}
+.filesNames{
+	margin: 5px;
+
+	color: black;
+
+	width: 100%;
+
+	cursor: pointer;
+
+	font-size: 21px;
+	text-decoration: none;
+}
+.filesNames:hover{
+	text-decoration: underline;
+}
+
+.divFilesNames{
+	width: auto;
+	height: auto;
+}
+
+/* The tab style */
+.tab{
+	position: absolute;
+
+	left: 50%;
+
+	width: auto;
+	height: auto;
+}
+.textBold{
+	font-weight: bold;
+}
