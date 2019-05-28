@@ -9,8 +9,6 @@ function parse(){
 
 function parseMarkdown(content){
 
-    debugger;
-
     // Unorder list
     content = content.replace(/^([^\*\s].+)\n(\*\s.+)/gm, "$1\n<ul>\n$2"); // First line; Something before
     content = content.replace(/^(\*\s.+)/g, "<ul>\n$1"); // First line; Nothing before
@@ -29,10 +27,10 @@ function parseMarkdown(content){
     content = content.replace(/\[(.+)\]\((.+)\)/g, '<a href=$2>$1</a>');
 
     // Bold
-    content = content.replace(/(\_){2}(.+)(\_){2}/g, "<b>$2</b>");
+    content = content.replace(/(\_){2}([^\_]+)(\_){2}/g, "<b>$2</b>");
 
     // Italic
-    content = content.replace(/(\_){1}(.+)(\_){1}/g, "<i>$2</i>");
+    content = content.replace(/(\_){1}([^\_]+)(\_){1}/g, "<i>$2</i>");
 
     // Headers
     content = content.replace(/[\#]{6}\s*(.+)/g, "<h6>$1</h6>"); // h6
