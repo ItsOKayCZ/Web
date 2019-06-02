@@ -45,6 +45,7 @@ function githubHandler(req, res){
 
 function getContentsOfFolder(category){
 
+  // TODO: Add token to URL
   var githubAPI = "https://api.github.com/repos/ItsOKayCZ/" + category + "/contents";
 
   var options = {
