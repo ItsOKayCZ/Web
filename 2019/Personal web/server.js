@@ -4,14 +4,14 @@ const PORT = 8080
 
 const requestPromise = require("request-promise");
 const request = require("request");
-const fs = require("fs");
 const path = require("path");
 
-// The tokens for github API
-app.use("/token", restricted);
-function restricted(req, res){
-
-  res.send("Restricted");
+// Getting the token
+try{
+  const fs = require("fs");
+  const token = fs.readFileSync("token", "utf8").split("\n");
+} catch(err){
+  console.log("No token file");
 }
 
 // When a github API is called
@@ -25,81 +25,73 @@ app.use("/github", githubHandler);
 function githubHandler(req, res){
   var category = req.query.category;
 
-  console.log("Got request to /github");
-  console.log("Category: " + category);
+  console.log("Got request to /github?category=" + category);
 
   // When category = to the Web category
   if(category == categories.Web){
 
-    var promise = getContentsOfFolder(category);
+    // Getting the web contents
+    var promise = getContentsFromFolder(category, "");
     promise.then(function(contents){
-      
+      contents = contents.body;
+
+      // Getting all the folders that have a year name "2016" "2018" etc.
       var temp = [];
       for(var i = 0; i < contents.length; i++){
-        
-        // Getting the main directories (years)
-        if("20" == contents[i].name.substring(0, 2)){
-          temp.push(contents[i].name); 
+        if(contents[i].name.substring(0, 2) == "20"){
+          temp.push(contents[i].name);
         }
-        
       }
       contents = temp;
       temp = [];
-      
-      // Getting the folders from the years folders
+
+      // Number of folders in the root directory
+      var numberOfFolders = contents.length;
+
+      var done = [];
+      // Getting the folders contents
       for(var i = 0; i < contents.length; i++){
-        
+
+
         var promise = getContentsFromFolder(category, contents[i]);
-        promise.then(function(folders){
-          
-          // For all the folders
-          for(var j = 0; j < folders.length; j++){
-          
-            temp.push(folders[j].name);
-            
+        promise.then(function(projects){
+          projects = projects.body;
+
+          // Going through the projects folders
+          for(var index = 0; index < projects.length; index++){
+
+            temp.push(projects[index].name);
+
           }
-          
-          contents = temp;
-      
-          
+
+          // If all the requests are done
+          done.push("Done");
+          if(done.length == numberOfFolders){
+            contents = temp;
+
+            console.log("Done processing");
+            console.log("Sending contents: " + category);
+            res.send(contents);
+          }
         });
-         
+
       }
-      
+
     });
 
-    // TODO: Web
+  } else {
+
+    res.send("OK");
 
   }
 
-  res.send("OK");
-
 }
 
-// Get the folders from years directory
+// Get the contents of a folder
 function getContentsFromFolder(category, path){
-  
-  var githubAPI = "https://api.github.com/repos/ItsOKayCZ/" + category + "/contents/" + path;
-  
-  return makeRequest(request, githubAPI);
-}
 
-// Gets the years folders from the root directory
-function getContentsOfFolder(category){
+  var URL = "https://api.github.com/repos/ItsOKayCZ/" + category + "/contents/" + path + "?client_id=" + token[0] + "&client_secret=" + token[1];
 
-  // TODO: Add token to URL
-  var githubAPI = "https://api.github.com/repos/ItsOKayCZ/" + category + "/contents";
-
-  return makeRequest(requestPromise, githubAPI);
-}
-
-// Make a request
-// Is isPromise = true
-// Will use request-promise
-function makeRequest(isPromise, URL){
-  
-  // TODO: Grab token from file
-  
   var options = {
     uri: URL,
     headers: {
@@ -107,36 +99,16 @@ function makeRequest(isPromise, URL){
     },
     json: true
   };
-  
-  if(isPromise == true){
-    var promise = new Promise(function(resolve, reject){
 
-    requestPromise(options)
-      .then(function(response){
-        resolve(response);
-      })
-      .catch(function(err){
-        console.log(err);
-      });
+  var promise = new Promise(function(resolve, reject){
 
+    request(options, function(error, response, body){
+      resolve(response);
     });
-    
-    return promise;  
-  
-  } else {
-    
-    // TODO: without promise
-    
-    // var promise = new Promise(function(resolve, reject){
-      
-    //   request(options, function(err, response, body){
-    //     resolve(response);
-    //   });
-      
-    // });
-    
-  }
-  
+
+  });
+
+  return promise;
 }
 
 // All files

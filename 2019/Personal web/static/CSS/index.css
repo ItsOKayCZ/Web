@@ -19,6 +19,8 @@ Default settings
     font-family: defaultFont;
 }
 body{
+  /* min-width: 484px; */
+
     display: flex;
     flex-flow: column;
     height: 100%;
