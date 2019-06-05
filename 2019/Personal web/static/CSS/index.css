@@ -25,9 +25,6 @@ body{
     flex-flow: column;
     height: 100%;
 }
-.clearfix{
-    clear: both;
-}
 
 /*
 
@@ -126,6 +123,9 @@ Content
 #content{
     flex-grow: 1;
 
+    display: flex;
+    flex-flow: column;
+
     margin: 12px;
     padding: 20px;
     padding-top: 10px;
@@ -142,8 +142,80 @@ Content
     text-align: center;
 }
 
+.content_with_info{
+  display: flex;
+  flex-flow: row;
+
+  flex-grow: 1;
+}
+
+.content_div_para{
+  text-align: justify;
+}
 .content_para{
     font-size: 18px;
+}
 
-    text-align: justify;
+/*
+Github repos
+*/
+.content_projects{
+  flex-grow: 0.15;
+  height: 50%;
+
+  min-width: 200px;
+
+  background-color: var(--header_background_color);
+
+  margin-left: 15px;
+
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.content_projects h2{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+.content_projects p{
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.content_projects p:hover{
+  color: var(--hover_color_text);
+}
+
+#links{
+  border-top: blue 1px solid;
+
+  flex-grow: 0.15;
+  height: 110px;
+
+  min-width: 200px;
+
+  background-color: #628ee2;
+
+  margin-left: 15px;
+
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+#links h2{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+#links p{
+  margin-bottom: 5px;
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+#links a{
+  text-decoration: none;
+  color: black;
+}
+#links a:hover{
+  color: white;
 }

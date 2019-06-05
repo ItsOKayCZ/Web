@@ -16,6 +16,7 @@ function main(category){
 
 
 function displayProjects(projects){
+  projects = projects.sort();
 
   var el = document.getElementsByClassName("content_Projects")[0];
 

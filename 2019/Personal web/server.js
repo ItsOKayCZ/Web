@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const PORT = 8080
 
-const requestPromise = require("request-promise");
 const request = require("request");
 const path = require("path");
 
@@ -19,7 +18,8 @@ try{
 var categories = {
   CPlusPlus: "CPlusPlus",
   Web: "Web",
-  Python: "Python"
+  Python: "Python",
+  Repositories: "Repositories"
 };
 app.use("/github", githubHandler);
 function githubHandler(req, res){
@@ -30,7 +30,7 @@ function githubHandler(req, res){
   // When category = to the Web category
   if(category == categories.Web){
 
-    var dontAddProjects = ["Personal web"];
+    var dontAddProjects = ["Personal web", "Webserver"];
     var diffLocationOfIndex = ["Recipe Website"];
     gettingContents(res, category, dontAddProjects, diffLocationOfIndex);
 
@@ -42,7 +42,25 @@ function githubHandler(req, res){
 
     console.log("Message sent");
     res.send('["0000/Not implemented"]');
-    
+
+  } else if(category == categories.Repositories){
+
+    // Getting all the names of the directories
+    var promise = getRepositories();
+    promise.then(function(repos){
+      repos = repos.body;
+
+      var temp = [];
+      for(var i = 0; i < repos.length; i++){
+        temp.push("0000/" + repos[i].name);
+      }
+      repos = temp;
+
+      console.log("Sending the repos");
+      res.send(repos);
+
+    });
+
   }
 
 }
@@ -111,6 +129,29 @@ function gettingContents(res, category, dontAddProjects, diffLocationOfIndex){
 
   });
 
+}
+
+function getRepositories(){
+
+  var URL = "https://api.github.com/users/ItsOKayCZ/repos";
+
+  var options = {
+    uri: URL,
+    headers: {
+      "User-Agent": "Personal web API"
+    },
+    json: true
+  };
+
+  var promise = new Promise(function(resolve, reject){
+
+    request(options, function(error, response, body){
+      resolve(response);
+    });
+
+  });
+
+  return promise;
 }
 
 // Get the contents of a folder

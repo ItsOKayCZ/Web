@@ -14,9 +14,14 @@
     flex-flow: row;
 }
 
+.content_div_projects{
+  display: flex;
+  flex-flow: column;
+}
+
 .content_Projects{
-    width: 200px;
-    /* height: 100%; */
+    width: 250px;
+    flex-grow: 1;
 
     border-radius: 5px;
 
