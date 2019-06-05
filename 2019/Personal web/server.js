@@ -17,7 +17,7 @@ try{
 // When a github API is called
 // https://api.github.com/repos/ItsOKayCZ/{Category}/contents/{Path}
 var categories = {
-  CTFs: "CTFs",
+  CPlusPlus: "CPlusPlus",
   Web: "Web",
   Python: "Python"
 };
@@ -30,60 +30,86 @@ function githubHandler(req, res){
   // When category = to the Web category
   if(category == categories.Web){
 
-    // Getting the web contents
-    var promise = getContentsFromFolder(category, "");
-    promise.then(function(contents){
-      contents = contents.body;
+    var dontAddProjects = ["Personal web"];
+    var diffLocationOfIndex = ["Recipe Website"];
+    gettingContents(res, category, dontAddProjects, diffLocationOfIndex);
 
-      // Getting all the folders that have a year name "2016" "2018" etc.
-      var temp = [];
-      for(var i = 0; i < contents.length; i++){
-        if(contents[i].name.substring(0, 2) == "20"){
-          temp.push(contents[i].name);
-        }
-      }
-      contents = temp;
-      temp = [];
+  } else if(category == categories.Python){
 
-      // Number of folders in the root directory
-      var numberOfFolders = contents.length;
+    gettingContents(res, category);
 
-      var done = [];
-      // Getting the folders contents
-      for(var i = 0; i < contents.length; i++){
+  } else if(category == categories.CPlusPlus){
 
-
-        var promise = getContentsFromFolder(category, contents[i]);
-        promise.then(function(projects){
-          projects = projects.body;
-
-          // Going through the projects folders
-          for(var index = 0; index < projects.length; index++){
-
-            temp.push(projects[index].name);
-
-          }
-
-          // If all the requests are done
-          done.push("Done");
-          if(done.length == numberOfFolders){
-            contents = temp;
-
-            console.log("Done processing");
-            console.log("Sending contents: " + category);
-            res.send(contents);
-          }
-        });
-
-      }
-
-    });
-
-  } else {
-
-    res.send("OK");
-
+    console.log("Message sent");
+    res.send('["0000/Not implemented"]');
+    
   }
+
+}
+
+function gettingContents(res, category, dontAddProjects, diffLocationOfIndex){
+
+  dontAddProjects = (dontAddProjects == undefined) ? [] : dontAddProjects;
+  diffLocationOfIndex = (diffLocationOfIndex == undefined) ? [] : diffLocationOfIndex;
+
+  // Getting the contents
+  var promise = getContentsFromFolder(category, "");
+  promise.then(function(contents){
+    contents = contents.body;
+
+    // Getting all the folders that have a year name "2016" "2018" etc.
+    var temp = [];
+    for(var i = 0; i < contents.length; i++){
+      if(contents[i].name.substring(0, 2) == "20"){
+        temp.push(contents[i].name);
+      }
+    }
+    contents = temp;
+    temp = [];
+
+    // Number of folders in the root directory
+    var numberOfFolders = contents.length;
+
+    var done = [];
+    // Getting the folders contents
+    for(var i = 0; i < contents.length; i++){
+
+
+      var promise = getContentsFromFolder(category, contents[i]);
+      promise.then(function(projects){
+        projects = projects.body;
+
+        // Going through the projects folders
+        for(var index = 0; index < projects.length; index++){
+
+          // If its a project that I dont want to include in the page
+          if(dontAddProjects.contains(projects[index].name) == false){
+
+            // A node.js project that has the index.html in the static directory
+            if(diffLocationOfIndex.contains(projects[index].name) == true){
+              temp.push(projects[index].path + "/static");
+            } else {
+              // Normal project
+              temp.push(projects[index].path);
+            }
+          }
+
+        }
+
+        // If all the requests are done
+        done.push("Done");
+        if(done.length == numberOfFolders){
+          contents = temp;
+
+          console.log("Done processing");
+          console.log("Sending contents of " + category);
+          res.send(contents);
+        }
+      });
+
+    }
+
+  });
 
 }
 
@@ -117,3 +143,7 @@ app.use(express.static("static"));
 app.listen(PORT, function(){
   console.log("Server listening on port: " + PORT);
 });
+
+Array.prototype.contains = function(element){
+  return this.indexOf(element) != -1;
+}

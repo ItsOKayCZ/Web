@@ -28,8 +28,12 @@
     margin-left: 5px;
 }
 .content_Projects h2{
+    margin-top: 5px;
     padding-bottom: 5px;
     text-align: center;
+}
+.content_Projects big{
+  padding-left: 5px;
 }
 .content_Projects p:hover{
     color: white;
