@@ -133,6 +133,8 @@ function gettingContents(res, category, dontAddProjects, diffLocationOfIndex){
 
 function getRepositories(){
 
+  // TODO: TOKEN
+
   var URL = "https://api.github.com/users/ItsOKayCZ/repos";
 
   var options = {
@@ -156,6 +158,8 @@ function getRepositories(){
 
 // Get the contents of a folder
 function getContentsFromFolder(category, path){
+
+  // TODO: Add condition if no token
 
   var URL = "https://api.github.com/repos/ItsOKayCZ/" + category + "/contents/" + path + "?client_id=" + token[0] + "&client_secret=" + token[1];
 
