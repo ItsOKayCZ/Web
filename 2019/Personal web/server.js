@@ -10,6 +10,7 @@ try{
   const fs = require("fs");
   const token = fs.readFileSync("token", "utf8").split("\n");
 } catch(err){
+  const token = undefined;
   console.log("No token file");
 }
 
@@ -164,7 +165,7 @@ function getContentsFromFolder(category, path){
   if(token != undefined){
     URL += "?client_id=" + token[0] + "&client_secret=" + token[1];
   }
-  
+
   var options = {
     uri: URL,
     headers: {
