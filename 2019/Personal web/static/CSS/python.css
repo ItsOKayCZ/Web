@@ -22,8 +22,8 @@
 .content_Projects{
     width: 200px;
     min-width: 200px;
-    /* height: 100%; */
-    flex-grow: 1;
+    height: auto;
+    flex: 1;
 
     border-radius: 5px;
 

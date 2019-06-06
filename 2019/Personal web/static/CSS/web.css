@@ -4,24 +4,25 @@
 
 #content{
     display: flex;
-    flex-flow: column;
+    flex-direction: column;
 }
 
 .content_with_projects{
-    flex-grow: 1;
+    flex: 1;
 
     display: flex;
-    flex-flow: row;
+    flex-direction: row;
 }
 
 .content_div_projects{
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
 }
 
 .content_Projects{
     width: 250px;
-    flex-grow: 1;
+    flex: 1;
+    height: auto;
 
     border-radius: 5px;
 
