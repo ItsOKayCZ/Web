@@ -45,6 +45,9 @@
     color: white;
     cursor: pointer;
 }
+.content_Projects p:last-child{
+  margin-bottom: 5px;
+}
 
 .content_viewer{
     border: 1px solid black;

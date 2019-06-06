@@ -46,6 +46,10 @@
     color: white;
     cursor: pointer;
 }
+.content_Projects p:last-child{
+  margin-bottom: 5px;
+}
+
 
 .content_viewer{
     flex-grow: 1;
