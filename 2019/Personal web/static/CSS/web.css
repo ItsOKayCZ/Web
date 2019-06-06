@@ -22,7 +22,8 @@
 .content_Projects{
     width: 250px;
     flex: 1;
-    height: auto;
+
+    overflow: auto;
 
     border-radius: 5px;
 
