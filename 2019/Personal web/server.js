@@ -6,11 +6,12 @@ const request = require("request");
 const path = require("path");
 
 // Getting the token
+var token = undefined;
+const fs = require("fs");
 try{
-  const fs = require("fs");
-  const token = fs.readFileSync("token", "utf8").split("\n");
+  token = fs.readFileSync("token", "utf8").split("\n");
 } catch(err){
-  const token = undefined;
+  token = undefined;
   console.log("No token file");
 }
 
