@@ -18,7 +18,7 @@ try{
 // When a github API is called
 // https://api.github.com/repos/ItsOKayCZ/{Category}/contents/{Path}
 var categories = {
-  C: "C",
+  CPlusPlus: "CPlusPlus",
   Web: "Web",
   Python: "Python",
   Repositories: "Repositories"
@@ -40,7 +40,7 @@ function githubHandler(req, res){
 
     gettingContents(res, category);
 
-  } else if(category == categories.C){
+  } else if(category == categories.CPlusPlus){
 
     console.log("Message sent");
     res.send('["0000/Not implemented"]');
