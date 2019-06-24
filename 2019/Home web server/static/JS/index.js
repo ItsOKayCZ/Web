@@ -21,4 +21,20 @@ function manageRequest(content){
   // TODO: Manager request from api and display it
 
   console.log(content);
+  changeSubdirStyles();
+}
+
+function changeSubdirStyles(){
+
+  var el = document.getElementsByClassName("subdir");
+
+  var offset = 10;
+
+  for(var i = 0; i < el.length; i++){
+
+    var subdir = el[i].classList[1];
+
+    el[i].style.paddingLeft = (offset * subdir) + "px";
+  }
+
 }

@@ -6,13 +6,14 @@ app.use(express.static("static"));
 
 app.use("/getFolders", function(req, res){
 
-  var path = req.query.path;
+  // var path = req.query.path;
 
-  console.log("Path: " + path);
+  // console.log("Path: " + path);
 
-  // TODO: Return file structure
+  console.log("[#] Got request to /getFolders");
 
-  res.send('{"Message": "Testing", "path": "' + path + '"}');
+
+  res.send('{"Message": "Testing"}');
 
 });
 
