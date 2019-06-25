@@ -38,3 +38,61 @@ function changeSubdirStyles(){
   }
 
 }
+
+function changeDisplay(el){
+
+  var subdir;
+  var classList = el.classList[0];
+  // Change display to block
+  if(classList == "root"){
+    subdir = 1;
+
+    var tempEl = el.nextElementSibling;
+    var classList = "root";
+    while(true){
+
+      if(tempEl == undefined || tempEl.classList[0] == classList){
+        break;
+      }
+
+      if(tempEl.classList[1] == subdir){
+        if(tempEl.style.display == "" || tempEl.style.display == "none"){
+          tempEl.style.display = "block";
+        } else {
+          tempEl.style.display = "none";
+        }
+      } else {
+        tempEl.style.display = "none";
+      }
+
+      tempEl = tempEl.nextElementSibling;
+    }
+
+  } else if(classList == "subdir"){ // When clicked on a subdir
+
+    subdir = parseInt(el.classList[1]) + 1;
+
+    var tempEl = el.nextElementSibling;
+    var classList = parseInt(el.classList[1]);
+    while(true){
+
+      if(tempEl == undefined || tempEl.classList[1] == classList){
+        break;
+      }
+
+      if(tempEl.classList[1] == subdir){
+        if(tempEl.style.display == "" || tempEl.style.display == "none"){
+          tempEl.style.display = "block";
+        } else {
+          tempEl.style.display = "none";
+        }
+      } else {
+        tempEl.style.display = "none";
+      }
+
+      tempEl = tempEl.nextElementSibling;
+    }
+
+  }
+
+}

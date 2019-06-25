@@ -4,6 +4,9 @@
 }
 
 body{
+  height: 100%;
+  width: 100%;
+
   display: flex;
 
   flex-flow: row;
@@ -46,3 +49,6 @@ body{
   display: none;
 }
 
+.root, .subdir{
+  cursor: pointer;
+}
