@@ -1,0 +1,167 @@
+[
+  {
+    "name": "Documents",
+    "contents": [
+      {
+        "name": "Mama",
+        "contents": [],
+        "type": "folder"
+      },
+      {
+        "name": "Olda",
+        "contents": [
+          {
+            "name": "School",
+            "contents": [
+              {
+                "name": "Homework",
+                "contents": {
+                  "type": "Buffer",
+                  "data": [
+                    65,
+                    65,
+                    65,
+                    65,
+                    10
+                  ]
+                },
+                "type": "file"
+              }
+            ],
+            "type": "folder"
+          },
+          {
+            "name": "Work",
+            "contents": [],
+            "type": "folder"
+          }
+        ],
+        "type": "folder"
+      },
+      {
+        "name": "Tata",
+        "contents": [],
+        "type": "folder"
+      }
+    ],
+    "type": "folder"
+  },
+  {
+    "name": "Movies",
+    "contents": [
+      {
+        "name": "Avatar",
+        "contents": [],
+        "type": "folder"
+      },
+      {
+        "name": "End game",
+        "contents": [],
+        "type": "folder"
+      },
+      {
+        "name": "Mario",
+        "contents": [],
+        "type": "folder"
+      }
+    ],
+    "type": "folder"
+  },
+  {
+    "name": "Pictures",
+    "contents": [
+      {
+        "name": "Holiday",
+        "contents": [
+          {
+            "name": "2000",
+            "contents": [],
+            "type": "folder"
+          },
+          {
+            "name": "2001",
+            "contents": [],
+            "type": "folder"
+          },
+          {
+            "name": "2002",
+            "contents": [],
+            "type": "folder"
+          }
+        ],
+        "type": "folder"
+      },
+      {
+        "name": "Summer",
+        "contents": [],
+        "type": "folder"
+      },
+      {
+        "name": "Winter",
+        "contents": [],
+        "type": "folder"
+      }
+    ],
+    "type": "folder"
+  },
+  {
+    "name": "Testing.txt",
+    "contents": {
+      "type": "Buffer",
+      "data": [
+        84,
+        101,
+        115,
+        116,
+        105,
+        110,
+        103,
+        10
+      ]
+    },
+    "type": "file"
+  },
+  {
+    "name": "Work",
+    "contents": [
+      {
+        "name": "Dentons",
+        "contents": [
+          {
+            "name": "Fedor",
+            "contents": [],
+            "type": "folder"
+          },
+          {
+            "name": "Richard",
+            "contents": [],
+            "type": "folder"
+          },
+          {
+            "name": "Vlcek",
+            "contents": [],
+            "type": "folder"
+          }
+        ],
+        "type": "folder"
+      },
+      {
+        "name": "Hopi",
+        "contents": [
+          {
+            "name": "Car",
+            "contents": [],
+            "type": "folder"
+          },
+          {
+            "name": "Fish productions",
+            "contents": [],
+            "type": "folder"
+          }
+        ],
+        "type": "folder"
+      }
+    ],
+    "type": "folder"
+  }
+]

@@ -18,11 +18,87 @@ function main(path){
 }
 
 function manageRequest(content){
-  // TODO: Manager request from api and display it
 
-  console.log(content);
+  displayFolders(content);
+
   changeSubdirStyles();
 }
+
+function displayFolders(content){
+
+  // TODO: NOT working
+
+  var list = [];
+
+  for(var i = 0; i < content.length; i++){
+
+    if(content[i].type == "folder"){
+
+      var info = {
+        name: content[i].name,
+        dir: "root"
+      };
+
+      list.push(info);
+
+      if(content[i].contents.length > 0){
+        var folderInfo = getFolder(content[i].contents, 1);
+        for(var j = 0; j < folderInfo.length; j++){
+          list.push(folderInfo);
+        }
+      }
+
+    }
+
+  }
+  console.log(list);
+
+  // DOM element
+  var outputDOM = document.getElementById("folders");
+
+  for(var i = 0; i < list.length; i++){
+
+    var template = document.createElement("p");
+    template.innerHTML = list[i].name;
+    template.setAttribute("onclick", "changeDisplay(this)");
+    template.className = list[i].dir;
+
+    outputDOM.appendChild(template);
+
+  }
+}
+function getFolder(content, subdir){
+
+  var list = [];
+
+  for(var i = 0; i < content.length; i++){
+
+    if(content[i].type == "folder"){
+
+      console.log("Content: " + content[i].name);
+      console.log(content[i]);
+      console.log(content[i].contents.length);
+
+      var info = {
+        name: content[i].name,
+        dir: "subdir " + subdir
+      };
+
+      list.push(info);
+
+      if(content[i].contents.length > 0){
+        var folderInfo = getFolder(content[i].contents, subdir + 1);
+        for(var j = 0; j < folderInfo.length; j++){
+          list.push(folderInfo[j]);
+        }
+      }
+    }
+
+  }
+
+  return list;
+}
+
 
 function changeSubdirStyles(){
 
