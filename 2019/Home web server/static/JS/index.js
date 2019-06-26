@@ -1,11 +1,9 @@
-function main(path){
+var folderStructure;
 
-  if(path == undefined){
-    path = "";
-  }
+function main(){
 
   var http = new XMLHttpRequest();
-  var url = document.location.origin + "/getFolders?path=" + path;
+  var url = document.location.origin + "/getFolders";
 
   http.open("GET", url);
   http.onreadystatechange = function(){
@@ -18,15 +16,17 @@ function main(path){
 }
 
 function manageRequest(content){
+  folderStructure = content;
+  // console.log(content);
 
+  // TODO: Append root directory
+  // TODO: Display over content not only in root
   displayFolders(content);
 
   changeSubdirStyles();
 }
 
 function displayFolders(content){
-
-  // TODO: NOT working
 
   var list = [];
 
@@ -38,20 +38,17 @@ function displayFolders(content){
         name: content[i].name,
         dir: "root"
       };
-
       list.push(info);
 
-      if(content[i].contents.length > 0){
-        var folderInfo = getFolder(content[i].contents, 1);
-        for(var j = 0; j < folderInfo.length; j++){
-          list.push(folderInfo);
-        }
-      }
+      var folderInfo = getFolder(content[i].contents, 1);
 
+      for(var j = 0; j < folderInfo.length; j++){
+        list.push(folderInfo[j]);
+      }
+      
     }
 
   }
-  console.log(list);
 
   // DOM element
   var outputDOM = document.getElementById("folders");
@@ -69,34 +66,34 @@ function displayFolders(content){
 }
 function getFolder(content, subdir){
 
-  var list = [];
+  var currentContent = [];
 
   for(var i = 0; i < content.length; i++){
 
     if(content[i].type == "folder"){
 
-      console.log("Content: " + content[i].name);
-      console.log(content[i]);
-      console.log(content[i].contents.length);
-
       var info = {
         name: content[i].name,
         dir: "subdir " + subdir
       };
+      currentContent.push(info);
 
-      list.push(info);
-
-      if(content[i].contents.length > 0){
-        var folderInfo = getFolder(content[i].contents, subdir + 1);
+      var folderInfo = getFolder(content[i].contents, subdir + 1);
+      if(folderInfo != undefined){
         for(var j = 0; j < folderInfo.length; j++){
-          list.push(folderInfo[j]);
+          currentContent.push(folderInfo[j]);
         }
       }
+
     }
 
   }
 
-  return list;
+  if(currentContent.length > 0){
+    return currentContent;
+  } else {
+    return undefined;
+  }
 }
 
 
@@ -115,7 +112,49 @@ function changeSubdirStyles(){
 
 }
 
+function changeContent(el){
+
+  var filesDOM = document.getElementById("files");
+  var typesDOM = document.getElementById("types");
+
+  filesDOM.innerHTML = "";
+  typesDOM.innerHTML = "";
+
+  if(el.classList[0] == "root"){
+
+    var name = el.innerHTML;
+
+    for(var i = 0; i < folderStructure.length; i++){
+
+      if(folderStructure[i].name == name){
+
+        console.log(folderStructure[i]);
+
+        for(var j = 0; j < folderStructure[i].contents.length; j++){
+
+          if(folderStructure[i].contents[j].type != "folder"){
+            var template = document.createElement("p");
+            template.innerHTML = folderStructure[i].contents[j].name;
+            filesDOM.appendChild(template);
+
+            template = document.createElement("p");
+            template.innerHTML = folderStructure[i].contents[j].description;
+            typesDOM.appendChild(template);
+          }
+          
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
 function changeDisplay(el){
+
+  changeContent(el);
 
   var subdir;
   var classList = el.classList[0];
@@ -152,7 +191,7 @@ function changeDisplay(el){
     var classList = parseInt(el.classList[1]);
     while(true){
 
-      if(tempEl == undefined || tempEl.classList[1] == classList){
+      if(tempEl == undefined || tempEl.classList[1] <= classList || tempEl.classList == "root"){
         break;
       }
 

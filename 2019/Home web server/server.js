@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 
+const shell = require("shelljs");
+
 const path = "Storage/";
 const PORT = 8080;
 
@@ -12,8 +14,7 @@ app.use(express.static("static"));
 app.use("/getFolders", function(req, res){
   console.log("[#] Got request to /getFolders");
 
-  // res.send('{"Response": "OK"}');
-
+  console.log("[#] Sending list to client: " + req.ip);
   res.send(JSON.stringify(list));
 });
 
@@ -41,7 +42,8 @@ function getFolders(){
       var file = {
         name: folders[i], 
         contents: fs.readFileSync(path + folders[i]), 
-        type: "file"
+        type: "file",
+        description: shell.exec("file " + (path + folders[i]), {silent: true}).split(":")[1]
       };
   
       list.push(file);
@@ -76,7 +78,8 @@ function getFolderContents(directory){
       var file = {
         name: folderContents[i],
         contents: fs.readFileSync(nextDir),
-        type: "file"
+        type: "file",
+        description: shell.exec("file " + (nextDir), {silent: true}).split(":")[1]
       };
 
       contents.push(file);
