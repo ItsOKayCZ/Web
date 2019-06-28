@@ -1,5 +1,8 @@
 var folderStructure;
 
+
+// The main function
+// main is called onload of the body DOM
 function main(){
 
   var http = new XMLHttpRequest();
@@ -15,20 +18,28 @@ function main(){
   http.send();
 }
 
+// Manages request from the server API and displays it and sets the styles
+// Is called from main
 function manageRequest(content){
   folderStructure = content;
-  // console.log(content);
 
-  // TODO: Append root directory
   // TODO: Display over content not only in root
+  // TODO: Root directory not showing files
   displayFolders(content);
 
   changeSubdirStyles();
 }
 
+// TODO: Write documentation to functions
 function displayFolders(content){
 
   var list = [];
+
+  // The root directory of all
+  list.push({
+    name: "Main",
+    dir: "root"
+  });
 
   for(var i = 0; i < content.length; i++){
 
@@ -36,6 +47,7 @@ function displayFolders(content){
 
       var info = {
         name: content[i].name,
+        path: content[i].path,
         dir: "root"
       };
       list.push(info);
@@ -58,6 +70,7 @@ function displayFolders(content){
     var template = document.createElement("p");
     template.innerHTML = list[i].name;
     template.setAttribute("onclick", "changeDisplay(this)");
+    template.setAttribute("path", list[i].path);
     template.className = list[i].dir;
 
     outputDOM.appendChild(template);
@@ -74,6 +87,7 @@ function getFolder(content, subdir){
 
       var info = {
         name: content[i].name,
+        path: content[i].path,
         dir: "subdir " + subdir
       };
       currentContent.push(info);
@@ -114,39 +128,40 @@ function changeSubdirStyles(){
 
 function changeContent(el){
 
+  var list = [];
+
+  console.log(folderStructure);
+
   var filesDOM = document.getElementById("files");
   var typesDOM = document.getElementById("types");
 
   filesDOM.innerHTML = "";
   typesDOM.innerHTML = "";
 
-  if(el.classList[0] == "root"){
 
-    var name = el.innerHTML;
 
-    for(var i = 0; i < folderStructure.length; i++){
+  // No files in directory
+  if(list.length == 0){
 
-      if(folderStructure[i].name == name){
+    var templateName = document.createElement("p");
 
-        console.log(folderStructure[i]);
+    templateName.innerHTML = "No files in directory";
 
-        for(var j = 0; j < folderStructure[i].contents.length; j++){
+    filesDOM.appendChild(templateName);
 
-          if(folderStructure[i].contents[j].type != "folder"){
-            var template = document.createElement("p");
-            template.innerHTML = folderStructure[i].contents[j].name;
-            filesDOM.appendChild(template);
+    return;
+  }
 
-            template = document.createElement("p");
-            template.innerHTML = folderStructure[i].contents[j].description;
-            typesDOM.appendChild(template);
-          }
-          
-        }
+  for(var i = 0; i < list.length; i++){
 
-      }
+    var templateName = document.createElement("p");
+    var templateDesc = document.createElement("p");
 
-    }
+    templateName.innerHTML = list[i].name;
+    templateDesc.innerHTML = list[i].description;
+
+    filesDOM.appendChild(templateName);
+    typesDOM.appendChild(templateDesc);
 
   }
 

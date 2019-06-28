@@ -33,7 +33,8 @@ function getFolders(){
       
       var folder = {
         name: folders[i],
-        contents: getFolderContents(path + folders[i]), 
+        contents: getFolderContents(path + folders[i]),
+        path: path + folders[i],
         type: "folder"
       };
 
@@ -43,6 +44,7 @@ function getFolders(){
         name: folders[i], 
         contents: fs.readFileSync(path + folders[i]), 
         type: "file",
+        path: path + folders[i],
         description: shell.exec("file " + (path + folders[i]), {silent: true}).split(":")[1]
       };
   
@@ -69,6 +71,7 @@ function getFolderContents(directory){
       var folder = {
         name: folderContents[i],
         contents: getFolderContents(nextDir),
+        path: nextDir,
         type: "folder"
       };
 
@@ -78,6 +81,7 @@ function getFolderContents(directory){
       var file = {
         name: folderContents[i],
         contents: fs.readFileSync(nextDir),
+        path: nextDir,
         type: "file",
         description: shell.exec("file " + (nextDir), {silent: true}).split(":")[1]
       };
