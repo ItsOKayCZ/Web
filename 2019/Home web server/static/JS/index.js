@@ -23,14 +23,13 @@ function main(){
 function manageRequest(content){
   folderStructure = content;
 
-  // TODO: Display over content not only in root
-  // TODO: Root directory not showing files
   displayFolders(content);
 
   changeSubdirStyles();
 }
 
-// TODO: Write documentation to functions
+// Displayes the folders that were called from the API
+// Is called from manageRequest
 function displayFolders(content){
 
   var list = [];
@@ -38,6 +37,7 @@ function displayFolders(content){
   // The root directory of all
   list.push({
     name: "Main",
+    path: "",
     dir: "root"
   });
 
@@ -77,6 +77,9 @@ function displayFolders(content){
 
   }
 }
+
+// Is a recursive function for displayFolders
+// Called from displayFolders
 function getFolder(content, subdir){
 
   var currentContent = [];
@@ -110,7 +113,8 @@ function getFolder(content, subdir){
   }
 }
 
-
+// Changes the subdir padding styles so that it is indented
+// Called from manageRequest
 function changeSubdirStyles(){
 
   var el = document.getElementsByClassName("subdir");
@@ -126,11 +130,11 @@ function changeSubdirStyles(){
 
 }
 
+// Displays the contents of a folder
+// Called from changeDisplay
 function changeContent(el){
 
-  var list = [];
-
-  console.log(folderStructure);
+  // debugger;
 
   var filesDOM = document.getElementById("files");
   var typesDOM = document.getElementById("types");
@@ -139,6 +143,77 @@ function changeContent(el){
   typesDOM.innerHTML = "";
 
 
+  var list = [];
+
+  // Need to discover the files in the directory
+  var path = el.attributes.path.value.split("/");
+
+  // When it is the root directory
+  if(path == ""){
+
+    for(var i = 0; i < folderStructure.length; i++){
+
+      if(folderStructure[i].type == "file"){
+      
+        var info = {
+          name: folderStructure[i].name,
+          path: folderStructure[i].path,
+          description: folderStructure[i].description
+        };
+
+        list.push(info);
+
+      }
+
+    }
+
+  } else { // When it is in a subdirectory
+
+    // path.shift();
+
+    var done = false;
+
+    var contentIndex = 0;
+    var content = folderStructure;
+    var pathIndex = 0;
+    while(done == false){
+
+      if(content[contentIndex].name == path[pathIndex]){
+
+        if(pathIndex == path.length - 1){
+
+          for(var i = 0; i < content[contentIndex].contents.length; i++){
+
+            if(content[contentIndex].contents[i].type == "file"){
+
+              var info = {
+                name: content[contentIndex].contents[i].name,
+                path: content[contentIndex].contents[i].path,
+                description: content[contentIndex].contents[i].description
+              };
+
+              list.push(info);
+
+            }
+
+          }
+
+          // Finished the loop
+          done = true;
+
+        }
+
+        content = content[contentIndex].contents;
+
+        pathIndex++;
+        contentIndex = 0;
+      } else {
+        contentIndex++;
+      }
+
+    }
+
+  }
 
   // No files in directory
   if(list.length == 0){
@@ -158,8 +233,11 @@ function changeContent(el){
     var templateDesc = document.createElement("p");
 
     templateName.innerHTML = list[i].name;
-    templateDesc.innerHTML = list[i].description;
+    templateName.setAttribute("onclick", "openFile(this);");
+    templateName.setAttribute("path", list[i].path);
 
+    templateDesc.innerHTML = shortData(list[i].description);
+    
     filesDOM.appendChild(templateName);
     typesDOM.appendChild(templateDesc);
 
@@ -167,6 +245,33 @@ function changeContent(el){
 
 }
 
+// Takes the description and only shows useful stuff the client
+// Called from changeContent
+function shortData(desc){
+
+  var list = [
+    {
+      // Format: MP4
+      name: "MP4",
+      short: function(temp){
+        // String: ISO Media, MP4 v2 [ISO 14496-14]
+        // Return:            ===
+        return temp.split(",")[1].split("v2")[0];
+      }
+    }
+  ];
+
+  for(var i = 0; i < list.length; i++){
+    if(desc.indexOf(list[i].name) != -1){
+      return list[i].short(desc);
+    }
+  }
+
+  return desc;
+}
+
+// Show the subdirectories 
+// Called from the DOM
 function changeDisplay(el){
 
   changeContent(el);
@@ -224,5 +329,19 @@ function changeDisplay(el){
     }
 
   }
+
+}
+
+// Sending a request for a file to the server
+// Called by the DOM
+function openFile(el){
+  var width = 600;
+  var height = 600;
+
+  var name = el.innerHTML;
+  var path = el.attributes.path.value;
+  console.dir(el);
+
+  window.open(location.origin + "/getFile?file=" + path, name, "left=250,top=100,width=" + width + ",height=" + height, false);
 
 }

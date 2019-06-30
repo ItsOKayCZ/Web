@@ -1,28 +1,59 @@
+// Node.js modules
 const express = require("express");
 const app = express();
 const fs = require("fs");
-
 const shell = require("shelljs");
+const resolve = require("path").resolve;
 
+// The constant global variables
+const pwd = process.cwd();
 const path = "Storage/";
 const PORT = 8080;
 
+// The list of folders and files in the "database"
 var list = [];
+
 
 app.use(express.static("static"));
 
-app.use("/getFolders", function(req, res){
-  console.log("[#] Got request to /getFolders");
+function log(msg, ip){
+  console.log("{" + ip + "}\t[#] " + msg);
+}
 
-  console.log("[#] Sending list to client: " + req.ip);
+// When the client requests for the folders and files
+app.use("/getFolders", function(req, res){
+  log("Request to /getFolders", req.ip);
   res.send(JSON.stringify(list));
 });
 
-app.listen(PORT, function(){
-  console.log("[#] Server listening on port " + PORT);
+// When the client requests to see the contents of a file
+app.use("/getFile", function(req, res){
+  var file = req.query.file;
+  log("Request to /getFile?file=" + file, req.ip);
+
+  // Trying to figure out if it isn't a path traversal
+  var pathTemp = resolve(path, file);
+  
+  if(pwd != pathTemp.substr(0, pwd.length)){
+    log("Sent error", req.ip);
+    res.send("<h1>Error</h1>");
+    return;
+  }
+
+  // Finding the directory
+  var fileContent = shell.cat(pathTemp).stdout
+  var fileDesc = shell.exec("file '" + pathTemp + "'");
+  console.log(fileDesc);
+
+  res.send("OK");
 });
 
-var list;
+// Running the server
+app.listen(PORT, function(){
+  log("Listening on port " + PORT, "127.0.0.1");
+});
+
+// Main function for searching the database
 function getFolders(){
 
   var folders = fs.readdirSync(path);
@@ -34,17 +65,16 @@ function getFolders(){
       var folder = {
         name: folders[i],
         contents: getFolderContents(path + folders[i]),
-        path: path + folders[i],
+        path: shortPath(path + folders[i]),
         type: "folder"
       };
 
       list.push(folder);
     } else { // Is a file
       var file = {
-        name: folders[i], 
-        contents: fs.readFileSync(path + folders[i]), 
+        name: folders[i],
         type: "file",
-        path: path + folders[i],
+        path: shortPath(path + folders[i]),
         description: shell.exec("file " + (path + folders[i]), {silent: true}).split(":")[1]
       };
   
@@ -55,7 +85,7 @@ function getFolders(){
 }
 getFolders();
 
-// Get the contents of a folder {directory}
+// Recursive function for getFolders
 function getFolderContents(directory){
 
   var contents = [];
@@ -71,7 +101,7 @@ function getFolderContents(directory){
       var folder = {
         name: folderContents[i],
         contents: getFolderContents(nextDir),
-        path: nextDir,
+        path: shortPath(nextDir),
         type: "folder"
       };
 
@@ -80,8 +110,7 @@ function getFolderContents(directory){
 
       var file = {
         name: folderContents[i],
-        contents: fs.readFileSync(nextDir),
-        path: nextDir,
+        path: shortPath(nextDir),
         type: "file",
         description: shell.exec("file " + (nextDir), {silent: true}).split(":")[1]
       };
@@ -92,4 +121,13 @@ function getFolderContents(directory){
   }
 
   return contents;
+}
+
+// Shorten the path from:
+// Storage/foo/bar
+// to
+// foo/bar
+function shortPath(path){
+  var temp = path.split("/"); temp.shift(); temp = temp.join("/");
+  return temp;
 }
