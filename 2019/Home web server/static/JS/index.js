@@ -22,6 +22,7 @@ function main(){
 // Is called from main
 function manageRequest(content){
   folderStructure = content;
+  console.log(content);
 
   displayFolders(content);
 
@@ -54,8 +55,10 @@ function displayFolders(content){
 
       var folderInfo = getFolder(content[i].contents, 1);
 
-      for(var j = 0; j < folderInfo.length; j++){
-        list.push(folderInfo[j]);
+      if(folderInfo != undefined){
+        for(var j = 0; j < folderInfo.length; j++){
+          list.push(folderInfo[j]);
+        }
       }
       
     }
@@ -236,38 +239,13 @@ function changeContent(el){
     templateName.setAttribute("onclick", "openFile(this);");
     templateName.setAttribute("path", list[i].path);
 
-    templateDesc.innerHTML = shortData(list[i].description);
+    templateDesc.innerHTML = list[i].description;
     
     filesDOM.appendChild(templateName);
     typesDOM.appendChild(templateDesc);
 
   }
 
-}
-
-// Takes the description and only shows useful stuff the client
-// Called from changeContent
-function shortData(desc){
-
-  var list = [
-    {
-      // Format: MP4
-      name: "MP4",
-      short: function(temp){
-        // String: ISO Media, MP4 v2 [ISO 14496-14]
-        // Return:            ===
-        return temp.split(",")[1].split("v2")[0];
-      }
-    }
-  ];
-
-  for(var i = 0; i < list.length; i++){
-    if(desc.indexOf(list[i].name) != -1){
-      return list[i].short(desc);
-    }
-  }
-
-  return desc;
 }
 
 // Show the subdirectories 

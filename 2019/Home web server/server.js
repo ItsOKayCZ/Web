@@ -41,11 +41,11 @@ app.use("/getFile", function(req, res){
   }
 
   // Finding the directory
-  var fileContent = shell.cat(pathTemp).stdout
-  var fileDesc = shell.exec("file '" + pathTemp + "'");
+  var fileContent = shell.cat(pathTemp).stdout;
+  var fileDesc = shell.exec("file '" + pathTemp + "'", {silent: true}).stdout.split(": ")[1];
   console.log(fileDesc);
 
-  res.send("OK");
+  // if(fileDesc)
 });
 
 // Running the server
@@ -75,7 +75,7 @@ function getFolders(){
         name: folders[i],
         type: "file",
         path: shortPath(path + folders[i]),
-        description: shell.exec("file " + (path + folders[i]), {silent: true}).split(":")[1]
+        description: shortData(shell.exec("file '" + (path + folders[i]) + "'", {silent: true}).split(": ")[1])
       };
   
       list.push(file);
@@ -112,7 +112,7 @@ function getFolderContents(directory){
         name: folderContents[i],
         path: shortPath(nextDir),
         type: "file",
-        description: shell.exec("file " + (nextDir), {silent: true}).split(":")[1]
+        description: shortData(shell.exec("file '" + (nextDir) + "'", {silent: true}).split(": ")[1])
       };
 
       contents.push(file);
@@ -130,4 +130,68 @@ function getFolderContents(directory){
 function shortPath(path){
   var temp = path.split("/"); temp.shift(); temp = temp.join("/");
   return temp;
+}
+
+// Shorts the file types
+// Here are almost all of the data types stored and changed for the user to understand
+// the file type
+function shortData(desc){
+  var list = [
+    {
+      // Format: MP4
+      name: "MP4",
+      short: function(temp){
+        // String: ISO Media, MP4 v2 [ISO 14496-14]
+        return "MP4 video";
+      }
+    },
+    {
+      // Format: Zip
+      name: "Zip",
+      short: function(temp){
+        // String:  Zip archive data, at least v1.0 to extract
+        return "ZIP archive";
+      }
+    },
+    {
+      // Format: PDF
+      name: "PDF",
+      short: function(temp){
+        // String: PDF document, version 1.5
+        return "PDF document";
+      }
+    },
+    {
+      // Format: PNG
+      name: "PNG",
+      short: function(temp){
+        // String: PNG image data, 800 x 600, 8-bit/color RGBA, non-interlaced
+        return "PNG image";
+      }
+    },
+    {
+      // Format: MP3
+      name: "ID3",
+      short: function(temp){
+        // String: Audio file with ID3 version 2.4.0, contains
+        return "MP3 audio";
+      }
+    },
+    {
+      // Format: JPEG
+      name: "JPEG",
+      short: function(temp){
+        // String: JPEG image data, JFIF standard 1.01, resolution (DPI)...
+        return "JPEG image";
+      }
+    }
+  ];
+
+  for(var i = 0; i < list.length; i++){
+    if(desc.indexOf(list[i].name) != -1){
+      return list[i].short(desc);
+    }
+  }
+
+  return desc;
 }
