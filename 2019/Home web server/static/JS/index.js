@@ -239,9 +239,11 @@ function changeContent(el){
     templateName.setAttribute("onclick", "openFile(this);");
     templateName.setAttribute("path", list[i].path);
 
-    templateDesc.innerHTML = list[i].description;
-    
     filesDOM.appendChild(templateName);
+
+    templateDesc.innerHTML = list[i].description;
+    templateDesc.style.height = templateName.clientHeight - 5;
+
     typesDOM.appendChild(templateDesc);
 
   }

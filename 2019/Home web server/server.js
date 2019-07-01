@@ -1,5 +1,3 @@
-// https://docs.google.com/viewerng/viewer?url=http://linktoword/
-
 // Node.js modules
 const express = require("express");
 const app = express();
@@ -14,6 +12,10 @@ const PORT = 8080;
 
 // The list of folders and files in the "database"
 var list = [];
+
+// Cookie username and password
+const name = "";
+const value = "";
 
 // All of the file types
 // This is the list of all the file types
@@ -109,10 +111,10 @@ function log(msg, ip){
 app.use("/getFolders", function(req, res){
   log("Request to /getFolders", req.ip);
 
-  // if(login(req.headers.cookie) == false){
-  //   res.send('{"Message": "Unauthorized"}');
-  //   return;
-  // }
+  if(login(req.headers.cookie) == false){
+    res.send('{"Message": "Unauthorized"}');
+    return;
+  }
 
   res.send(JSON.stringify(list));
 });
@@ -221,9 +223,11 @@ function getFolderContents(directory){
 
 // Login with cookie
 function login(cookie){
+  return true;
 
-  var name = "testing";
-  var value = "testing";
+  if(cookie == undefined){
+    cookie = "";
+  }
 
   cookie = cookie.split("=");
 
