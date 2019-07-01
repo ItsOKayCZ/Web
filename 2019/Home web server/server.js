@@ -1,3 +1,5 @@
+// https://docs.google.com/viewerng/viewer?url=http://linktoword/
+
 // Node.js modules
 const express = require("express");
 const app = express();
@@ -13,6 +15,89 @@ const PORT = 8080;
 // The list of folders and files in the "database"
 var list = [];
 
+// All of the file types
+// This is the list of all the file types
+var fileTypes = [
+  {
+    // Format: TXT
+    name: "ASCII",
+    contentType: "text/plain",
+    short: function(){
+      // String: ASCII text
+      return "Text file";
+    }
+  },
+  {
+    // Format: MP3
+    name: "ID3",
+    contentType: "audio/mpeg",
+    short: function(){
+      // String: Audio file with ID3 version 2.4.0, contains
+      return "MP3 audio";
+    }
+  },
+  {
+    // Format: MP4
+    name: "MP4",
+    contentType: "video/mp4",
+    short: function(){
+      // String: ISO Media, MP4 v2 [ISO 14496-14]
+      return "MP4 video";
+    }
+  },
+  {
+    // Format: ZIP, Word document, Excel document
+    name: "Zip archive data, at least v1.0",
+    contentType: "application/zip",
+    short: function(){
+      // String:  Zip archive data, at least v1.0 to extract
+      return "ZIP archive";
+    }
+  },
+  {
+    // Format: PDF
+    name: "PDF",
+    contentType: "application/pdf",
+    short: function(){
+      // String: PDF document, version 1.5
+      return "PDF document";
+    }
+  },
+  {
+    // Format: PNG
+    name: "PNG",
+    contentType: "image/png",
+    short: function(){
+      // String: PNG image data, 800 x 600, 8-bit/color RGBA, non-interlaced
+      return "PNG image";
+    }
+  },
+  {
+    // Format: JPEG
+    name: "JPEG",
+    contentType: "image/jpeg",
+    short: function(){
+      // String: JPEG image data, JFIF standard 1.01, resolution (DPI)...
+      return "JPEG image";
+    }
+  },
+  {
+    // Format: xlsx
+    name: /^xl\//gmi,
+    contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    short: function(){
+      return "Excel document"
+    }
+  },
+  {
+    // Format: docx
+    name: /^word\//gmi,
+    contentType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    short: function(){
+      return "Word document"
+    }
+  }
+];
 
 app.use(express.static("static"));
 
@@ -23,29 +108,40 @@ function log(msg, ip){
 // When the client requests for the folders and files
 app.use("/getFolders", function(req, res){
   log("Request to /getFolders", req.ip);
+
+  // if(login(req.headers.cookie) == false){
+  //   res.send('{"Message": "Unauthorized"}');
+  //   return;
+  // }
+
   res.send(JSON.stringify(list));
 });
 
 // When the client requests to see the contents of a file
 app.use("/getFile", function(req, res){
+
   var file = req.query.file;
   log("Request to /getFile?file=" + file, req.ip);
 
-  // Trying to figure out if it isn't a path traversal
+  // if(login(req.headers.cookie) == false){
+  //   res.send("<h1>Unauthorized</h1>");
+  //   return;
+  // }
+
   var pathTemp = resolve(path, file);
-  
+
+  // Trying to figure out if it isn't a path traversal
   if(pwd != pathTemp.substr(0, pwd.length)){
     log("Sent error", req.ip);
     res.send("<h1>Error</h1>");
     return;
   }
 
-  // Finding the directory
-  var fileContent = shell.cat(pathTemp).stdout;
-  var fileDesc = shell.exec("file '" + pathTemp + "'", {silent: true}).stdout.split(": ")[1];
-  console.log(fileDesc);
+  // Setting Content-Type
+  var fileType = shortData(pathTemp);
+  res.setHeader("Content-Type", getContentType(fileType));
 
-  // if(fileDesc)
+  res.sendFile(pathTemp);
 });
 
 // Running the server
@@ -75,7 +171,7 @@ function getFolders(){
         name: folders[i],
         type: "file",
         path: shortPath(path + folders[i]),
-        description: shortData(shell.exec("file '" + (path + folders[i]) + "'", {silent: true}).split(": ")[1])
+        description: shortData(path + folders[i])
       };
   
       list.push(file);
@@ -112,7 +208,7 @@ function getFolderContents(directory){
         name: folderContents[i],
         path: shortPath(nextDir),
         type: "file",
-        description: shortData(shell.exec("file '" + (nextDir) + "'", {silent: true}).split(": ")[1])
+        description: shortData(nextDir)
       };
 
       contents.push(file);
@@ -121,6 +217,21 @@ function getFolderContents(directory){
   }
 
   return contents;
+}
+
+// Login with cookie
+function login(cookie){
+
+  var name = "testing";
+  var value = "testing";
+
+  cookie = cookie.split("=");
+
+  if(cookie[0] == name && cookie[1] == value){
+    return true;
+  }
+
+  return false;
 }
 
 // Shorten the path from:
@@ -135,63 +246,34 @@ function shortPath(path){
 // Shorts the file types
 // Here are almost all of the data types stored and changed for the user to understand
 // the file type
-function shortData(desc){
-  var list = [
-    {
-      // Format: MP4
-      name: "MP4",
-      short: function(temp){
-        // String: ISO Media, MP4 v2 [ISO 14496-14]
-        return "MP4 video";
-      }
-    },
-    {
-      // Format: Zip
-      name: "Zip",
-      short: function(temp){
-        // String:  Zip archive data, at least v1.0 to extract
-        return "ZIP archive";
-      }
-    },
-    {
-      // Format: PDF
-      name: "PDF",
-      short: function(temp){
-        // String: PDF document, version 1.5
-        return "PDF document";
-      }
-    },
-    {
-      // Format: PNG
-      name: "PNG",
-      short: function(temp){
-        // String: PNG image data, 800 x 600, 8-bit/color RGBA, non-interlaced
-        return "PNG image";
-      }
-    },
-    {
-      // Format: MP3
-      name: "ID3",
-      short: function(temp){
-        // String: Audio file with ID3 version 2.4.0, contains
-        return "MP3 audio";
-      }
-    },
-    {
-      // Format: JPEG
-      name: "JPEG",
-      short: function(temp){
-        // String: JPEG image data, JFIF standard 1.01, resolution (DPI)...
-        return "JPEG image";
-      }
-    }
-  ];
+function shortData(path){
 
-  for(var i = 0; i < list.length; i++){
-    if(desc.indexOf(list[i].name) != -1){
-      return list[i].short(desc);
+  var file = shell.exec("file '" + path + "'", {silent: true}).split(": ")[1];
+  var strings = shell.exec("strings '" + path + "'", {silent: true}).stdout;
+  
+  for(var i = 0; i < fileTypes.length; i++){
+  
+    if(file.search(fileTypes[i].name) != -1){
+      return fileTypes[i].short();
+    } else 
+    if(strings.search(fileTypes[i].name) != -1){
+      return fileTypes[i].short();
     }
   }
 
-  return desc;
+
+  return file;
+}
+
+// Sets the Content-Type in response header
+function getContentType(fileType){
+
+  for(var i = 0; i < fileTypes.length; i++){
+
+    if(fileType == fileTypes[i].short()){
+      return fileTypes[i].contentType;
+    }
+  }
+
+  return "application/octet-stream" // text/plain
 }

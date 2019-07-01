@@ -22,7 +22,6 @@ function main(){
 // Is called from main
 function manageRequest(content){
   folderStructure = content;
-  console.log(content);
 
   displayFolders(content);
 
@@ -222,6 +221,7 @@ function changeContent(el){
   if(list.length == 0){
 
     var templateName = document.createElement("p");
+    templateName.setAttribute("style", "text-decoration: None;");
 
     templateName.innerHTML = "No files in directory";
 
@@ -318,7 +318,6 @@ function openFile(el){
 
   var name = el.innerHTML;
   var path = el.attributes.path.value;
-  console.dir(el);
 
   window.open(location.origin + "/getFile?file=" + path, name, "left=250,top=100,width=" + width + ",height=" + height, false);
 
