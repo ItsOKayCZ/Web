@@ -242,7 +242,7 @@ function changeContent(el){
     filesDOM.appendChild(templateName);
 
     templateDesc.innerHTML = list[i].description;
-    templateDesc.style.height = templateName.clientHeight - 5;
+    templateDesc.style.height = templateName.clientHeight - 10;
 
     typesDOM.appendChild(templateDesc);
 

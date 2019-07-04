@@ -88,7 +88,16 @@ var fileTypes = [
     name: /^xl\//gmi,
     contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     short: function(){
-      return "Excel document"
+      return "Excel document";
+    }
+  },
+  {
+    // Format: doc
+    name: "Composite Document File",
+    contentType: "application/msword",
+    short: function(){
+      // String: Composite Document File V2 Document, Little Endian, Os
+      return "Word document";
     }
   },
   {
@@ -96,7 +105,7 @@ var fileTypes = [
     name: /^word\//gmi,
     contentType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     short: function(){
-      return "Word document"
+      return "Word document";
     }
   }
 ];

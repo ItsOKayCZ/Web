@@ -4,7 +4,7 @@
 }
 
 @font-face{
-  src: url("../Fonts/Bitter-Regular.ttf");
+  src: url("../Fonts/KeepCalm.ttf");
   font-family: defaultFont;
 }
 
@@ -95,6 +95,7 @@ body{
 
 #files p, #types p{
   padding-bottom: 5px;
+  padding-top: 5px;
 
   border-bottom: 1px dashed black;
 }
