@@ -171,8 +171,6 @@ function changeContent(el){
 
   } else { // When it is in a subdirectory
 
-    // path.shift();
-
     var done = false;
 
     var contentIndex = 0;
