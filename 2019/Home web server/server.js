@@ -116,6 +116,18 @@ function log(msg, ip){
   console.log("{" + ip + "}\t[#] " + msg);
 }
 
+app.use("/uploadFile", function(req, res){
+  log("Request to /uploadFile", req.ip);
+
+  var path = req.query.path;
+  var fileContents = Buffer.from(req.query.content, "base64").toString();
+
+  console.log("Path: " + path);
+  console.log("File contents: " + fileContents);
+
+  res.send("OK");
+});
+
 // When the client requests for the folders and files
 app.use("/getFolders", function(req, res){
   log("Request to /getFolders", req.ip);
