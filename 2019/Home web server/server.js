@@ -119,13 +119,24 @@ function log(msg, ip){
 app.use("/uploadFile", function(req, res){
   log("Request to /uploadFile", req.ip);
 
-  var path = req.query.path;
+  var filePath = req.query.path;
   var fileContents = Buffer.from(req.query.content, "base64").toString();
 
-  console.log("Path: " + path);
-  console.log("File contents: " + fileContents);
+  filePath = resolve("./", path, filePath);1
+  if(pwd != filePath.substr(0, pwd.length)){
+    log("Sent error", req.ip);
+    res.send("Error");
+    return;
+  }
 
-  res.send("OK");
+  fs.writeFile(filePath, fileContents, function(err){
+    if(err) throw err;
+
+    getFolders();
+    console.log("[#] Updated the folder structure");
+
+    res.send(JSON.stringify(list));
+  });
 });
 
 // When the client requests for the folders and files
@@ -174,6 +185,8 @@ app.listen(PORT, function(){
 
 // Main function for searching the database
 function getFolders(){
+
+  list = [];
 
   var folders = fs.readdirSync(path);
   for(var i = 0; i < folders.length; i++){
