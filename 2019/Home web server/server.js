@@ -129,6 +129,14 @@ app.use("/uploadFile", function(req, res){
     return;
   }
 
+  var dirPath = filePath.split("/"); 
+  dirPath.pop(); 
+  dirPath = dirPath.join("/");
+
+  if(fs.existsSync(dirPath) == false){
+    shell.mkdir("-p", dirPath);
+  }
+
   fs.writeFile(filePath, fileContents, function(err){
     if(err) throw err;
 
