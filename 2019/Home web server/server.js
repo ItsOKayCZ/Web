@@ -4,6 +4,7 @@ const app = express();
 const fs = require("fs");
 const shell = require("shelljs");
 const resolve = require("path").resolve;
+const bodyParser = require("body-parser");
 
 // The constant global variables
 const pwd = process.cwd();
@@ -16,6 +17,10 @@ var list = [];
 // Cookie username and password
 const name = "";
 const value = "";
+
+// Configuring express to use body-parser
+app.use(bodyParser.urlencoded({ limit: "3gb", extended: true }));
+app.use(bodyParser.json({ limit: "3gb", extended: true }));
 
 // All of the file types
 // This is the list of all the file types
@@ -120,7 +125,9 @@ app.use("/uploadFile", function(req, res){
   log("Request to /uploadFile", req.ip);
 
   var filePath = req.query.path;
-  var fileContents = Buffer.from(req.query.content, "base64").toString();
+  console.log("FilePath: " + filePath);
+  
+  var fileContents = Buffer.from(req.body.file, "base64");
 
   filePath = resolve("./", path, filePath);1
   if(pwd != filePath.substr(0, pwd.length)){
