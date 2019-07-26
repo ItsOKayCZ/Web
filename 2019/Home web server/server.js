@@ -121,11 +121,28 @@ function log(msg, ip){
   console.log("{" + ip + "}\t[#] " + msg);
 }
 
+app.use("/remove", function(req, res){
+  log("Request to /remove", req.ip);
+
+  var filePath = req.query.path;
+
+  filePath = resolve("./", path, filePath);
+  if(pwd != filePath.substr(0, pwd.length)){
+    log("Sent error", req.ip);
+    res.send("Error");
+    return;
+  }
+
+  shell.rm("-r", filePath);
+
+  getFolders();
+  res.send(JSON.stringify(list));
+});
+
 app.use("/uploadFile", function(req, res){
   log("Request to /uploadFile", req.ip);
 
   var filePath = req.query.path;
-  console.log("FilePath: " + filePath);
   
   var fileContents = Buffer.from(req.body.file, "base64");
 
