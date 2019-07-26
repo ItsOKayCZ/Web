@@ -18,30 +18,26 @@ app.use(bodyParser.json({ limit: "3gb", extended: true }));
 app.use(cookieParser());
 
 // Setting the router middleware
-// TODO: Make a authorization with cookie and the set the cookie
 const router = express.Router();
 
-function hashCode(s) {
-  var h = 0;
-  for(let i = 0; i < s.length; i++)
-      h = Math.imul(31, h) + s.charCodeAt(i) | 0;
-
-  return h;
-}
-
-const cookie = hashCode("Testing");
-console.log("Cookie set to " + cookie);
+// TODO
+const cookie = "defaultValue" // Change this
+console.log("[#] Cookie: " + cookie);
 
 router.use(function(req, res, next){
-  if(req.url == "setCookie"){
+  if(req.url == "/setCookie"){
 
-    res.cookie("auth", cookie, { maxAge: 900000, httpOnly: true });
+    res.cookie("auth", cookie, { maxAge: new Date() - new Date(3000), httpOnly: true });
+    console.log("Cookie set");
 
     res.send("Cookie sent");
     return;
   }
 
-  console.log("Cookie: " + req.cookies.auth);
+  if(req.cookies.auth != cookie){
+    res.send("Unauthorized");
+    return;
+  }
 
   next();
 });
