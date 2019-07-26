@@ -5,11 +5,48 @@ const fs = require("fs");
 const shell = require("shelljs");
 const resolve = require("path").resolve;
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // The constant global variables
 const pwd = process.cwd();
 const path = "Storage/";
 const PORT = 8080;
+
+// Configuring express to use body-parser
+app.use(bodyParser.urlencoded({ limit: "3gb", extended: true }));
+app.use(bodyParser.json({ limit: "3gb", extended: true }));
+app.use(cookieParser());
+
+// Setting the router middleware
+// TODO: Make a authorization with cookie and the set the cookie
+const router = express.Router();
+
+function hashCode(s) {
+  var h = 0;
+  for(let i = 0; i < s.length; i++)
+      h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+
+  return h;
+}
+
+const cookie = hashCode("Testing");
+console.log("Cookie set to " + cookie);
+
+router.use(function(req, res, next){
+  if(req.url == "setCookie"){
+
+    res.cookie("auth", cookie, { maxAge: 900000, httpOnly: true });
+
+    res.send("Cookie sent");
+    return;
+  }
+
+  console.log("Cookie: " + req.cookies.auth);
+
+  next();
+});
+
+app.use("/", router);
 
 // The list of folders and files in the "database"
 var list = [];
@@ -17,10 +54,6 @@ var list = [];
 // Cookie username and password
 const name = "";
 const value = "";
-
-// Configuring express to use body-parser
-app.use(bodyParser.urlencoded({ limit: "3gb", extended: true }));
-app.use(bodyParser.json({ limit: "3gb", extended: true }));
 
 // All of the file types
 // This is the list of all the file types
@@ -144,8 +177,14 @@ app.use("/uploadFile", function(req, res){
 
   var filePath = req.query.path;
   
-  var fileContents = Buffer.from(req.body.file, "base64");
-
+  var fileContents;
+  if(req.body.file != undefined){
+    fileContents = Buffer.from(req.body.file, "base64");
+  } else {
+    res.send("Error");
+    return;
+  }
+  
   filePath = resolve("./", path, filePath);1
   if(pwd != filePath.substr(0, pwd.length)){
     log("Sent error", req.ip);
@@ -175,11 +214,6 @@ app.use("/uploadFile", function(req, res){
 app.use("/getFolders", function(req, res){
   log("Request to /getFolders", req.ip);
 
-  if(login(req.headers.cookie) == false){
-    res.send('{"Message": "Unauthorized"}');
-    return;
-  }
-
   res.send(JSON.stringify(list));
 });
 
@@ -188,11 +222,6 @@ app.use("/getFile", function(req, res){
 
   var file = req.query.file;
   log("Request to /getFile?file=" + file, req.ip);
-
-  // if(login(req.headers.cookie) == false){
-  //   res.send("<h1>Unauthorized</h1>");
-  //   return;
-  // }
 
   var pathTemp = resolve(path, file);
 
@@ -285,23 +314,6 @@ function getFolderContents(directory){
   }
 
   return contents;
-}
-
-// Login with cookie
-function login(cookie){
-  return true;
-
-  if(cookie == undefined){
-    cookie = "";
-  }
-
-  cookie = cookie.split("=");
-
-  if(cookie[0] == name && cookie[1] == value){
-    return true;
-  }
-
-  return false;
 }
 
 // Shorten the path from:
