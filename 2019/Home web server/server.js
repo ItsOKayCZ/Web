@@ -25,7 +25,7 @@ router.use(function(req, res, next){
 
   if(req.url == "/" + cookie){
 
-    res.cookie("auth", cookie, {maxAge: 365 * 10 * 60 * 60 * 1000});
+    res.cookie("auth", cookie, {maxAge: 50 * 365 * 24 * 60 * 60 * 1000});
     console.log("[#] Cookie sent to " + req.ip);
     res.redirect("/");
     return;
