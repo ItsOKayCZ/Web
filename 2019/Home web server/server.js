@@ -19,22 +19,13 @@ app.use(cookieParser());
 
 // Setting the router middleware
 const router = express.Router();
-
-// TODO
 const cookie = "defaultValue" // Change this
-console.log("[#] Cookie: " + cookie);
 
 router.use(function(req, res, next){
-  if(req.url == "/setCookie"){
-
-    res.cookie("auth", cookie, { maxAge: new Date() - new Date(3000), httpOnly: true });
-    console.log("Cookie set");
-
-    res.send("Cookie sent");
-    return;
-  }
 
   if(req.cookies.auth != cookie){
+    console.log("[!!] Unauthorized access: " + req.ip);
+    console.log("[!!] " + req.cookies.auth);
     res.send("Unauthorized");
     return;
   }
@@ -237,6 +228,9 @@ app.use("/getFile", function(req, res){
 
 // Running the server
 app.listen(PORT, function(){
+
+  log("Cookie has been set to " + cookie, "127.0.0.1");
+
   log("Listening on port " + PORT, "127.0.0.1");
 });
 
