@@ -123,7 +123,7 @@ var fileTypes = [
     }
   },
   {
-    // Format: doc
+    // Format: do
     name: "Composite Document File",
     contentType: "application/msword",
     short: function(){
@@ -244,6 +244,10 @@ app.listen(PORT, function(){
 function getFolders(){
 
   list = [];
+
+  if(!fs.existsSync(path)){
+    fs.mkdirSync(path);
+  }
 
   var folders = fs.readdirSync(path);
   for(var i = 0; i < folders.length; i++){
