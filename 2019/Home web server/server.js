@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 // The constant global variables
 const pwd = process.cwd();
 const path = "Storage/";
-const PORT = 8080;
+const PORT = 80;
 
 // Configuring express to use body-parser
 app.use(bodyParser.urlencoded({ limit: "3gb", extended: true }));
@@ -25,7 +25,6 @@ router.use(function(req, res, next){
 
   if(req.cookies.auth != cookie){
     console.log("[!!] Unauthorized access: " + req.ip);
-    console.log("[!!] " + req.cookies.auth);
     res.send("Unauthorized");
     return;
   }
