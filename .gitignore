@@ -1,3 +1,6 @@
 token
 Storage
 Storage/*
+
+node_modules/
+node_modules/*
