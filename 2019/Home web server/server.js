@@ -27,7 +27,7 @@ router.use(function(req, res, next){
 
     res.cookie("auth", cookie, {maxAge: 365 * 10 * 60 * 60 * 1000});
     console.log("[#] Cookie sent to " + req.ip);
-    res.send("Cookie sent");
+    res.redirect("/");
     return;
 
   } else if(req.cookies.auth != cookie){
@@ -108,7 +108,7 @@ var fileTypes = [
   {
     // Format: JPEG
     name: "JPEG",
-    contentType: "image/jpeg",
+    contentType: "image/jpeg",doc
     short: function(){
       // String: JPEG image data, JFIF standard 1.01, resolution (DPI)...
       return "JPEG image";
