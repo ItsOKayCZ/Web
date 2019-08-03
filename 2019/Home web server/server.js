@@ -108,7 +108,7 @@ var fileTypes = [
   {
     // Format: JPEG
     name: "JPEG",
-    contentType: "image/jpeg",doc
+    contentType: "image/jpeg",
     short: function(){
       // String: JPEG image data, JFIF standard 1.01, resolution (DPI)...
       return "JPEG image";
