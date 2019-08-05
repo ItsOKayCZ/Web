@@ -24,8 +24,6 @@ function manageRequest(content){
   folderStructure = content;
 
   displayFolders(content);
-
-  changeSubdirStyles();
 }
 
 // Displayes the folders that were called from the API
@@ -65,17 +63,17 @@ function displayFolders(content){
   }
 
   // DOM element
-  var outputDOM = document.getElementById("folders");
 
+  var parentDiv = document.getElementById("folders");
   for(var i = 0; i < list.length; i++){
 
-    var template = document.createElement("p");
-    template.innerHTML = list[i].name;
-    template.setAttribute("onclick", "changeDisplay(this)");
-    template.setAttribute("path", list[i].path);
-    template.className = list[i].dir;
+    var folderDOM = document.createElement("span");
 
-    outputDOM.appendChild(template);
+    folderDOM.innerHTML = list[i].name;
+    folderDOM.path = list[i].path;
+    folderDOM.setAttribute("class", list[i].dir);
+
+    // parentDiv.appendChild(folderDOM);
 
   }
 }
@@ -115,29 +113,11 @@ function getFolder(content, subdir){
   }
 }
 
-// Changes the subdir padding styles so that it is indented
-// Called from manageRequest
-function changeSubdirStyles(){
-
-  var el = document.getElementsByClassName("subdir");
-
-  var offset = 10;
-
-  for(var i = 0; i < el.length; i++){
-
-    var subdir = el[i].classList[1];
-
-    el[i].style.paddingLeft = (offset * subdir) + "px";
-  }
-
-}
-
 // Displays the contents of a folder
 // Called from changeDisplay
 function changeContent(el){
 
-  // debugger;
-
+  // TODO: Add the divs
   var filesDOM = document.getElementById("files");
   var typesDOM = document.getElementById("types");
 
@@ -215,6 +195,12 @@ function changeContent(el){
 
   }
 
+  /*
+
+  ///////// TODO: ?Rewrite? the displaying of the file names and descriptions
+
+  */
+
   // No files in directory
   if(list.length == 0){
 
@@ -249,64 +235,9 @@ function changeContent(el){
 }
 
 // Show the subdirectories 
-// Called from the DOM
-function changeDisplay(el){
+function showSubdir(el){
 
-  changeContent(el);
-
-  var subdir;
-  var classList = el.classList[0];
-  // Change display to block
-  if(classList == "root"){
-    subdir = 1;
-
-    var tempEl = el.nextElementSibling;
-    var classList = "root";
-    while(true){
-
-      if(tempEl == undefined || tempEl.classList[0] == classList){
-        break;
-      }
-
-      if(tempEl.classList[1] == subdir){
-        if(tempEl.style.display == "" || tempEl.style.display == "none"){
-          tempEl.style.display = "block";
-        } else {
-          tempEl.style.display = "none";
-        }
-      } else {
-        tempEl.style.display = "none";
-      }
-
-      tempEl = tempEl.nextElementSibling;
-    }
-
-  } else if(classList == "subdir"){ // When clicked on a subdir
-
-    subdir = parseInt(el.classList[1]) + 1;
-
-    var tempEl = el.nextElementSibling;
-    var classList = parseInt(el.classList[1]);
-    while(true){
-
-      if(tempEl == undefined || tempEl.classList[1] <= classList || tempEl.classList == "root"){
-        break;
-      }
-
-      if(tempEl.classList[1] == subdir){
-        if(tempEl.style.display == "" || tempEl.style.display == "none"){
-          tempEl.style.display = "block";
-        } else {
-          tempEl.style.display = "none";
-        }
-      } else {
-        tempEl.style.display = "none";
-      }
-
-      tempEl = tempEl.nextElementSibling;
-    }
-
-  }
+  console.log(el);
 
 }
 

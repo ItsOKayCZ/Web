@@ -1,113 +1,82 @@
+/*
+Defaults
+*/
 *{
   margin: 0px;
   padding: 0px;
 }
-
 @font-face{
   src: url("../Fonts/KeepCalm.ttf");
   font-family: defaultFont;
 }
-
 p{
-  user-select: none;
-  font-family: defaultFont;
+  font-family: defaultFont, monospace;
 }
+
 
 body{
-  height: 100%;
-  width: 100%;
-
   display: flex;
-
-  flex-flow: row;
 }
 
+/*
+Folders
+*/
 #folders{
-  flex: 0.25;
-  height: calc(100% - 10px);
+  display: flex;
+  flex-direction: column;
+  flex-basis: 20%;
+  max-width: 20%;
 
-  overflow: auto;
+  background-color: #1d2e46;
 
-  min-width: 250px;
-
-  background-color: #ffffff;
-
-  border-right: 3px solid black;
-}
-#folders:first-child{
-  padding-top: 10px;
-}
-
-.root{
-  margin-left: 5px;
-  font-size: 40px;
-}
-.root:active .subdir{
-  color: red;
-
-  
-}
-.subdir{
+  color: white;
   font-size: 20px;
-  display: none;
+  user-select: none;
 }
+.root{
+  overflow-wrap: break-word;
 
-.root, .subdir{
+  border-top: 1px solid #979797;
+
+  padding-top: 6px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+
   cursor: pointer;
 }
-.root:hover, .subdir:hover{
-  text-decoration: underline; 
+.root:last-child{
+  border-bottom: 1px solid #979797;
 }
 
-
-.container{
-  flex-grow: 1;
-  height: 100%;
-
-  background-color: #f9c343;
+p{
+  border-radius: 3px;
+  /* padding-left: 5px; */
+}
+p:hover{
+  background-color: #2e496e;
 }
 
-#content{
-  background-color: white;
+.subdir{
+  display: flex;
+  /* display: none; */
+  flex-direction: column;
 
-  margin: 20px;
+  border-top: 3px solid white;
+  border-bottom: 2px solid white;
 
-  width: calc(100% - 2 * 21px);
-  height: calc(100% - 2 * 21px);
+  background-color: #1d2e46;
 
-  border-radius: 5px;
-  border: 1px solid black;
-
-  font-size: 20px;
-
-  overflow: auto;
-}
-
-
-
-#files, #types{
-  padding-top: 6px;
-  padding-left: 10px;
-
-  width: calc(50% - 20px);
-  height: calc(100% - 10px);
-}
-
-#files p, #types p{
-  padding-bottom: 5px;
   padding-top: 5px;
+  margin-bottom: 5px;
 
-  border-bottom: 1px dashed black;
-}
-#files p:hover{
-  text-decoration: underline;
+  font-size: 17px;
 }
 
-#files{
-  float: left;
-}
-
-#types{
-  padding-right: 10px;
-  float: right;
+/*
+Contents
+*/
+#contents{
+  flex-grow: 1;
+  flex-basis: 1;
 }

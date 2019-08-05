@@ -1,0 +1,113 @@
+*{
+  margin: 0px;
+  padding: 0px;
+}
+
+@font-face{
+  src: url("../Fonts/KeepCalm.ttf");
+  font-family: defaultFont;
+}
+
+p{
+  user-select: none;
+  font-family: defaultFont;
+}
+
+body{
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+
+  flex-flow: row;
+}
+
+#folders{
+  flex: 0.25;
+  height: calc(100% - 10px);
+
+  overflow: auto;
+
+  min-width: 250px;
+
+  background-color: #ffffff;
+
+  border-right: 3px solid black;
+}
+#folders:first-child{
+  padding-top: 10px;
+}
+
+.root{
+  margin-left: 5px;
+  font-size: 40px;
+}
+.root:active .subdir{
+  color: red;
+
+  
+}
+.subdir{
+  font-size: 20px;
+  display: none;
+}
+
+.root, .subdir{
+  cursor: pointer;
+}
+.root:hover, .subdir:hover{
+  text-decoration: underline; 
+}
+
+
+.container{
+  flex-grow: 1;
+  height: 100%;
+
+  background-color: #f9c343;
+}
+
+#content{
+  background-color: white;
+
+  margin: 20px;
+
+  width: calc(100% - 2 * 21px);
+  height: calc(100% - 2 * 21px);
+
+  border-radius: 5px;
+  border: 1px solid black;
+
+  font-size: 20px;
+
+  overflow: auto;
+}
+
+
+
+#files, #types{
+  padding-top: 6px;
+  padding-left: 10px;
+
+  width: calc(50% - 20px);
+  height: calc(100% - 10px);
+}
+
+#files p, #types p{
+  padding-bottom: 5px;
+  padding-top: 5px;
+
+  border-bottom: 1px dashed black;
+}
+#files p:hover{
+  text-decoration: underline;
+}
+
+#files{
+  float: left;
+}
+
+#types{
+  padding-right: 10px;
+  float: right;
+}
