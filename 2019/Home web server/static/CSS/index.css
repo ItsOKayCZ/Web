@@ -51,26 +51,29 @@ Folders
 
 p{
   border-radius: 3px;
-  /* padding-left: 5px; */
 }
-p:hover{
+.root:hover{
   background-color: #2e496e;
 }
 
 .subdir{
-  display: flex;
-  /* display: none; */
+  /* display: flex; */
+  display: none;
   flex-direction: column;
 
-  border-top: 3px solid white;
+  border-top: 4px solid white;
   border-bottom: 2px solid white;
 
   background-color: #1d2e46;
 
-  padding-top: 5px;
-  margin-bottom: 5px;
-
   font-size: 17px;
+}
+.subdir p{
+  padding-top: 5px;
+  /* padding-bottom: 5px; */
+}
+.subdir p:hover{
+  background-color: #3c5f91;
 }
 
 /*
@@ -80,3 +83,4 @@ Contents
   flex-grow: 1;
   flex-basis: 1;
 }
+

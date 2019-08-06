@@ -30,87 +30,70 @@ function manageRequest(content){
 // Is called from manageRequest
 function displayFolders(content){
 
-  var list = [];
+  var parent = document.getElementById("folders");
 
-  // The root directory of all
-  list.push({
-    name: "Main",
-    path: "",
-    dir: "root"
-  });
+  // Main
+  var folderDIV = setDOMAttributes("div", "root");
+  var folderDOM = setDOMAttributes("p", undefined, "Main", "");
 
-  for(var i = 0; i < content.length; i++){
+  folderDIV.appendChild(folderDOM);
+  parent.appendChild(folderDIV);
+  
+  // Other folders
+  function recursionFunction(passedContent, dir){
+    var content = passedContent;
 
-    if(content[i].type == "folder"){
+    var folderDIV = setDOMAttributes("div", "subdir");
 
-      var info = {
-        name: content[i].name,
-        path: content[i].path,
-        dir: "root"
-      };
-      list.push(info);
+    var folderDOM;
+    for(var i = 0; i < content.length; i++){
 
-      var folderInfo = getFolder(content[i].contents, 1);
+      if(content[i].type == "folder"){
 
-      if(folderInfo != undefined){
-        for(var j = 0; j < folderInfo.length; j++){
-          list.push(folderInfo[j]);
+        if(dir == 0){
+          folderDIV = setDOMAttributes("div", "root");
         }
+
+        folderDOM = setDOMAttributes("p", undefined, content[i].name, content[i].path);
+
+        folderDIV.appendChild(folderDOM);
+
+        if(content[i].contents.length != 0){
+          folderDIV.appendChild(recursionFunction(content[i].contents, dir + 1));
+        }
+
+        if(dir == 0){
+          parent.appendChild(folderDIV);
+        }
+
       }
-      
+
     }
 
-  }
-
-  // DOM element
-
-  var parentDiv = document.getElementById("folders");
-  for(var i = 0; i < list.length; i++){
-
-    var folderDOM = document.createElement("span");
-
-    folderDOM.innerHTML = list[i].name;
-    folderDOM.path = list[i].path;
-    folderDOM.setAttribute("class", list[i].dir);
-
-    // parentDiv.appendChild(folderDOM);
+    return folderDIV;
 
   }
+  recursionFunction(content, 0);
 }
 
-// Is a recursive function for displayFolders
-// Called from displayFolders
-function getFolder(content, subdir){
+// Setting the attributes for the selected DOM
+function setDOMAttributes(DOM, dir, name, path){
+  
+  if(DOM == "div"){
 
-  var currentContent = [];
+    var DOM = document.createElement(DOM);
+    DOM.setAttribute("class", dir);
 
-  for(var i = 0; i < content.length; i++){
+  } else if(DOM == "p"){
 
-    if(content[i].type == "folder"){
-
-      var info = {
-        name: content[i].name,
-        path: content[i].path,
-        dir: "subdir " + subdir
-      };
-      currentContent.push(info);
-
-      var folderInfo = getFolder(content[i].contents, subdir + 1);
-      if(folderInfo != undefined){
-        for(var j = 0; j < folderInfo.length; j++){
-          currentContent.push(folderInfo[j]);
-        }
-      }
-
-    }
+    var DOM = document.createElement(DOM);
+    DOM.innerHTML = name;
+    DOM.path = path;
+    DOM.setAttribute("onclick", "showSubdir(this)");
 
   }
 
-  if(currentContent.length > 0){
-    return currentContent;
-  } else {
-    return undefined;
-  }
+  return DOM;
 }
 
 // Displays the contents of a folder
@@ -237,7 +220,20 @@ function changeContent(el){
 // Show the subdirectories 
 function showSubdir(el){
 
-  console.log(el);
+  if(el.nextSibling == undefined){
+    return;
+  }
+  el = el.nextSibling;
+
+  if(el.className == "subdir"){
+
+    if(el.style.display == "" || el.style.display == "none"){
+      el.style.display = "flex";
+    } else {
+      el.style.display = "none";
+    }
+
+  }
 
 }
 
