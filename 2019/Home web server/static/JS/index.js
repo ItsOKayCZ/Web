@@ -98,131 +98,120 @@ function setDOMAttributes(DOM, dir, name, path){
 
 // Displays the contents of a folder
 // Called from changeDisplay
-function changeContent(el){
+function changeContentDIV(el){
 
-  // TODO: Add the divs
-  var filesDOM = document.getElementById("files");
-  var typesDOM = document.getElementById("types");
+  var fileDIV = document.getElementById("files");
+  var typeDIV = document.getElementById("types");
 
-  filesDOM.innerHTML = "";
-  typesDOM.innerHTML = "";
-
+  var path = el.path.split("/");
 
   var list = [];
 
-  // Need to discover the files in the directory
-  var path = el.attributes.path.value.split("/");
-
-  // When it is the root directory
-  if(path == ""){
+  console.log(path);
+  if(path[0] == ""){
 
     for(var i = 0; i < folderStructure.length; i++){
 
-      if(folderStructure[i].type == "file"){
-      
-        var info = {
+      if(folderStructure[i].type != "folder"){
+        list.push({
           name: folderStructure[i].name,
           path: folderStructure[i].path,
           description: folderStructure[i].description
-        };
-
-        list.push(info);
-
+        });
       }
 
     }
 
-  } else { // When it is in a subdirectory
+  } else {
 
     var done = false;
-
-    var contentIndex = 0;
     var content = folderStructure;
     var pathIndex = 0;
+
     while(done == false){
 
-      if(content[contentIndex].name == path[pathIndex]){
+      for(var i = 0; i < content.length; i++){
 
-        if(pathIndex == path.length - 1){
+        if(content[i].name == path[pathIndex]){
 
-          for(var i = 0; i < content[contentIndex].contents.length; i++){
+          content = content[i].contents
+          pathIndex++;
 
-            if(content[contentIndex].contents[i].type == "file"){
+          if(pathIndex == path.length){
 
-              var info = {
-                name: content[contentIndex].contents[i].name,
-                path: content[contentIndex].contents[i].path,
-                description: content[contentIndex].contents[i].description
-              };
-
-              list.push(info);
+            for(var j = 0; j < content.length; j++){
+              if(content[j].type != "folder"){
+                list.push({
+                  name: content[j].name,
+                  path: content[j].path,
+                  description: content[j].description
+                });
+              }
 
             }
 
+            done = true;
+            break;
+          } else {
+            break;
           }
-
-          // Finished the loop
-          done = true;
 
         }
 
-        content = content[contentIndex].contents;
-
-        pathIndex++;
-        contentIndex = 0;
-      } else {
-        contentIndex++;
       }
 
     }
 
   }
 
-  /*
 
-  ///////// TODO: ?Rewrite? the displaying of the file names and descriptions
+  fileDIV.innerHTML = "";
+  typeDIV.innerHTML = "";
 
-  */
-
-  // No files in directory
   if(list.length == 0){
 
-    var templateName = document.createElement("p");
-    templateName.setAttribute("style", "text-decoration: None;");
-
-    templateName.innerHTML = "No files in directory";
-
-    filesDOM.appendChild(templateName);
+    var DOM = document.createElement("p");
+    DOM.innerHTML = "No files in directory";
+    
+    fileDIV.append(DOM);
 
     return;
   }
 
   for(var i = 0; i < list.length; i++){
 
-    var templateName = document.createElement("p");
-    var templateDesc = document.createElement("p");
+    var fileDOM = document.createElement("p");
+    fileDOM.innerHTML = list[i].name;
+    fileDOM.path = list[i].path;
+    fileDOM.setAttribute("class", "underLineText");
+    fileDOM.setAttribute("onclick", "openFile(this)");
 
-    templateName.innerHTML = list[i].name;
-    templateName.setAttribute("onclick", "openFile(this);");
-    templateName.setAttribute("path", list[i].path);
+    fileDIV.appendChild(fileDOM);
 
-    filesDOM.appendChild(templateName);
+    var typeDOM = document.createElement("p");
+    typeDOM.innerHTML = list[i].description;
 
-    templateDesc.innerHTML = list[i].description;
-    templateDesc.style.height = templateName.clientHeight - 10;
-
-    typesDOM.appendChild(templateDesc);
+    typeDIV.appendChild(typeDOM);
 
   }
-
 }
 
 // Show the subdirectories 
 function showSubdir(el){
 
+  changeContentDIV(el);
+
+  var directory = document.createElement("p");
+  directory.innerHTML = "Directory: " + el.path;
+
+  var directoryDOM = document.getElementById("directoryText");
+  directoryDOM.innerHTML = "";
+  directoryDOM.appendChild(directory);
+
   if(el.nextSibling == undefined){
     return;
   }
+  
   el = el.nextSibling;
 
   if(el.className == "subdir"){
@@ -232,7 +221,6 @@ function showSubdir(el){
     } else {
       el.style.display = "none";
     }
-
   }
 
 }
@@ -244,7 +232,7 @@ function openFile(el){
   var height = 600;
 
   var name = el.innerHTML;
-  var path = el.attributes.path.value;
+  var path = el.path;
 
   window.open(location.origin + "/getFile?file=" + path, name, "left=250,top=100,width=" + width + ",height=" + height, false);
 
