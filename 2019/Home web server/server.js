@@ -171,13 +171,15 @@ app.use("/uploadFile", function(req, res){
   var filePath = req.query.path;
   
   var fileContents;
+
+  // console.log(req.body.file.split(" ").join("+"));
   if(req.body.file != undefined){
-    fileContents = Buffer.from(req.body.file, "base64");
+    fileContents = Buffer.from(req.body.file.split(" ").join("+"), "base64");
   } else {
     res.send("Error");
     return;
   }
-  
+
   filePath = resolve("./", path, filePath);1
   if(pwd != filePath.substr(0, pwd.length)){
     log("Sent error", req.ip);

@@ -59,7 +59,10 @@ function displayFolders(content){
         folderDIV.appendChild(folderDOM);
 
         if(content[i].contents.length != 0){
-          folderDIV.appendChild(recursionFunction(content[i].contents, dir + 1));
+          var subdirDIV = recursionFunction(content[i].contents, dir + 1);
+          if(subdirDIV.children.length != 0){
+            folderDIV.appendChild(subdirDIV);
+          }  
         }
 
         if(dir == 0){
@@ -107,7 +110,6 @@ function changeContentDIV(el){
 
   var list = [];
 
-  console.log(path);
   if(path[0] == ""){
 
     for(var i = 0; i < folderStructure.length; i++){
