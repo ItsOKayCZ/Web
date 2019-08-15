@@ -1,0 +1,22 @@
+{
+  "name": "phototoemail",
+  "version": "1.0.0",
+  "description": "Takes a picture and then send it to the email address that is specified",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItsOKayCZ/Web.git"
+  },
+  "author": "Oldrich Krupauer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ItsOKayCZ/Web/issues"
+  },
+  "homepage": "https://github.com/ItsOKayCZ/Web#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "nodemailer": "^6.3.0"
+  }
+}
