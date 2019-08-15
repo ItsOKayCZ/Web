@@ -11,9 +11,7 @@ function main(){
 
   var backCamera = { 
     video: { 
-      facingMode: { 
-        exact: "environment" 
-      } 
+      facingMode: "enviroment"
     },
     audio: false 
   }
