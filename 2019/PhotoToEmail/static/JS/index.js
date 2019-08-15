@@ -1,4 +1,5 @@
 window.onload = main;
+var facingDirection = "front";
 
 function main(){
 
@@ -59,11 +60,22 @@ function main(){
   }
 
   flipCamera.onclick = function(){
-    navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
-      cameraView.srcObject = stream;
-    }).catch(function(error){
-      alert("Sorry, you cannot do that");
-    });
+
+    if(facingDirection == "front"){
+      navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
+        cameraView.srcObject = stream;
+        facingDirection = "back";
+      }).catch(function(error){
+        alert("Sorry, you cannot do that");
+      });
+    } else if(facingDirection == "back"){
+      navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
+        cameraView.srcObject = stream;
+        facingDirection = "front";
+      }).catch(function(error){
+        alert("Sorry, you cannot do that");
+      });
+    }
   }
 
   cameraButton.onmousedown = function(){
