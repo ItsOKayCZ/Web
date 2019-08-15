@@ -9,13 +9,13 @@ function main(){
     audio: false
   };
 
-  var backCamera = {
-    video: {
-      facingMode: {
-        exact: "enviroment"
-      },
-      audio: false
-    }
+  var backCamera = { 
+    video: { 
+      facingMode: { 
+        exact: "environment" 
+      } 
+    },
+    audio: false 
   }
 
   const cameraView = document.getElementById("cameraView");
