@@ -42,7 +42,7 @@ app.use(express.static("static"))
 app.use("/sendEmail", function(req, res){
   console.log("Got request to /sendEmail {" + req.ip + "}");
 
-  var details = fs.readFileSync("credentials.txt").toString().split("\n");
+  var details = fs.readFileSync("credentials.txt").toString().split(",");
 
   var email = details[0];
   var password = details[1];
@@ -56,7 +56,6 @@ app.use("/sendEmail", function(req, res){
     port: smtpServerPort,
     secure: true,
     auth: {
-      type: "login",
       user: email,
       pass: password
     }
@@ -77,15 +76,15 @@ app.use("/sendEmail", function(req, res){
     ]
   };
 
-  console.log("Sending email");
+  console.log("Sending email {" + req.ip + "}");
   server.sendMail(mailOptions, function(error, info){
     if(error){
-      res.send(error);
+      res.send("An error occured");
       throw error;
     }
 
-    console.log("Email sent");
-    res.send("OK");
+    console.log("Email sent {" + req.ip + "}");
+    res.send("Photo sent");
   });
 });
 

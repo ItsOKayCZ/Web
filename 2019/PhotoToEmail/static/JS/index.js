@@ -52,7 +52,7 @@ function main(){
 
     http.onreadystatechange = function(){
       if(http.readyState === 4 && http.status === 200) {
-        console.log("Status: " + this.responseText);
+        alert(this.responseText);
       }
     }
 
