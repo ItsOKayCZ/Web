@@ -80,7 +80,8 @@ app.use("/sendEmail", function(req, res){
   server.sendMail(mailOptions, function(error, info){
     if(error){
       res.send("An error occured");
-      throw error;
+      console.log(error);
+      return;
     }
 
     console.log("Email sent {" + req.ip + "}");
