@@ -1,5 +1,5 @@
 window.onload = main;
-var facingDirection = "front";
+var facingDirection;
 
 function main(){
 
@@ -22,7 +22,8 @@ function main(){
   const cameraButton = document.getElementById("cameraButton");
   const flipCamera = document.getElementById("flipCamera");
 
-  navigator.mediaDevices.getUserMedia(frontCamera).then(function(stream){
+  facingDirection = "back";
+  navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
     cameraView.srcObject = stream;
   }).catch(function(error){
     var DOM = document.createElement("p");
@@ -69,7 +70,7 @@ function main(){
         alert("Sorry, you cannot do that");
       });
     } else if(facingDirection == "back"){
-      navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
+      navigator.mediaDevices.getUserMedia(frontCamera).then(function(stream){
         cameraView.srcObject = stream;
         facingDirection = "front";
       }).catch(function(error){
