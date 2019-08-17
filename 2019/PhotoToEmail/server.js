@@ -19,8 +19,6 @@ app.use(cookieParser());
 const router = express.Router()
 router.use(function(req, res, next){
 
-  console.log(req.url);
-
   if(req.url == "/" + cookie){
 
     res.cookie("auth", cookie, {maxAge: 50 * 365 * 24 * 60 * 60 * 1000});

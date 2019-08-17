@@ -5,14 +5,18 @@ function main(){
 
   var frontCamera = {
     video: {
-      facingMode: "user",
+      mandatory: {
+        facingMode: "user"
+      }
     },
     audio: false
   };
 
   var backCamera = { 
-    video: { 
-      facingMode: "enviroment"
+    video: {
+      mandatory: {
+        facingMode: "enviroment"
+      }
     },
     audio: false 
   }
@@ -26,12 +30,7 @@ function main(){
   navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
     cameraView.srcObject = stream;
   }).catch(function(error){
-
-    var http = new XMLHttpRequest();
-    var url = location.origin + "/" + error;
-    
-    http.open("GET", url);
-    http.send();
+    alert(error);
   });
 
   cameraButton.onclick = function(){
