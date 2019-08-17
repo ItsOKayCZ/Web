@@ -12,7 +12,7 @@ function main(){
 
   var backCamera = { 
     video: { 
-      facingMode: "enviroment"
+      facingMode: {exact: "env"}
     },
     audio: false 
   }
@@ -26,10 +26,12 @@ function main(){
   navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
     cameraView.srcObject = stream;
   }).catch(function(error){
-    var DOM = document.createElement("p");
-    DOM.innerHTML = error;
 
-    document.getElementsByTagName("body")[0].appendChild(DOM);
+    var http = new XMLHttpRequest();
+    var url = location.origin + "/" + error;
+    
+    http.open("GET", url);
+    http.send();
   });
 
   cameraButton.onclick = function(){
