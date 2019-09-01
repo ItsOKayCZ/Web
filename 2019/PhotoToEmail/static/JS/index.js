@@ -5,18 +5,14 @@ function main(){
 
   var frontCamera = {
     video: {
-      mandatory: {
-        facingMode: "user"
-      }
+      facingMode: "user"
     },
     audio: false
   };
 
   var backCamera = {
     video: {
-      mandatory: {
-        facingMode: "enviroment"
-      }
+      facingMode: "enviroment"
     },
     audio: false
   }
