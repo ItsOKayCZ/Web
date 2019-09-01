@@ -33,6 +33,7 @@ function main(){
 
     navigator.mediaDevices.getUserMedia(frontCamera).then(function(stream){
       cameraView.srcObject = stream;
+      facingDirection = "front";
     }).catch(function(error){
       alert("Cannot use camera");
     });
