@@ -12,13 +12,13 @@ function main(){
     audio: false
   };
 
-  var backCamera = { 
+  var backCamera = {
     video: {
       mandatory: {
         facingMode: "enviroment"
       }
     },
-    audio: false 
+    audio: false
   }
 
   const cameraView = document.getElementById("cameraView");
@@ -30,7 +30,13 @@ function main(){
   navigator.mediaDevices.getUserMedia(backCamera).then(function(stream){
     cameraView.srcObject = stream;
   }).catch(function(error){
-    alert(error);
+
+    navigator.mediaDevices.getUserMedia(frontCamera).then(function(stream){
+      cameraView.srcObject = stream;
+    }).catch(function(error){
+      alert("Cannot use camera");
+    });
+
   });
 
   cameraButton.onclick = function(){
