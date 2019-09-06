@@ -1,6 +1,8 @@
 token
 Storage/*
 Storage/
+cert/
+cert/*
 
 node_modules/
 node_modules/*

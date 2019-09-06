@@ -1,6 +1,7 @@
 // Node.js modules
 const express = require("express");
 const app = express();
+const https = require("https");
 const fs = require("fs");
 const shell = require("shelljs");
 const resolve = require("path").resolve;
@@ -20,6 +21,9 @@ app.use(cookieParser());
 // Setting the router middleware
 const router = express.Router();
 const cookie = "defaultValue" // Change this
+
+const enableHttps = false;
+const certDir = "";
 
 router.use(function(req, res, next){
 
@@ -235,12 +239,24 @@ app.use("/getFile", function(req, res){
 });
 
 // Running the server
-app.listen(PORT, function(){
+if(enableHttps == true){
 
-  log("Cookie has been set to " + cookie, "127.0.0.1");
+  https.createServer({
+    key: fs.readFileSync(certDir + "server.key"),
+    cert: fs.readFileSync(certDir + "server.cert")
+  }, app).listen(PORT, function(){
+    log("Cookie has been set to " + cookie, "127.0.0.1");
 
-  log("Listening on port " + PORT, "127.0.0.1");
-});
+    log("Listening on port " + PORT, "127.0.0.1");
+  });
+
+} else {
+  app.listen(PORT, function(){
+    log("Cookie has been set to " + cookie, "127.0.0.1");
+
+    log("Listening on port " + PORT, "127.0.0.1");
+  });
+}
 
 // Main function for searching the database
 function getFolders(){
