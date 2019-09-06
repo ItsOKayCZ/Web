@@ -70,17 +70,8 @@ var fileTypes = [
     }
   },
   {
-    // Format: MP4
-    name: "MP4",
-    contentType: "video/mp4",
-    short: function(){
-      // String: ISO Media, MP4 v2 [ISO 14496-14]
-      return "MP4 video";
-    }
-  },
-  {
     // Format: ZIP, Word document, Excel document
-    name: "Zip archive data, at least v1.0",
+    name: "Zip",
     contentType: "application/zip",
     short: function(){
       // String:  Zip archive data, at least v1.0 to extract
@@ -120,6 +111,15 @@ var fileTypes = [
     contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     short: function(){
       return "Excel document";
+    }
+  },
+  {
+    // Format: MP4
+    name: "MP4",
+    contentType: "video/mp4",
+    short: function(){
+      // String: ISO Media, MP4 v2 [ISO 14496-14]
+      return "MP4 video";
     }
   },
   {
@@ -169,7 +169,7 @@ app.use("/uploadFile", function(req, res){
   log("Request to /uploadFile", req.ip);
 
   var filePath = req.query.path;
-  
+
   var fileContents;
 
   // console.log(req.body.file.split(" ").join("+"));
@@ -187,8 +187,8 @@ app.use("/uploadFile", function(req, res){
     return;
   }
 
-  var dirPath = filePath.split("/"); 
-  dirPath.pop(); 
+  var dirPath = filePath.split("/");
+  dirPath.pop();
   dirPath = dirPath.join("/");
 
   if(fs.existsSync(dirPath) == false){
@@ -256,7 +256,7 @@ function getFolders(){
 
     var tempPath = fs.lstatSync(path + folders[i]);
     if(tempPath.isDirectory()){ // Is a folder
-      
+
       var folder = {
         name: folders[i],
         contents: getFolderContents(path + folders[i]),
@@ -272,10 +272,10 @@ function getFolders(){
         path: shortPath(path + folders[i]),
         description: shortData(path + folders[i])
       };
-  
+
       list.push(file);
     }
-    
+
   }
 }
 getFolders();
@@ -292,7 +292,7 @@ function getFolderContents(directory){
 
     var tempPath = fs.lstatSync(nextDir);
     if(tempPath.isDirectory()){
-      
+
       var folder = {
         name: folderContents[i],
         contents: getFolderContents(nextDir),
@@ -312,7 +312,7 @@ function getFolderContents(directory){
 
       contents.push(file);
     }
-    
+
   }
 
   return contents;
@@ -332,16 +332,22 @@ function shortPath(path){
 // the file type
 function shortData(path){
 
-  var file = shell.exec("file '" + path + "'", {silent: true}).split(": ")[1];
+  var file = shell.exec("file '" + path + "'", {silent: true}).stdout.split(": ")[1];
   var strings = shell.exec("strings '" + path + "'", {silent: true}).stdout;
-  
+
   for(var i = 0; i < fileTypes.length; i++){
-  
+
+    console.log("Path: " + path);
+    console.log("File: " + file);
+    console.log("File type: " + fileTypes[i].name);
     if(file.search(fileTypes[i].name) != -1){
+
       return fileTypes[i].short();
-    } else 
-    if(strings.search(fileTypes[i].name) != -1){
+
+    } else if(strings.search(fileTypes[i].name) != -1){
+
       return fileTypes[i].short();
+
     }
   }
 
