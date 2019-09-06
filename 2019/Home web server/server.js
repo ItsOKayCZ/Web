@@ -337,9 +337,6 @@ function shortData(path){
 
   for(var i = 0; i < fileTypes.length; i++){
 
-    console.log("Path: " + path);
-    console.log("File: " + file);
-    console.log("File type: " + fileTypes[i].name);
     if(file.search(fileTypes[i].name) != -1){
 
       return fileTypes[i].short();
