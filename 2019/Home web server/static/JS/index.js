@@ -38,7 +38,7 @@ function displayFolders(content){
 
   folderDIV.appendChild(folderDOM);
   parent.appendChild(folderDIV);
-  
+
   // Other folders
   function recursionFunction(passedContent, dir){
     var content = passedContent;
@@ -62,7 +62,7 @@ function displayFolders(content){
           var subdirDIV = recursionFunction(content[i].contents, dir + 1);
           if(subdirDIV.children.length != 0){
             folderDIV.appendChild(subdirDIV);
-          }  
+          }
         }
 
         if(dir == 0){
@@ -81,7 +81,7 @@ function displayFolders(content){
 
 // Setting the attributes for the selected DOM
 function setDOMAttributes(DOM, dir, name, path){
-  
+
   if(DOM == "div"){
 
     var DOM = document.createElement(DOM);
@@ -174,7 +174,7 @@ function changeContentDIV(el){
 
     var DOM = document.createElement("p");
     DOM.innerHTML = "No files in directory";
-    
+
     fileDIV.append(DOM);
 
     return;
@@ -198,7 +198,7 @@ function changeContentDIV(el){
   }
 }
 
-// Show the subdirectories 
+// Show the subdirectories
 function showSubdir(el){
 
   changeContentDIV(el);
@@ -213,7 +213,7 @@ function showSubdir(el){
   if(el.nextSibling == undefined){
     return;
   }
-  
+
   el = el.nextSibling;
 
   if(el.className == "subdir"){

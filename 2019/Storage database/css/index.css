@@ -1,0 +1,60 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  display: flex;
+  flex-flow: row;
+}
+
+#options{
+  flex: 0.25;
+
+  background-color: #a6f7f5;
+
+  border-right: 1px solid black;
+}
+#options p{
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  font-size: 4.5vw;
+}
+.option{
+  border-bottom: 1px solid black;
+}
+
+#contents{
+  flex: 1;
+}
+
+/* Info */
+.info{
+  background-color: #fef5a7;
+  padding-right: 1px;
+}
+.info th{
+  border: 1px solid black;
+}
+.info span{
+  font-size: 2vw;
+}
+
+/* Items */
+.item{
+  height: 30px;
+}
+.item span{
+  font-size: 2.5vw;
+}
+.item th:first-child{
+  border-left: 1px solid black;
+}
+.item th{
+  border-right: 2px solid black;
+}
+.item th:last-child{
+  border-right: 1px solid black;
+}
