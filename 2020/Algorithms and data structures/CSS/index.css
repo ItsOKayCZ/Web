@@ -1,0 +1,57 @@
+@font-face{
+    font-family: defaultFont;
+    src: url("../Font/Roboto-Medium.ttf");
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+span, p, h1{
+    font-family: defaultFont;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+
+    user-select: none;
+
+    width: 100%;
+    height: 100%;
+}
+
+#categories{
+    padding-top: 0.5em;
+    padding-left: 1em;
+
+    /* font-family: defaultFont; */
+
+    flex: 0.2;
+    min-width: 200px;
+    max-width: 200px;
+    background-color: yellow;
+}
+
+#display{
+    width: 100%;
+    height: 100%;
+
+    border-style: none;
+}
+
+#content{
+    flex: 1;
+}
+
+.subCategory{
+    background-color: orange;
+}
+.subCategory p{
+    margin-left: 5%;
+}
+.subCategory p:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
