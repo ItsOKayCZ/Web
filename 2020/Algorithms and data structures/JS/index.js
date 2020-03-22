@@ -1,4 +1,8 @@
 function display(algName){
     var el = document.getElementById("display");
-    el.src = `${location.origin}/Algs/${algName}/index.html`;
+
+    var url = location.href;
+    url = url.split("/"); url.pop(); 
+    url = url.join("/");
+    el.src = `${url}/Algs/${algName}/index.html`;
 }
