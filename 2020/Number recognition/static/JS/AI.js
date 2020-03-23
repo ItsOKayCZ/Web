@@ -2,7 +2,12 @@ var model;
 
 async function AI(){
   console.log("Loading model");
-  model = await tf.loadLayersModel(location.origin + "/model/model.json");
+
+  var url = location.href;
+  url = url.split("/"); url.pop();
+  url = url.join("/");
+
+  model = await tf.loadLayersModel(`${url}/model/model.json`);
   console.log("Done loading model");
 }
 
