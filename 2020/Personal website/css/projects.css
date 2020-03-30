@@ -1,0 +1,55 @@
+header{
+    height: 20%;
+}
+
+.content{
+    display: flex;
+    justify-content: flex-end;
+    height: 650px;
+}
+
+.clickable{
+    user-select: none;
+    cursor: pointer;
+}
+.clickable:hover{
+    font-family: SenBold;
+}
+
+.hidden{
+    display: none;
+}
+
+.clicked{
+    background-color: black;
+    color: white;
+}
+
+.preview{
+    width: 100%;
+    height: auto;
+
+    border: none;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 7px;
+}
+
+.categories{
+    margin-left: 10px;
+    color: black;
+    border-radius: 7px;
+    background-color: white;
+    width: 400px;
+
+    padding-top: 3px;
+}
+.categories h1{
+    padding-bottom: 3px;
+    padding-left: 5px;
+    font-size: 2em;
+}
+.categories li{
+    font-size: 1.5em;
+    padding-left: 20px;
+}

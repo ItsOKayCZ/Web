@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>You reading this?</title>
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/projects.css">
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+        <script src="js/Cypher.js"></script>
+        <script src="js/Particle.js"></script>
+        <script src="js/index.js"></script>
+        <script src="js/projects.js"></script>
+    </head>
+    
+    <body>
+        
+        <header id="header">
+
+            <div id="canvas-holder" class="header">
+            </div>
+
+        </header>
+
+        <nav>
+            <div class="container">
+                <div class="menu">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">Projects</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section>
+
+            <div class="container content">
+
+                <iframe class="preview" id="preview"></iframe>
+
+                <div class="categories">
+                    <h1 class="clickable" onclick="showDropdown(this)">Web</h1>
+                    <ul class="hidden">
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://rawcdn.githack.com/ItsOKayCZ/Web/b9ada56afc7f29d4c0a74cf441171dca9132af67/2016/Vanocni prani/index.html">Christmas card</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://rawcdn.githack.com/ItsOKayCZ/Web/b9ada56afc7f29d4c0a74cf441171dca9132af67/2017/3D Cube/index.html">3D Cube</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://rawcdn.githack.com/ItsOKayCZ/Web/b9ada56afc7f29d4c0a74cf441171dca9132af67/2017/Asteroids (remake)/index.html">Asteroids</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://rawcdn.githack.com/ItsOKayCZ/Web/b9ada56afc7f29d4c0a74cf441171dca9132af67/2017/Fireworks/index.html">Fireworks</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://rawcdn.githack.com/ItsOKayCZ/Web/b9ada56afc7f29d4c0a74cf441171dca9132af67/2017/Smart rockets/index.html">Smart rockets</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://github.com/ItsOKayCZ/Web">Github</li>
+                    </ul>
+                    <h1 class="clickable" onclick="showDropdown(this)">Python</h1>
+                    <ul class="hidden">
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://rawcdn.githack.com/ItsOKayCZ/Web/b9ada56afc7f29d4c0a74cf441171dca9132af67/2020/Number recognition/static/index.html">Number recognition</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://github.com/ItsOKayCZ/Python">Github</li>
+                    </ul>
+                    <h1 class="clickable" onclick="showDropdown(this)">C++</h1>
+                    <ul class="hidden">
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://github.com/ItsOKayCZ/CPlusPlus">Github</li>
+                    </ul>
+                    <h1 class="clickable" onclick="showDropdown(this)">Arduino</h1>
+                    <ul class="hidden">
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://github.com/ItsOKayCZ/Arduino">Github</li>
+                    </ul>
+                    <h1 class="clickable" onclick="showDropdown(this)">Data science</h1>
+                    <ul class="hidden">
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://nbviewer.jupyter.org/github/ItsOKayCZ/Data-science/blob/master/2019/World%20happiness/notebook.ipynb">World happiness</li>
+                        <li onclick="displayLink(this);" class="clickable" data-link="https://github.com/ItsOKayCZ/Data-science">Github</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </section>
+    
+    </body>
+
+</html>
