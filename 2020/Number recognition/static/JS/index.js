@@ -38,15 +38,12 @@ function getMousePos(e){
 
 class Painter{
 
-  prevPos = {x: undefined, y: undefined};
-
-  color = "black";
-  radius = 10;
-
-  mousePressed = false;
-
   constructor(){
     this.clear();
+	this.prevPos = {x: undefined, y: undefined};
+	this.color = "black";
+	this.radius = 10;
+	this.mousePressed = false;
   }
 
   draw(pos){
