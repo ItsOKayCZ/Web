@@ -1,28 +1,51 @@
 class Particles{
     
-    font;
-    str;
-    fontSize;
-    color;
-    backgroundColor;
-
-    particles = [];
     constructor(parameters){
-        [this.font, this.str, this.fontSize, this.color, this.backgroundColor] = parameters;
+		this.particles = [];
+
+		var padding = 0;
+		var userOffset = 0;
+        [this.font, this.str, this.fontSize, this.color, this.backgroundColor, padding, userOffset] = parameters;
 
         textFont(this.font);
 
-        var bounds = this.font.textBounds(this.str, 0, 0, this.fontSize);
-        var offsetX = bounds.w / 2;
-        var offsetY = bounds.h / 2;
-
-        var points = this.font.textToPoints(this.str, width / 2 - offsetX, height / 2 + offsetY, this.fontSize);
+		this.updateSize(this.fontSize, padding, userOffset);
+		return;
 
         for(var i = 0; i < points.length; i++){
-            this.particles.push(new Particle(points[i].x, points[i].y, this.color));
+            this.particles.push(new Particle(points[i].x, points[i].y, this.color, windowWidth, this.bounds.h + padding));
         }
 
     }
+
+	getHeight(){
+		return this.bounds.h;
+	}
+
+	updateSize(size, padding, userOffset){
+		this.fontSize = size;
+		this.bounds = this.font.textBounds(this.str, 0, 0, this.fontSize);
+		var offsetX = this.bounds.w / 2;
+		var offsetY = this.bounds.h / 2;
+
+		var points = this.font.textToPoints(this.str, windowWidth / 2 - offsetX,
+													  (this.bounds.h + padding) / 2 + offsetY + userOffset,
+													  this.fontSize);
+		for(var i = 0; i < points.length; i++){
+			var pos = createVector(random(windowWidth), random(this.bounds.h + padding));
+			if(this.particles[i] != undefined){
+				pos = this.particles[i].pos;
+			}
+
+			this.particles[i] = new Particle(points[i].x, points[i].y, this.color, 0, 0);
+			this.particles[i].pos = pos;
+
+		}
+
+		if(points.length < this.particles.length){
+			this.particles.splice(points.length - 1, this.particles.length - points.length);
+		}
+	}
 
     update(){
         background(this.backgroundColor);
@@ -35,8 +58,8 @@ class Particles{
 }
 
 class Particle{
-    constructor(x, y, color){
-        this.pos = createVector(random(width), random(height));
+    constructor(x, y, color, canvasWidth, canvasHeight){
+        this.pos = createVector(random(canvasWidth), random(canvasHeight));
         this.vel = p5.Vector.random2D();
         this.acc = createVector();
         this.target = createVector(x, y);

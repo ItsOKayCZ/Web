@@ -1,43 +1,34 @@
 class Cypher{
 
-    str = "";
-    current = "";
-    font;
-    size;
-
-    offsetX = 0;
-    offsetY = 0;
-
-    index = 0;
-
-    count = 0;
-    maxCount = 2;
-
-    backgroundColor;
-    textColor;
-
     constructor(parameters){
-        [this.font, this.str, this.size, this.textColor, this.backgroundColor] = parameters;
-        this.font = font;
+		this.current = '';
+		this.offsetX = 0;
+		this.offsetY = 0;
+		this.index = 0;
+		this.count = 0;
+		this.maxCount = 2;
+
+        [this.font, this.str, this.fontSize, this.textColor, this.backgroundColor, this.padding, this.userOffset] = parameters;
         textFont(this.font);
 
         for(var i = 0; i < this.str.length; i++){
             this.current += this.generateChar();
         }
 
-        var bounds = this.font.textBounds(this.str, 0, 0, this.size);
-        this.offsetX = bounds.w / 2;
-        this.offsetY = bounds.h / 4;
-
+		this.updateSize(this.fontSize);
     }
+
+	getHeight(){
+		return this.bounds.h;
+	}
 
     update(){
         background(this.backgroundColor);
 
         fill(this.textColor);
         noStroke();
-        textSize(this.size);
-        text(this.current, width / 2 - this.offsetX, height / 2 + this.offsetY);
+        textSize(this.fontSize);
+		text(this.current, windowWidth / 2 - this.offsetX, (this.bounds.h + this.padding) / 2 + this.offsetY + this.userOffset); // TODO: Not working on projects.html
 
         this.current = this.str.substring(0, this.index + 1);
 
@@ -52,6 +43,13 @@ class Cypher{
             this.count++;
         }
     }
+
+	updateSize(size){
+		this.fontSize = size;
+		this.bounds = this.font.textBounds(this.str, 0, 0, this.fontSize);
+		this.offsetX = this.bounds.w / 2;
+		this.offsetY = this.bounds.h / 2;
+	}
 
     generateChar(){
         return String.fromCharCode(floor(random(33, 123)))

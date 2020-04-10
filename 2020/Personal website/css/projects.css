@@ -1,5 +1,6 @@
-header{
-    height: 20%;
+h1, li{
+	user-select: none;
+	-moz-user-select: none;
 }
 
 .content{
@@ -9,7 +10,6 @@ header{
 }
 
 .clickable{
-    user-select: none;
     cursor: pointer;
 }
 .clickable:hover{

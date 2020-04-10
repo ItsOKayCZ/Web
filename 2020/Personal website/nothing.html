@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>Nothing</title>
+		<style>
+
+			@font-face{
+				font-family: Sen;
+				src: url('fonts/Sen-Regular.ttf');
+			}
+
+			*{
+				margin: 0;
+				padding: 0;
+			}
+
+			body{
+				height: 100%;
+				width: 100%;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			@keyframes appear{
+				0%{
+					opacity: 0;
+				}
+				100%{
+					opacity: 1;
+				}
+			}
+
+			h1{
+				font-family: Sen;
+
+				opacity: 0;
+
+				animation-name: appear;
+				animation-duration: 1.2s;
+				animation-fill-mode: forwards;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>Please select a project</h1>	
+	</body>
+</html>
