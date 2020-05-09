@@ -24,6 +24,9 @@ h1, li{
     background-color: black;
     color: white;
 }
+.highlight{
+	font-family: SenBold;
+}
 
 .preview{
     width: 100%;
