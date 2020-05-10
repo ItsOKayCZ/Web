@@ -4,7 +4,7 @@ function showDropdown(el){
 }
 
 function displayLink(el){
-    if(el.innerHTML == "Github"){
+    if(el.dataset.type == "newTab"){
         window.open(el.dataset.link, "_blank");
         return;
     }
