@@ -6,22 +6,20 @@
 
 class Controls{
 
-    // DOMs in the control menu
-    menu;
-
-    // Cosmetic variables
-    width = 250;
-    height;
-
-    // Elements
-    elements;
-
     /**
      * Contstructor
      * @param {Array} elements 
      */
     constructor(elements){
         
+		this.menu = undefined;
+
+		this.width = 250;
+		this.height = 0;
+
+		this.elements = undefined;
+
+
         this.createMenu();
 
         for(var i = 0; i < elements.length; i++){

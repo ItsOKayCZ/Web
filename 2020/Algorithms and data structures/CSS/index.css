@@ -31,7 +31,7 @@ body{
     flex: 0.2;
     min-width: 200px;
     max-width: 200px;
-    background-color: yellow;
+    background-color: #f0f0f0;
 }
 
 #display{
@@ -46,7 +46,9 @@ body{
 }
 
 .subCategory{
-    background-color: orange;
+    background-color: #d2d2d2;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 .subCategory p{
     margin-left: 5%;
