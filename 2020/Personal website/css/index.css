@@ -188,3 +188,8 @@ footer{
 
 	cursor: pointer;
 }
+
+.noUnderline{
+	text-decoration: none !important;
+	color: black;
+}
