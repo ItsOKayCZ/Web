@@ -1,0 +1,19 @@
+:root{
+
+}
+@font-face{
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Medium.ttf');
+}
+
+*{
+	padding: 0;
+	margin: 0;
+}
+html, body{
+	width: 100%;
+	height: 100%;
+}
+span, p, h1, button, li{
+	font-family: Roboto;
+}
