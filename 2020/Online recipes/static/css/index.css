@@ -1,0 +1,359 @@
+:root{
+	--mainBackgroundColor: #00154A;
+	--filterBackgroundColor: #49b1ff;
+	--mainContentWidth: 85%;
+	--itemBorderColor: #b5b5b5;
+}
+@font-face{
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto-Medium.ttf');
+}
+
+*{
+	padding: 0;
+	margin: 0;
+}
+html, body{
+	width: 100%;
+	height: 100%;
+}
+body{
+	display: flex;
+	flex-direction: column;
+}
+li{
+	list-style: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+label, span, p, h1, button, li, textarea{
+	font-family: Roboto;
+}
+button{
+	border: none;
+	border-radius: 5px;
+	
+	padding: 5px 10px;
+	font-size: 1.2em;
+	border-bottom: 1px solid #d8d8d8;
+
+	background-color: white;
+	color: black;
+
+	cursor: pointer;
+
+	transition: background-color 0.1s, color 0.1s;
+}
+button:hover{
+	background-color: black;
+	color: white;
+}
+
+.header{
+	width: 100%;
+	background-color: var(--mainBackgroundColor);
+
+	padding: 6px 0;
+
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+
+	border-bottom: 2px solid black;
+}
+.header-button{
+	margin-right: 10px;
+}
+
+.main-container{
+	display: flex;
+
+	width: 100%;
+	height: 100%;
+}
+.categories-container{
+	width: 250px;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	
+	border-right: 2px solid black;
+}
+.category{
+	font-size: 1.2em;
+
+	border-bottom: 1px solid black;
+
+	padding: 5px;
+
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+
+	transition: background-color 0.1s, color 0.1s;
+}
+.category:hover{
+	background-color: black;
+	color: white;
+}
+.selectedCategory{
+	background-color: var(--mainBackgroundColor) !important;
+	color: white !important;
+}
+*[data-edit-category='true']{
+	display: none;
+}
+.categories-options{
+	border-top: 2px solid black;
+	width: 100%;
+	height: 35px;
+
+	background-color: var(--mainBackgroundColor);
+
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+.categories-option{
+	color: white;
+
+	width: 23px;
+	height: 23px;
+
+	font-size: 29px;
+	line-height: 20px;
+
+	border: 1px solid white;
+	border-radius: 2px;
+
+	margin-right: 5px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+
+	transition: background-color 0.1s, color 0.1s;
+}
+.categories-option:first-child:hover{
+	background-color: #0f0;
+	color: black;
+}
+.categories-option:last-child:hover{
+	background-color: #f00;
+	color: black;
+}
+
+.content{
+	width: 100%;
+	height:100%;
+}
+.filters-container{
+	background-color: var(--mainBackgroundColor);
+
+	width: var(--mainContentWidth);
+	height: 45px;
+
+	margin: 20px auto;
+
+	display: flex;
+	align-items: center;
+
+	border-radius: 5px;
+}
+.filters-header{
+	color: white;
+
+	font-size: 1.5em;
+	margin: 0 5px;
+}
+.filter-container{
+	background-color: var(--filterBackgroundColor);
+
+	display: flex;
+	align-items: center;
+	
+	border-radius: 4px;
+	padding: 3px;
+}
+.filter-header{
+	font-size: 1.2em;
+	margin-right: 5px;
+}
+
+.items{
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+
+	width: var(--mainContentWidth);
+	margin: 0 auto;
+}
+.item{
+	border-color: var(--itemBorderColor);
+	border-style: solid;
+	border-width: 0px 1px 1px 0;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	padding: 10px 0;
+
+	cursor: pointer;
+	
+	user-select: none;
+	-moz-user-select: none;
+
+	transition: background-color 0.1s;
+}
+.item:hover{
+	background-color: #e7e7e7;
+}
+.item:nth-child(3n + 1){
+	border-left: 1px solid var(--itemBorderColor);
+}
+.item-image{
+	border-radius: 3px;
+	width: 80%;
+}
+.item:nth-child(3n + 1) .item-image{
+	width: calc(80% + 1px);
+}
+
+.prompt-window-content label:not(:first-child){
+	margin-top: 10px;
+}
+.prompt-background{
+	background-color: rgba(0, 0, 0, 0.5);
+
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	height: 100%;
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.prompt-window{
+	border: 2px solid black;
+	border-radius: 5px;
+
+	background-color: white;
+
+	-webkit-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+}
+.prompt-window-header{
+	width: 100%;
+
+	display: flex;
+}
+.prompt-window-header-close{
+	width: 20px;
+}
+.prompt-window-header{
+	border-bottom: 2px solid black;
+
+	display: flex;
+	justify-content: space-between;
+}
+.prompt-window-header-text, .prompt-window-header-close{
+	user-select: none;
+	-moz-user-select: none;
+}
+.prompt-window-header-text{
+	margin-left: 5px;
+	font-size: 1.5em;
+}
+.prompt-window-header-close{
+	margin-right: 5px;
+	
+	cursor: pointer;
+}
+.prompt-window-header-close:hover{
+	opacity: 0.7;
+}
+.prompt-window-content{
+	display: flex;
+	flex-direction: column;
+
+	padding: 5px;
+}
+.prompt-window-content input[type='text']{
+	border: 2px solid black;
+	border-radius: 4px;
+
+	padding: 2px;
+
+	transition: border-color 0.2s;
+}
+.prompt-window-content input[type='text']:focus{
+	border-color: #00f000;
+}
+.prompt-window-promptLabel{
+	font-size: 1.1em;
+	margin-bottom: 2px;
+}
+.prompt-window-promptButton{
+	margin-top: 10px;
+
+}
+.prompt-window-ingredients, .prompt-window-steps{
+	margin-top: 10px;
+}
+.prompt-window-steps .step{
+	display: flex;
+	align-items: center;
+
+	margin-top: 5px;
+}
+.prompt-window-steps .step div{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.prompt-window-steps span{
+	margin-right: 5px;
+
+	user-select: none;
+	-moz-user-select: none;
+}
+.prompt-window-steps .step .arrow{
+	cursor: pointer;
+}
+.prompt-window-steps .step .arrow:hover{
+	opacity: 0.6;
+}
+.prompt-window-steps .step textarea{
+	width: 100%;
+	height: 100px;
+}
+.prompt-ingredients-header, .prompt-steps-header{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+.prompt-ingredients-header *:last-child, .prompt-steps-header *:last-child{
+	margin-right: 5px;
+}
+.prompt-ingredients-header button, .prompt-steps-header button{
+	font-size: 1.5em;
+	line-height: 20px;
+}
+.prompt-ingredients{
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	margin-top: 5px;
+}

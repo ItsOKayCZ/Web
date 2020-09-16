@@ -1,0 +1,111 @@
+<html>
+	<head>
+		<title>Recipes</title>
+		<link href='/css/index.css' rel='stylesheet'>
+	</head>
+
+	<body>
+		<div class='header'>
+			<button onclick='addRecipeToCategory();' class='header-button'>Add recipe</button>
+			<button onclick='removeRecipeToCategory();' class='header-button'>Remove recipe</button>
+		</div>
+		<div class='main-container'>
+			<div class='categories-container'>
+				<ul id='categories' class='categories'>
+				</ul>
+				<div class='categories-options'>
+					<span onclick='addCategory();' class='categories-option'>+</span>
+					<span id='remove-category-button' onclick='removeCategory();' class='categories-option'>-</span>
+				</div>
+			</div>
+
+			<div class='content'>
+				<div class='filters-container'>
+					<span class='filters-header'>Filters</span>
+					<div class='filter-container'>
+						<span class='filter-header'>Podle abecedy</span>
+						<div class='filter-options'>
+							<button onclick='setFilter(/a-zA-Z/g);' class='filter-button'>A-Z</button>
+							<button onclick='setFilter(/z-aZ-A/g);' class='filter-button'>Z-A</button>
+						</div>
+					</div>
+				</div>
+
+				<div class='items'>
+					<div onclick='selectItem(this.dataset.id)' data-id='1' class='item'>
+						<img class='item-image' src='/img/svickova-omacka.jpeg'>
+						<p class='item-name'>A</p>
+					</div>
+					<div onclick='selectItem(this.dataset.id)' data-id='2' class='item'>
+						<img class='item-image' src='/img/svickova-omacka.jpeg'>
+						<p class='item-name'>D</p>
+					</div>
+					<div onclick='selectItem(this.dataset.id)' data-id='3' class='item'>
+						<img class='item-image' src='/img/svickova-omacka.jpeg'>
+						<p class='item-name'>C</p>
+					</div>
+					<div onclick='selectItem(this.dataset.id)' data-id='4' class='item'>
+						<img class='item-image' src='/img/svickova-omacka.jpeg'>
+						<p class='item-name'>F</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id='prompt-window' class='prompt-background'>
+			<div class='prompt-window'>
+				<div class='prompt-window-header'>
+					<span id='prompt-header' class='prompt-window-header-text'>Header text</span>
+					<img id='prompt-window-close' class='prompt-window-header-close' src='/img/close.svg'>
+				</div>
+				<div id='prompt-content' class='prompt-window-content'>
+					<label for='prompt-window-category'>Category:</label>
+					<select data-form='true' id='prompt-window-category'>
+						<option value='' selected disabled hidden>Please select a category</option>
+					</select>
+
+					<label for='prompt-window-name'>Name:</label>
+					<input data-form='true' type='text' id='prompt-window-name'>
+
+					<label>Image: <input data-form='true' type='file' accept='image/*'></label>
+					<div class='prompt-window-ingredients'>
+						<div class='prompt-ingredients-header'>
+							<p>Ingredients:</p>
+							<div>
+								<button onclick='prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
+								<button onclick='prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
+							</div>
+						</div>
+						<div id='prompt-ingredients' class='prompt-ingredients'>
+							<select data-form='true'>
+								<option value='' selected disabled hidden>Please select an ingredient</option>
+								<option value='New'>New ingredient</option>
+							</select>
+							<input data-form='true' type='text'>
+						</div>
+					</div>
+					<div class='prompt-window-steps'>
+						<div class='prompt-steps-header'>
+							<p>Steps (5):</p>
+							<div>
+								<button onclick='prompt.addStep()' class='prompt-steps-add'>+</button>
+								<button onclick='prompt.removeStep()' class='prompt-steps-sub'>-</button>
+							</div>
+						</div>
+						<div class='step'>
+							<div>
+								<span class='arrow'>▲</span>
+								<span class='amountOfSteps'>1</span>
+								<span class='arrow'>▼</span>
+							</div>
+							<textarea data-form='true'></textarea>
+						</div>
+					</div>
+					<button onclick='prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
+				</div>
+			</div>
+		</div>
+
+		<script src='/js/index.js'></script>
+	</body>
+</html>
