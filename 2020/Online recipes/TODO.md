@@ -6,10 +6,17 @@ A website for posting recipes
 # Tasks
 - [x] Make a design
 - [x] Code the pages
-	- [ ] Make the buttons react
-		- [ ] Make the 'addRecipe' form preset look better
-- [ ] Code the backend
-	- [ ] Code the API endpoints
+- [x] Create the system for submitting the recipe
+- [x] Create a page for the recipe
+- [x] Add an edit button that is disabled, unless a recipe is selected
+- [x] Add deletion where item is viewed
+- [x] Add search bar
+- [ ] Add functionality to the search bar
+- [ ] Add authentication
+
+# Bug
+- [ ] When adding an ingredient, the previous ingredients get removed
+- [ ] Can remove all ingredients input fields
 
 # DB scheme
 DB name: onlinerecipes

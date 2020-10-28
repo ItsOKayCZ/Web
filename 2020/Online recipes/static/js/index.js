@@ -59,11 +59,51 @@ var API = {
 	},
 
 	/**
+	 * Add recipes to DB
+	 *
+	 * @param	category	-> The name of the category to add the recipe to
+	 * @param	image		-> The base64 encoding of the image
+	 * @param	ingredients	-> The name of the ingredient and amount
+	 * @param	name		-> The name of the recipe
+	 * @param	steps		-> Documentation of every step
+	 */
+	addRecipe: async function(data){
+		var url = `${location.origin}/API/addRecipe`;
+
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+	},
+
+	/**
+	 * Edits the recipe in DB using the ID
+	 *
+	 * @param	data	-> The data to be edited
+	 */
+	editRecipe: async function(data){
+		var url = `${location.origin}/API/editRecipe`;
+
+		console.log(data);
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+	},
+
+	/**
 	 * Gets all of the recipes of the category
 	 *
 	 * @param	categoryName	-> The name of the category
+	 * @param	order			-> The order in which the recipes will be sorted by
 	 */
-	getRecipes: async function(categoryName){
+	getRecipes: async function(categoryName, order){
 		var url = `${location.origin}/API/getRecipes`;
 
 		var response = await fetch(url, {
@@ -71,9 +111,78 @@ var API = {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ categoryName })
+			body: JSON.stringify({ categoryName, order })
 		})
 		
+		return await response.json();
+	},
+
+	/**
+	 * Gets the recipe using the id
+	 *
+	 * @param	id	-> The id of the recipe
+	 */
+	getRecipe: async function(id){
+		var url = `${location.origin}/API/getRecipe`;
+
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({ id })
+		})
+
+		return await response.json();
+	},
+
+	/**
+	 * Removes the recipes with specified ID
+	 *
+	 * @param	id	-> The array of the IDs
+	 */
+	removeRecipes: async function(id){
+		var url = `${location.origin}/API/removeRecipes`;
+
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({ id })
+		})
+
+		return await response.json();
+	},
+
+	/**
+	 * Updates the recipe name
+	 *
+	 * @param	recipeName	-> The recipe name to be changed
+	 * @param	newRecipeName	-> The new recipe name
+	 */
+	updateIngredient: async function(recipeName, newRecipeName){
+		var url = `${location.origin}/API/updateIngredient`;
+
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({ recipeName, newRecipeName })
+		})
+	},
+
+	/**
+	 * Gets all of the ingredients made by the user
+	 */
+	getIngredients: async function(){
+		var url = `${location.origin}/API/getIngredients`;
+
+		var response = await fetch(url, {
+			method: 'POST'
+		})
+
 		return await response.json();
 	}
 }
@@ -92,38 +201,102 @@ var prompt = {
 		addRecipe: {
 			html: `
 				<label for='prompt-window-category'>Category:</label>
-				<select data-form='true' id='prompt-window-category'>
+				<select name='category' data-form='true' id='prompt-window-category'>
 					<option value='' selected disabled hidden>Please select a category</option>
+					%dataCategories%
 				</select>
 
 				<label for='prompt-window-name'>Name:</label>
-				<input data-form='true' type='text' id='prompt-window-name'>
+				<input name='name' data-form='true' type='text' id='prompt-window-name'>
 
-				<label>Image: <input data-form='true' type='file' accept='image/*'></label>
-				<label>Ingredients:</label>
+				<label>Image: <input name='image' data-form='true' type='file' accept='image/*'></label>
 				<div class='prompt-window-ingredients'>
 					<div class='prompt-ingredients-header'>
-						<button class='prompt-ingredients-add'>+</button>
-						<button class='prompt-ingredients-sub'>-</button>
+						<p>Ingredients:</p>
+						<div>
+							<button title='Adds an ingredient to the end' onclick='prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
+							<button title='Removes the selected ingredients' onclick='prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
+						</div>
 					</div>
-					<div class='prompt-ingredients'>
-						<select data-form='true'>
-							<option value='' selected disabled hidden>Please select an ingredient</option>
-						</select>
-						<input data-form='true' type='text'>
+					<div id='prompt-ingredients' class='prompt-ingredients'>
+						<input placeholder='Please enter an ingredient' data-form='true' type='text' name='ingredientName' list='ingredients'>
+						<input name='ingredientAmount' placeholder='Enter amount' data-form='true' type='text'>
 					</div>
+					<datalist id='ingredients'>
+						%dataIngredients%
+					</datalist>
 				</div>
-				<label>Steps:</label>
 				<div class='prompt-window-steps'>
 					<div class='prompt-steps-header'>
-						<button class='prompt-steps-add'>+</button>
-						<button class='prompt-steps-sub'>-</button>
+						<p id='prompt-step-counter'>Steps (1):</p>
+						<div>
+							<button title='Adds a step to the end' onclick='prompt.addStep()' class='prompt-steps-add'>+</button>
+							<button title='Removes the step currently looking at' onclick='prompt.removeStep()' class='prompt-steps-sub'>-</button>
+						</div>
 					</div>
-					<span>1.</span><textarea data-form='true'></textarea>
+					<div class='step'>
+						<div>
+							<span onclick='prompt.previousStep()' class='arrow'>▲</span>
+							<span id='amountOfSteps' class='amountOfSteps'>1</span>
+							<span onclick='prompt.nextStep()' class='arrow'>▼</span>
+						</div>
+						<textarea name='steps' data-variable='steps' autocomplete='off' onkeyup='prompt.updateStep()' id='prompt-window-step' data-form='true'></textarea>
+					</div>
 				</div>
 				<button onclick='prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
 			`,
 			headerText: 'Add recipe'
+		},
+
+		editRecipe: {
+			html: `
+				<label for='prompt-window-category'>Category:</label>
+				<select name='category' data-form='true' id='prompt-window-category'>
+					%dataCategories%
+				</select>
+
+				<label for='prompt-window-name'>Name:</label>
+				<input name='name' value='%dataName%' data-form='true' type='text' id='prompt-window-name'>
+
+				<div class='prompt-window-ingredients'>
+					<div class='prompt-ingredients-header'>
+						<p>Ingredients:</p>
+						<div>
+							<button title='Adds an ingredient to the end' onclick='prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
+							<button title='Removes the selected ingredients' onclick='prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
+						</div>
+					</div>
+					<div id='prompt-ingredients' class='prompt-ingredients'>
+						%dataIngredientsDOM%
+					</div>
+					<datalist id='ingredients'>
+						%dataIngredients%
+					</datalist>
+				</div>
+				<div class='prompt-window-steps'>
+					<div class='prompt-steps-header'>
+						<p id='prompt-step-counter'>Steps (1):</p>
+						<div>
+							<button title='Adds a step to the end' onclick='prompt.addStep()' class='prompt-steps-add'>+</button>
+							<button title='Removes the step currently looking at' onclick='prompt.removeStep()' class='prompt-steps-sub'>-</button>
+						</div>
+					</div>
+					<div class='step'>
+						<div>
+							<span onclick='prompt.previousStep()' class='arrow'>▲</span>
+							<span id='amountOfSteps' class='amountOfSteps'>1</span>
+							<span onclick='prompt.nextStep()' class='arrow'>▼</span>
+						</div>
+						<textarea name='steps' data-variable='steps' autocomplete='off' onkeyup='prompt.updateStep()' id='prompt-window-step' data-form='true'>%dataStep%</textarea>
+					</div>
+				</div>
+				<button onclick='prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
+			`,
+			headerText: 'Edit recipe',
+			ingredientInput: `
+				<input value='%ingredientName%' placeholder='Please enter an ingredient' data-form='true' type='text' name='ingredientName' list='ingredients'>
+				<input value='%ingredientAmount%' name='ingredientAmount' placeholder='Enter amount' data-form='true' type='text'>
+			`
 		}
 	},
 	promptDOM: document.getElementById('prompt-window'),
@@ -132,13 +305,8 @@ var prompt = {
 	promptContentDOM: document.getElementById('prompt-content'),
 	cb: () => {},
 	selectedPreset: undefined,
-
-	/**
-	 * TODO
-	 * Make the system with element better
-	 * For example:
-	 * Using data attribute
-	 */
+	steps: [""],
+	stepIndex: 0,
 
 	/**
 	 * Displays the prompt window
@@ -146,15 +314,14 @@ var prompt = {
 	 * @param	preset	-> The preset that is chosen (addCategory; addRecipe)
 	 * @param	cb	-> The callback function to be called after prompt is closed or
 	 * 				after button is clicked
+	 * @param	data	-> The data to parse into the form
 	 */
-	display: function(preset, cb){
-		this.setupPreset(preset);
-
-		this.promptDOM.style.display = 'flex';
+	display: function(preset, cb, data={}){
+		this.setupPreset(preset, data);
 
 		this.cb = cb;
 
-		if(this.selectedPreset == 'addRecipe'){
+		if(this.selectedPreset == 'addRecipe' || this.selectedPreset == 'editRecipe'){
 			this.setupForm();
 		}
 	},
@@ -177,34 +344,123 @@ var prompt = {
 	 * Setups the preset
 	 *
 	 * @param	presetName	-> The preset
+	 * @param	data		-> Data to be added into the form
 	 */
-	setupPreset: function(presetName){
-		this.promptContentDOM.innerHTML = this.preset[presetName].html;
+	setupPreset: async function(presetName, data){
+		this.promptDOM.style.display = 'flex';
 
+		var html = this.preset[presetName].html;
+
+		if(presetName == 'addRecipe' || presetName == 'editRecipe'){
+			var ingredients = await API.getIngredients();
+			ingredients = ingredients.data;
+			var dataDOM = '';
+			for(var i = 0; i < ingredients.length; i++){
+				dataDOM += `<option value='${ingredients[i]}'>${ingredients[i]}</option>`;
+			}
+			
+			html = html.replace('%dataIngredients%', dataDOM);
+
+			var categories = await API.getCategories();
+			var dataDOM = '';
+			for(var i = 0; i < categories.length; i++){
+				dataDOM += `<option value='${categories[i]}'>${categories[i]}</option>`;
+			}
+			html = html.replace('%dataCategories%', dataDOM);
+		}
+
+		if(presetName == 'editRecipe'){
+			html = html.replace(/\%dataName\%/g, data.name);
+
+			var ingredientsDOM = '';
+			for(var i = 0; i < data.ingredients.length; i++){
+				ingredientsDOM += this.preset[presetName].ingredientInput;
+				ingredientsDOM = ingredientsDOM.replace(/\%ingredientName\%/g, data.ingredients[i].name);
+				ingredientsDOM = ingredientsDOM.replace(/\%ingredientAmount\%/g, data.ingredients[i].amount);
+			}
+			html = html.replace(/\%dataIngredientsDOM\%/g, ingredientsDOM);
+
+			this.steps = [ ...data.steps ];
+			html = html.replace(/\%dataStep\%/g, data.steps[0]);
+		}
+
+		this.promptContentDOM.innerHTML = html;
 		this.promptHeaderDOM.innerHTML = this.preset[presetName].headerText;
 
 		this.promptInputDOM = this.promptContentDOM.querySelectorAll('*[data-form="true"]');
-		for(var i = 0; i < this.promptInputDOM.length; i++){
-			this.promptInputDOM[i].value = '';
+		if(presetName != 'editRecipe'){
+			for(var i = 0; i < this.promptInputDOM.length; i++){
+				this.promptInputDOM[i].value = '';
+			}
 		}
 		this.promptInputDOM[0].focus();
 
+
 		this.selectedPreset = presetName;
+
+		if(presetName == 'addRecipe' || presetName == 'editRecipe'){
+
+			var ingredientsDOM = document.querySelector('input[name="ingredientName"]');
+			ingredientsDOM.onselect = (e) => { 
+				e.target.previousSelection = e.target.value;
+				e.target.editing = true; 
+			};
+			ingredientsDOM.onkeyup = (e) => { 
+
+				if(e.target.value == '') { 
+					e.target.editing = false; 
+				}
+			};
+			ingredientsDOM.onblur = (e) => {
+				if(e.target.editing && e.target.previousSelection != e.target.value){
+					API.updateIngredient(e.target.previousSelection, e.target.value);
+
+					var dataListDOM = document.getElementById('ingredients');
+					var optionDOM = dataListDOM.querySelector(`option[value="${e.target.previousSelection}"]`);
+					optionDOM.value = e.target.value;
+					optionDOM.innerHTML = e.target.value;
+				}
+				e.target.editing = false;
+			}
+
+			ingredientsDOM.editing = false;
+		}
 	},
 
 	/**
 	 * Gets the input from the input DOM when user submits
 	 */
 	getInput: function(){
+		this.promptInputDOM = document.querySelectorAll('*[data-form="true"]');
 		var promptInputValues = {};
 
 		for(var i = 0; i < this.promptInputDOM.length; i++){
-			if(this.promptInputDOM[i].value == ''){
+			var value = this.promptInputDOM[i].value;
+			if(this.promptInputDOM[i].dataset.variable != undefined){
+				value = this[this.promptInputDOM[i].dataset.variable];
+			} else if(this.promptInputDOM[i].tagName == 'INPUT' && this.promptInputDOM[i].type == 'file'){
+				value = this.promptInputDOM[i].files[0];
+			}
+			
+			if(this.promptInputDOM[i].tagName == 'INPUT' && this.promptInputDOM[i].type == 'file'
+				&& this.promptInputDOM[i].files.length == 0){
+				this.promptInputDOM[i].style.borderColor = 'red';
+				return;
+			}
+			if(value == '' || isEmpty(value)){
 				this.promptInputDOM[i].style.borderColor = 'red';
 				return;
 			}
 			this.promptInputDOM[i].style.borderColor = 'black';
-			promptInputValues[this.promptInputDOM[i].name] = this.promptInputDOM[i].value;
+
+			var name = this.promptInputDOM[i].name;
+			if(typeof(promptInputValues[name]) == 'object'){
+				promptInputValues[name].push(value);
+			} else if(promptInputValues[name] != undefined){
+				promptInputValues[name] = [promptInputValues[name], value];
+			} else {
+				promptInputValues[this.promptInputDOM[i].name] = value;
+			}
 		}
 
 		this.cb(promptInputValues);
@@ -217,12 +473,18 @@ var prompt = {
 		var ingredientsDOM = document.getElementById('prompt-ingredients');
 
 		ingredientsDOM.innerHTML += `
-			<select data-form='true'>
-				<option value='' selected disabled hidden>Please select an ingredient</option>
-				<option value='New'>New ingredient</option>
-			</select>
-			<input data-form='true' type='text'>
+			<input placeholder='Please enter an ingredient' data-form='true' type='text' name='ingredientName' list='ingredients'>
+			<input placeholder='Enter amount' name='ingredientAmount' data-form='true' type='text'>
 		`;
+	},
+
+	/**
+	 * Gets the ingredient that the user will add
+	 *
+	 * TODO: Change the select to a input type='text' and after onblur change it back
+	 */
+	getIngredient: function(){
+		alert('NOT DONE');
 	},
 
 	/**
@@ -241,7 +503,17 @@ var prompt = {
 	 * Adds a step
 	 */
 	addStep: function(){
-		alert('NOT DONE');
+		this.steps.push("");
+		this.stepIndex++;
+		this.updateStepUI();
+	},
+
+	/**
+	 * Updates the current step context
+	 */
+	updateStep: function(){
+		var textareaDOM = document.getElementById('prompt-window-step')
+		this.steps[this.stepIndex] = textareaDOM.value;
 	},
 
 	/**
@@ -249,7 +521,49 @@ var prompt = {
 	 * currently selected
 	 */
 	removeStep: function(){
-		alert('NOT DONE');
+		if(this.steps.length == 1){
+			return;
+		}
+
+		this.steps.splice(this.stepIndex, 1);
+		if(this.stepIndex >= this.steps.length){
+			this.stepIndex = this.steps.length - 1;
+		}
+
+		this.updateStepUI();
+	},
+
+	/**
+	 * Displays the previous step
+	 */
+	previousStep: function(){
+		var index = this.stepIndex - 1;
+		if(index >= 0){
+			this.updateStepUI(index);
+		}
+	},
+
+	/**
+	 * Displays the next step
+	 */
+	nextStep: function(){
+		var index = this.stepIndex + 1;
+		if(index < this.steps.length){
+			this.updateStepUI(index);
+		}
+	},
+
+	/**
+	 * Updates the step UI
+	 *
+	 * @param	index	-> The index of the step
+	 */
+	updateStepUI: function(index){
+		this.stepIndex = index == undefined ? this.stepIndex : index;
+		document.getElementById('prompt-window-step').innerHTML = this.steps[this.stepIndex];
+		document.getElementById('prompt-step-counter').innerHTML = `Steps (${this.steps.length}):`;
+		document.getElementById('amountOfSteps').innerHTML = this.stepIndex + 1;
+		document.getElementById('prompt-window-step').value = this.steps[this.stepIndex];
 	},
 	
 	/**
@@ -257,25 +571,177 @@ var prompt = {
 	 */
 	close: function(){
 		this.promptDOM.style.display = 'none';
+
+		this.stepIndex = 0;
+		this.steps = [""];
 	}
 }
 document.getElementById('prompt-window-close').addEventListener('click', () => { prompt.close(); });
 
 /**
+ * Checks the elements are empty in a string
+ * 
+ * @param	arr	-> The array
+ */
+function isEmpty(arr){
+	if(typeof(arr) != 'object')
+		return false;
+
+	for(var i = 0; i < arr.length; i++){
+		if(arr[i] == ''){
+			return true;
+		}
+	}
+	return false;
+}
+/**
  * Adds a recipe to the currently selected category
  */
 function addRecipeToCategory(){
-	prompt.display('addRecipe', async (data) => {
-		console.log('Add recipe data: ');
-		console.log(data);
+	prompt.display('addRecipe', async (rawData) => {
+		var data = Object.assign({}, rawData);
+
+		data.ingredients = [];
+		if(typeof(data.ingredientName) != 'string'){
+			for(var i = 0; i < data.ingredientName.length; i++){
+				data.ingredients.push({
+					name: data.ingredientName[i],
+					amount: data.ingredientAmount[i]
+				})
+			}
+		} else {
+			data.ingredients = [
+				{
+					name: data.ingredientName,
+					amount: data.ingredientAmount
+				}
+			]
+		}
+
+		delete data.ingredientName;
+		delete data.ingredientAmount;
+
+		var reader = new FileReader();
+		reader.readAsDataURL(data.image);
+		reader.onload = (e) => {
+			data.image = {
+				name: data.image.name,
+				data: e.target.result
+			}
+			API.addRecipe(data);
+			prompt.close();
+
+			var selectedCategoryEl = document.querySelector('.selectedCategory');
+			selectCategory(selectedCategoryEl, data.category);
+		}
 	})
 }
 
 /**
- * Removes a recipe from the category list
+ * Displays a window, where a user can edit the selected recipe
  */
-function removeRecipeToCategory(){
+function editRecipeFromCategory(){
+	var recipeDOM = document.getElementById('recipe');
 
+	var keys = Object.keys(recipeDOM.dataset);
+	var data = {};
+	for(var i = 0; i < keys.length; i++){
+		data[keys[i]] = recipeDOM.dataset[keys[i]];
+	}
+	data.ingredients = JSON.parse(data.ingredients);
+	data.steps = JSON.parse(data.steps);
+
+	prompt.display('editRecipe', async (rawData) => {
+		var data = Object.assign({}, rawData);
+
+		data.ingredients = [];
+		if(typeof(data.ingredientName) != 'string'){
+			for(var i = 0; i < data.ingredientName.length; i++){
+				data.ingredients.push({
+					name: data.ingredientName[i],
+					amount: data.ingredientAmount[i]
+				})
+			}
+		} else {
+			data.ingredients = [
+				{
+					name: data.ingredientName,
+					amount: data.ingredientAmount
+				}
+			]
+		}
+
+		delete data.ingredientName;
+		delete data.ingredientAmount;
+
+		data.id = recipeDOM.dataset.id;
+		API.editRecipe(data);
+		prompt.close();
+		selectItem(data.id);
+
+	}, data);
+}
+
+/**
+ * Removes a recipe from the category list
+ *
+ * @param	button	-> The button selected
+ */
+var removeMode = false;
+async function removeRecipeInCategory(button){
+	var itemsDOM = document.getElementById('items');
+	if(itemsDOM.firstElementChild.tagName == 'H1'){
+		return;
+	}
+	removeMode = !removeMode;
+	button.classList.toggle('selected-remove-button');
+
+	var recipeDOM = document.getElementById('recipe');
+
+	if(!removeMode){
+		var recipes = document.getElementsByClassName('selected-item');
+		if(recipes.length == 0)
+			return;
+
+		var message = 'Are you sure you want to delete the selected recipes:\n';
+
+		for(var i = 0; i < recipes.length; i++){
+			message += `- ${recipes[i].lastElementChild.innerHTML}\n`;
+		}
+
+		if(confirm(message)){
+			var id = [];
+			for(var i = 0; i < recipes.length; i++){
+				id.push(recipes[i].dataset.id);
+			}
+			var response = await API.removeRecipes(id);
+			if(response.code == 200){
+				for(var i = 0; i < recipes.length; i++){
+					recipes[i].remove();
+				}
+			} else {
+				alert('An error has occured');
+			}
+
+		} else {
+			for(var i = 0 ; i < recipes.length; i++){
+				recipes[i].classList.toggle('selected-item', false);
+			}
+		
+		}
+	} else if(recipeDOM.style.display != 'none' && confirm('Are you sure you want to delete this recipe')){
+		var id = [recipeDOM.dataset.id];
+
+		var response = await API.removeRecipes(id);
+		if(response.code == 200){
+			var selectedCategoryDOM = document.querySelector('.selectedCategory');
+			selectCategory(selectedCategoryDOM, selectedCategoryDOM.innerHTML);
+		} else {
+			alert('An error has occured');
+		}
+		removeMode = !removeMode;
+		button.classList.toggle('selected-remove-button');
+	}
 }
 
 /**
@@ -367,26 +833,114 @@ async function selectCategory(selectedDOM, categoryName){
 	}
 	selectedDOM.classList.toggle('selectedCategory', true);
 
-	var recipes = await API.getRecipes(categoryName);
+	var data = await API.getRecipes(categoryName, order);
+	data = data.data;
 
+	var recipeTemplateDOM = `
+		<div data-id='%id%' onclick='selectItem(this.dataset.id, this);' class='item'>
+			<img class='item-image' src='/recipeImages/%img%'>
+			<p class='item-name'>%name%</p>
+		</div>
+	`
+
+	document.getElementById('recipe').style.display = 'none';
+	document.querySelector('content').style.display = '';
+
+	disableHeaderButtons(false, true);
+	let itemsDOM = document.getElementById('items');
+	if(data.length == 0){
+		itemsDOM.style.display = 'flex';
+		itemsDOM.innerHTML = '<h1>There are no recipes in the category ¯\\_(ツ)_/¯</h1>';
+		return;
+	}
+
+	itemsDOM.innerHTML = '';
+	itemsDOM.style.display = 'grid';
+	for(var i = 0; i < data.length; i++){
+		var recipeDOM = recipeTemplateDOM;;
+		
+		recipeDOM = recipeDOM.replace(/\%id\%/g, data[i].id);
+		recipeDOM = recipeDOM.replace(/\%img\%/g, data[i].img);
+		recipeDOM = recipeDOM.replace(/\%name\%/g, data[i].name);
+
+		itemsDOM.innerHTML += recipeDOM;
+	}
 }
 
 /**
  * Sets a filter that the user selected
  *
- * @param regexFilter	-> The regex filter
+ * @param _order	-> The order of the sorting
  */
-function setFilter(regexFilter){
-
+var order = 'ASC';
+function setFilter(_order){
+	order = _order;
+	selectCategory(document.querySelector('.selectedCategory'), selectedCategory);
 }
 
 /**
  * Displays the selected item by id
  *
  * @param	itemId	-> The id of the item
+ * @param	el		-> The selected DOM
  */
-function selectItem(itemId){
+async function selectItem(itemId, el){
+	if(removeMode){
+		el.classList.toggle('selected-item');
+		return;
+	}
 
+	var data = await API.getRecipe(itemId);
+	data = data.data;
+
+
+	// Name
+	document.getElementById('recipe-name').innerHTML = data.name;
+	
+	// Image
+	document.getElementById('recipe-image').src = `/recipeImages/${data.img}`;
+
+	// Ingredients
+	var recipeTemplateDOM = `
+		<div class='recipe-ingredient'><p>%ingredientName%</p><p>%ingredientAmount%</p></div>
+	`;
+	var ingredientsDOM = document.getElementById('recipe-ingredients');
+	ingredientsDOM.innerHTML = '';
+	for(var i = 0; i < data.ingredients.length; i++){
+
+		ingredientsDOM.innerHTML += recipeTemplateDOM
+		.replace(/\%ingredientName\%/g, data.ingredients[i].name)
+		.replace(/\%ingredientAmount\%/g, data.ingredients[i].amount);
+	}
+
+	// Steps
+	var stepTemplateDOM = `
+		<div class='recipe-step'>
+			<span class='step-circle'>%count%</span>
+			<p>%step%</p>
+		</div>
+	`
+	var stepsDOM = document.getElementById('recipe-steps');
+	stepsDOM.innerHTML = '';
+	for(var i = 0; i < data.steps.length; i++){
+		stepsDOM.innerHTML += stepTemplateDOM
+		.replace(/\%count\%/g, i + 1)
+		.replace(/\%step\%/g, data.steps[i]);
+	}
+
+	var recipeDOM = document.getElementById('recipe');
+	recipeDOM.style.display = 'flex';
+
+	// Setting info about item into DOM
+	recipeDOM.dataset.category = data.category;
+	recipeDOM.dataset.id = data.id;
+	recipeDOM.dataset.ingredients = JSON.stringify(data.ingredients);
+	recipeDOM.dataset.name = data.name;
+	recipeDOM.dataset.steps = JSON.stringify(data.steps);
+
+	document.querySelector('content').style.display = 'none';
+
+	disableHeaderButtons(false, false);
 }
 
 /**
@@ -423,7 +977,24 @@ async function displayCategories(categoryName){
 		categoriesDOM.innerHTML += `<label data-edit-category='true'><li class='category'>${categories[i]}<input type='checkbox'></li></label>`;
 	}
 }
+
+/**
+ * Enables or disables the header button
+ *
+ * @param	headerButtonsStatestate	-> The state of the buttons
+ * @param	editButtonState			-> The state of the edit button
+ */
+function disableHeaderButtons(headerButtonsState, editButtonState){
+	var headerButtonDOMs = document.querySelectorAll('.header-button:first-child, .header-button:last-child');
+
+	for(var i = 0; i < headerButtonDOMs.length; i++){
+		headerButtonDOMs[i].disabled = headerButtonsState;
+	}
+
+	document.querySelector('.header-button:nth-child(2)').disabled = editButtonState;
+}
 	
 window.onload = function(){
 	displayCategories();
+	disableHeaderButtons(true, true);
 }

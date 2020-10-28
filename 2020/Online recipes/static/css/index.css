@@ -30,6 +30,10 @@ li{
 label, span, p, h1, button, li, textarea{
 	font-family: Roboto;
 }
+a{
+	text-decoration: none;
+	color: inherit;
+}
 button{
 	border: none;
 	border-radius: 5px;
@@ -49,6 +53,29 @@ button:hover{
 	background-color: black;
 	color: white;
 }
+button:disabled{
+	opacity: 0.7;
+	background-color: grey;
+	cursor: default;
+}
+button:disabled:hover{
+	background-color: gray;
+	color: black;
+}
+select{
+	border: 2px solid black;
+	border-radius: 3px;
+
+	background-color: white;
+}
+textarea{
+	border: 2px solid black;
+	border-radius: 3px;
+}
+input[type='file']{
+	border-radius: 3px;
+	border: 2px solid black;
+}
 
 .header{
 	width: 100%;
@@ -65,12 +92,28 @@ button:hover{
 .header-button{
 	margin-right: 10px;
 }
+.add-header-button{
+	transition: background-color 0.1s;
+	background-color: white;
+}
+.add-header-button:hover{
+	background-color: #0f0;
+	color: black;
+}
+.remove-header-button:hover{
+	background-color: #f00;
+}
+.selected-remove-button{
+	background-color: rgb(255, 0, 0);
+	color: white;
+}
 
 .main-container{
 	display: flex;
 
 	width: 100%;
 	height: 100%;
+	max-height: calc(100% - 48px);
 }
 .categories-container{
 	width: 250px;
@@ -153,8 +196,9 @@ button:hover{
 .content{
 	width: 100%;
 	height:100%;
+	overflow-y: auto;
 }
-.filters-container{
+.options-container{
 	background-color: var(--mainBackgroundColor);
 
 	width: var(--mainContentWidth);
@@ -164,8 +208,13 @@ button:hover{
 
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 
 	border-radius: 5px;
+}
+.filter{
+	display: flex;
+	align-items: center;
 }
 .filters-header{
 	color: white;
@@ -186,9 +235,42 @@ button:hover{
 	font-size: 1.2em;
 	margin-right: 5px;
 }
+.search{
+	display: flex;
+	align-items: center;
+	margin-right: 10px;
+
+	background-color: white;
+
+	border-radius: 5px;
+
+	height: 25px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.search-header{
+	border-right: 1px solid black;
+	margin-right: 5px;
+	padding: 5px 5px 5px 0;
+}
+.searchbar{
+	border: none;
+	font-size: 1.1em;
+	width: 200px;
+}
+.search-icon{
+	width: 20px;
+	margin-left: 5px;
+
+	cursor: pointer;
+}
+.search-icon:hover{
+	opacity: 0.7;
+}
 
 .items{
-	display: grid;
+	display: flex;
+	justify-content: center;
 	grid-template-columns: repeat(3, 1fr);
 
 	width: var(--mainContentWidth);
@@ -212,6 +294,12 @@ button:hover{
 
 	transition: background-color 0.1s;
 }
+.selected-item{
+	background-color: var(--itemBorderColor);
+}
+.item-name{
+	margin-top: 5px;
+}
 .item:hover{
 	background-color: #e7e7e7;
 }
@@ -224,6 +312,100 @@ button:hover{
 }
 .item:nth-child(3n + 1) .item-image{
 	width: calc(80% + 1px);
+}
+
+.recipe{
+	/* display: flex; */
+	display: none;
+	flex-direction: column;
+
+	border: 3px solid black;
+	border-radius: 5px;
+
+	height: calc(100% - (26px + 10px));
+
+	margin: 10px;
+	padding: 5px;
+}
+.recipe-header{
+	display: flex;
+
+	align-items: center;
+
+	padding-bottom: 5px;
+	border-bottom: 3px solid black;
+}
+.recipe-image{
+	width: auto;
+	height: 150px;
+	border-radius: 5px;
+}
+.recipe-header h1{
+	width: 100%;
+
+	text-align: center;
+	font-size: 4em;
+}
+.recipe-info{
+	display: flex;
+	flex: 1;
+	overflow-y: auto;
+}
+
+.recipe-ingredients, .recipe-steps{
+	padding-top: 5px;
+}
+.recipe-ingredients{
+	border-right: 3px solid black;
+
+	margin-left: 5px;
+	padding-right: 5px;
+
+	display: flex;
+	flex-direction: column;
+
+	min-width: max-content;
+	overflow-y: scroll;
+}
+.recipe-ingredient{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	margin-bottom: 5px;
+}
+.recipe-ingredient p:first-child{
+	margin-right: 15px;
+
+	font-size: 1.3em;
+}
+.recipe-ingredient p:last-child{
+	font-size: 1.2em;
+}
+.recipe-steps{
+	overflow-y: auto;
+	flex: 1;
+}
+.recipe-step{
+	display: flex;
+
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+	border-bottom: 1px solid black;
+}
+.step-circle{
+	background-color: #0ff;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+
+	margin-right: 10px;
 }
 
 .prompt-window-content label:not(:first-child){
@@ -239,7 +421,7 @@ button:hover{
 	height: 100%;
 	width: 100%;
 
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 }
@@ -300,6 +482,9 @@ button:hover{
 .prompt-window-content input[type='text']:focus{
 	border-color: #00f000;
 }
+.prompt-window-content input[type='file']{
+	width: 100%;
+}
 .prompt-window-promptLabel{
 	font-size: 1.1em;
 	margin-bottom: 2px;
@@ -336,6 +521,7 @@ button:hover{
 	opacity: 0.6;
 }
 .prompt-window-steps .step textarea{
+	padding: 3px;
 	width: 100%;
 	height: 100px;
 }
