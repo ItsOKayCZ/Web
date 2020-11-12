@@ -11,7 +11,8 @@ A website for posting recipes
 - [x] Add an edit button that is disabled, unless a recipe is selected
 - [x] Add deletion where item is viewed
 - [x] Add search bar
-- [ ] Add functionality to the search bar
+- [x] Add functionality to the search bar
+	- [x] Add formatting into the querystring
 - [ ] Add authentication
 
 # Bug

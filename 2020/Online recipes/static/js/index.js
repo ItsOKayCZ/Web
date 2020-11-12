@@ -184,6 +184,26 @@ var API = {
 		})
 
 		return await response.json();
+	},
+
+	/**
+	 * Search for items in the DB
+	 *
+	 * @param searchValue
+	 * @param category
+	 */
+	searchItems: async function(searchValue, category){
+		var url = `${location.origin}/API/searchItems`;
+
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({ searchValue, category })
+		});
+
+		return await response.json();
 	}
 }
 
@@ -822,9 +842,10 @@ async function removeCategory(){
  *
  * @param	selectedDOM		-> The selected DOM element
  * @param	categoryName	-> The name of the category selected
+ * @param	_data			-> The already queried recipes
  */
 var selectedCategory = '';
-async function selectCategory(selectedDOM, categoryName){
+async function selectCategory(selectedDOM, categoryName, _data=undefined){
 	selectedCategory = categoryName;
 
 	var categoriesDOM = document.querySelectorAll('*[data-edit-category="false"]');
@@ -833,8 +854,13 @@ async function selectCategory(selectedDOM, categoryName){
 	}
 	selectedDOM.classList.toggle('selectedCategory', true);
 
-	var data = await API.getRecipes(categoryName, order);
-	data = data.data;
+	var data;
+	if(_data == undefined){
+		data = await API.getRecipes(categoryName, order);
+		data = data.data;
+	} else {
+		data = _data;
+	}
 
 	var recipeTemplateDOM = `
 		<div data-id='%id%' onclick='selectItem(this.dataset.id, this);' class='item'>
@@ -846,7 +872,7 @@ async function selectCategory(selectedDOM, categoryName){
 	document.getElementById('recipe').style.display = 'none';
 	document.querySelector('content').style.display = '';
 
-	disableHeaderButtons(false, true);
+	disableHeaderButtons(false, true, false);
 	let itemsDOM = document.getElementById('items');
 	if(data.length == 0){
 		itemsDOM.style.display = 'flex';
@@ -940,7 +966,7 @@ async function selectItem(itemId, el){
 
 	document.querySelector('content').style.display = 'none';
 
-	disableHeaderButtons(false, false);
+	disableHeaderButtons(false, false, true);
 }
 
 /**
@@ -979,12 +1005,29 @@ async function displayCategories(categoryName){
 }
 
 /**
+ * Searches for the item in the selected category
+ *
+ * @param	searchValue	-> The value in the searchbar
+ * @param	category	-> In which category to search in
+ */
+async function searchItems(searchValue, category){
+	if(searchValue == ''){
+		selectCategory(document.querySelector('.selectedCategory'), selectedCategory);
+		return;
+	}
+
+	var data = (await API.searchItems(searchValue, category)).data;
+	selectCategory(document.querySelector('.selectedCategory'), selectedCategory, data);
+}
+
+/**
  * Enables or disables the header button
  *
  * @param	headerButtonsStatestate	-> The state of the buttons
  * @param	editButtonState			-> The state of the edit button
+ * @param	searchbarState			-> The state of the search bar
  */
-function disableHeaderButtons(headerButtonsState, editButtonState){
+function disableHeaderButtons(headerButtonsState, editButtonState, searchbarState){
 	var headerButtonDOMs = document.querySelectorAll('.header-button:first-child, .header-button:last-child');
 
 	for(var i = 0; i < headerButtonDOMs.length; i++){
@@ -992,9 +1035,20 @@ function disableHeaderButtons(headerButtonsState, editButtonState){
 	}
 
 	document.querySelector('.header-button:nth-child(2)').disabled = editButtonState;
+
+	document.querySelector('#searchbar').disabled = searchbarState;
+	document.querySelector('#searchbar').placeholder = !searchbarState ? 'Vyhledat' : '';
+	document.querySelector('#search').style.backgroundColor = searchbarState ? '#5a606f' : '';
 }
 	
 window.onload = function(){
 	displayCategories();
-	disableHeaderButtons(true, true);
+	disableHeaderButtons(true, true, true);
+
+	var searchbarDOM = document.querySelector('#searchbar');
+	searchbarDOM.onkeyup = (e) => {
+		if(e.keyCode == 13){
+			searchItems(searchbarDOM.value, selectedCategory);
+		}
+	}
 }

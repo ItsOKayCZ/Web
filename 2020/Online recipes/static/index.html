@@ -53,10 +53,10 @@
 								</div>
 							</div>
 						</div>
-						<div class='search'>
+						<div id='search' class='search'>
 							<span class='search-header'>Vyhledavání:</span>
-							<input class='searchbar' type='text' placeholder='Vyhledat' autocomplete='off'>
-							<img alt='Search icon' class='search-icon' src='/img/search-icon.svg'>
+							<input id='searchbar' class='searchbar' type='text' placeholder='Vyhledat' autocomplete='off'>
+							<img onclick='searchItems(this.previousElementSibling.value, selectedCategory);' alt='Search icon' class='search-icon' src='/img/search-icon.svg'>
 						</div>
 					</div>
 

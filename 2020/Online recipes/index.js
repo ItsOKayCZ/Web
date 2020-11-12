@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const { Client } = require('pg');
+const format = require('pg-format');
 require('dotenv').config({ path: './.env' });
 
 // The port of the server
@@ -302,6 +303,30 @@ app.post('/API/updateIngredient', (req, res) => {
 		}
 
 		res.json({ code: 200 });
+	})
+})
+
+/**
+ * Searches for an item in the DB
+ *
+ * @param	searchValue	-> The value that is searched for
+ * @param	category	-> The category in which the search in
+ */
+app.post('/API/searchItems', (req, res) => {
+	var {
+		searchValue,
+		category
+	} = req.body;
+
+	var queryString = format("SELECT * FROM recipes WHERE category=$1 AND name LIKE '%s%%'", searchValue);
+	client.query(queryString, [category], (err, dbRes) => {
+		if(err){
+			console.log(err)
+			res.sendStatus(500);
+			return;
+		}
+
+		res.json({ data: dbRes.rows, code: 200 });
 	})
 })
 
