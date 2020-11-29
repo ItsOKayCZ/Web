@@ -14,6 +14,7 @@ A website for posting recipes
 - [x] Add functionality to the search bar
 	- [x] Add formatting into the querystring
 - [ ] Add authentication
+- [ ] Implement Vue.js
 
 # Bug
 - [ ] When adding an ingredient, the previous ingredients get removed
