@@ -70,6 +70,6 @@ DBpassword='123456'
 node index.js
 ```
 
-10. Viewing page
+10. Viewing page  
 Open you preferred explorer and in the URL bar write `http://127.0.0.1:8080`.
 
