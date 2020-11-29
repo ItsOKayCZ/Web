@@ -8,11 +8,12 @@ This project uses:
 - Postgresql
 
 ## Installation
+1. Installing postgresql (Use the preferred package manager to install)  
 If you have postgresql already installed, you can jump to step 4
-1. Installing postgresql (Use the preferred package manager to install)
 ```
 apt install postgresql
 ```
+
 2. Change the password of the user postgres
 ```
 sudo passwd postgres
