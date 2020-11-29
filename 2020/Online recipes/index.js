@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const { Client } = require('pg');
 const format = require('pg-format');
-require('dotenv').config({ path: './.env' });
+require('dotenv').config({ path: './cred' });
 
 // The port of the server
 const PORT = 8080;

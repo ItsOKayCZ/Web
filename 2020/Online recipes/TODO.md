@@ -22,6 +22,9 @@ A website for posting recipes
 # DB scheme
 DB name: onlinerecipes
 
+# ingredients
+ingredientname (VARCHAR(255)): The name of the ingredient
+
 ## categories
 categoryname (VARCHAR(255)): The name of the category
 
