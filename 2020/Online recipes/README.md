@@ -1,6 +1,6 @@
 # Recipe website
 This is project I am working for a month now.
-The purpose for this project is that people recipe books, could self-host a save all of the recipes on to the site and don't need to bring the recipe books where ever they go.
+The purpose for this project is that people recipe books, could self-host a save all of the recipes on to the site and don't need to bring the recipe books where ever they go. Project is not done.
 
 ## Requirements
 This project uses:
