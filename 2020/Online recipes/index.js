@@ -46,12 +46,30 @@ app.use(express.static('static'));
  * API 
  * ############## 
  */
+/**
+ * Login
+ */
+app.post('/login', (req, res) => {
+	var {
+		username,
+		password
+	} = req.body;
+
+	if(username == process.env.username && password == process.env.password){
+		res.cookie('id', process.env.authCookie, { maxAge: 9000000, httpOnly: true, sameSite: 'strict' });
+		res.sendStatus(200);
+		return;
+	}
+
+	res.sendStatus(401);
+});
 /** 
  * Authentication of the user 
  */ 
 app.use('/API/*', (req, res, next) => {
-	// TODO: Authentication
 	if(req.cookies.id == undefined || req.cookies.id != process.env.authCookie){
+		res.sendStatus(401);
+		return;
 	}
 
 	next();

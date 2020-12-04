@@ -8,6 +8,37 @@
 var API = {
 
 	/**
+	 * Checks if user is authorized and if not, logs the user in
+	 *
+	 * @param	statusCode	-> The status code of the response
+	 */
+	checkIfAuthorized: async function(statusCode){
+		if(statusCode != 401)
+			return;
+
+		var url = `${location.origin}/login`;
+
+		var username = prompt('Enter username:');
+		var password = prompt('Enter password:');
+
+		var response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ username, password })
+		});
+	
+		if(response.status == 200){
+			alert('Successfully logged in');
+		} else {
+			alert('Username or password are incorrect');
+		}
+
+		window.location.reload();
+	},
+
+	/**
 	 * Sends a request to add a category
 	 *
 	 * @param	categoryName	-> The name of the category
@@ -35,6 +66,8 @@ var API = {
 		var response = await fetch(url, {
 			method: 'POST'
 		})
+
+		await this.checkIfAuthorized(response.status);
 
 		return await response.json();
 	},
@@ -210,12 +243,12 @@ var API = {
 /**
  * The prompt class
  */
-var prompt = {
+var Prompt = {
 	preset: {
 		addCategory: {
 			html: `<label class='prompt-window-promptLabel' for='prompt-input'>Category name</label>
 	<input data-form='true' id='prompt-input' class='prompt-window-prompt' name='prompt-input' type='text'>
-	<button onclick='prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>`,
+	<button onclick='Prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>`,
 			headerText: 'Add category'
 		},
 		addRecipe: {
@@ -596,7 +629,7 @@ var prompt = {
 		this.steps = [""];
 	}
 }
-document.getElementById('prompt-window-close').addEventListener('click', () => { prompt.close(); });
+document.getElementById('prompt-window-close').addEventListener('click', () => { Prompt.close(); });
 
 /**
  * Checks the elements are empty in a string
@@ -618,7 +651,7 @@ function isEmpty(arr){
  * Adds a recipe to the currently selected category
  */
 function addRecipeToCategory(){
-	prompt.display('addRecipe', async (rawData) => {
+	Prompt.display('addRecipe', async (rawData) => {
 		var data = Object.assign({}, rawData);
 
 		data.ingredients = [];
@@ -649,7 +682,7 @@ function addRecipeToCategory(){
 				data: e.target.result
 			}
 			API.addRecipe(data);
-			prompt.close();
+			Prompt.close();
 
 			var selectedCategoryEl = document.querySelector('.selectedCategory');
 			selectCategory(selectedCategoryEl, data.category);
@@ -671,7 +704,7 @@ function editRecipeFromCategory(){
 	data.ingredients = JSON.parse(data.ingredients);
 	data.steps = JSON.parse(data.steps);
 
-	prompt.display('editRecipe', async (rawData) => {
+	Prompt.display('editRecipe', async (rawData) => {
 		var data = Object.assign({}, rawData);
 
 		data.ingredients = [];
@@ -696,7 +729,7 @@ function editRecipeFromCategory(){
 
 		data.id = recipeDOM.dataset.id;
 		API.editRecipe(data);
-		prompt.close();
+		Prompt.close();
 		selectItem(data.id);
 
 	}, data);
@@ -768,7 +801,7 @@ async function removeRecipeInCategory(button){
  * Adds a category to the list
  */
 function addCategory(){
-	prompt.display('addCategory', async (data) => {
+	Prompt.display('addCategory', async (data) => {
 		var categoryName = data['prompt-input'];
 		var response = await API.addCategory(categoryName);
 
@@ -778,7 +811,7 @@ function addCategory(){
 			return;
 		} else {
 			displayCategories(categoryName);
-			prompt.close();
+			Prompt.close();
 		}
 	});
 }
