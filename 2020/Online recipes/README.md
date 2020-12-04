@@ -1,6 +1,6 @@
 # Recipe website
 This is project I am working for a month now.
-The purpose for this project is that people recipe books, could self-host a save all of the recipes on to the site and don't need to bring the recipe books where ever they go.
+The purpose for this project is that people recipe books, could self-host a save all of the recipes on to the site and don't need to bring the recipe books where ever they go. Project is not done.
 
 ## Requirements
 This project uses:
@@ -8,11 +8,12 @@ This project uses:
 - Postgresql
 
 ## Installation
+1. Installing postgresql (Use the preferred package manager to install)  
 If you have postgresql already installed, you can jump to step 4
-1. Installing postgresql (Use the preferred package manager to install)
 ```
 apt install postgresql
 ```
+
 2. Change the password of the user postgres
 ```
 sudo passwd postgres
@@ -28,7 +29,7 @@ sudo service postgresql start
 ```
 sudo psql -U postgres
 ```
-If this gives you an error, try [this](https://stackoverflow.com/a/26735105).
+If this gives you an error, try [this](https://stackoverflow.com/a/26735105).  
 Login using the password you used in step 2
 When logged in psql.
 ```
@@ -68,4 +69,7 @@ DBpassword='123456'
 ```
 node index.js
 ```
+
+10. Viewing page  
+Open you preferred explorer and in the URL bar write `http://127.0.0.1:8080`.
 

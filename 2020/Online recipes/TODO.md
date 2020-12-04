@@ -14,6 +14,7 @@ A website for posting recipes
 - [x] Add functionality to the search bar
 	- [x] Add formatting into the querystring
 - [ ] Add authentication
+- [ ] Implement Vue.js
 
 # Bug
 - [ ] When adding an ingredient, the previous ingredients get removed
@@ -22,27 +23,30 @@ A website for posting recipes
 # DB scheme
 DB name: onlinerecipes
 
-# ingredients
+## ingredients
 ingredientname (VARCHAR(255)): The name of the ingredient
 
 ## categories
 categoryname (VARCHAR(255)): The name of the category
 
 ## recipes
-category (VARCHAR(255)) (Dropbox): The name of the category, that the recipe is in
-name (VARCHAR(255)) (text input): Name of recipe
-img (VARCHAR(255)) (file input with preview): URL to image
-ingredients (JSON) (dropbox with number input -> Can add ingredient): The ingredients
+category (VARCHAR(255)) (Dropbox): The name of the category, that the recipe is in  
+name (VARCHAR(255)) (text input): Name of recipe  
+img (VARCHAR(255)) (file input with preview): URL to image  
+ingredients (JSON) (dropbox with number input -> Can add ingredient): The ingredients  
 Structure:
+```
 [
 	{
 		name,
 		amount
 	}
 ]
-		  
+```		  
 steps (JSON) (Can add text inputs): The steps 
+```
 [
 	"Something",
 	"Something 2"
 ]
+```
