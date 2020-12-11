@@ -20,6 +20,7 @@ html, body{
 body{
 	display: flex;
 	flex-direction: column;
+	min-width: 987px;
 }
 li{
 	list-style: none;

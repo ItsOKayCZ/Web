@@ -2,8 +2,6 @@
  * The API class
  *
  * Handles all of the API requests and response from the server
- *
- * TODO: In everything function implement error handling
  */
 var API = {
 
@@ -267,8 +265,8 @@ var Prompt = {
 					<div class='prompt-ingredients-header'>
 						<p>Ingredients:</p>
 						<div>
-							<button title='Adds an ingredient to the end' onclick='prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
-							<button title='Removes the selected ingredients' onclick='prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
+							<button title='Adds an ingredient to the end' onclick='Prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
+							<button title='Removes the selected ingredients' onclick='Prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
 						</div>
 					</div>
 					<div id='prompt-ingredients' class='prompt-ingredients'>
@@ -283,20 +281,20 @@ var Prompt = {
 					<div class='prompt-steps-header'>
 						<p id='prompt-step-counter'>Steps (1):</p>
 						<div>
-							<button title='Adds a step to the end' onclick='prompt.addStep()' class='prompt-steps-add'>+</button>
-							<button title='Removes the step currently looking at' onclick='prompt.removeStep()' class='prompt-steps-sub'>-</button>
+							<button title='Adds a step to the end' onclick='Prompt.addStep()' class='prompt-steps-add'>+</button>
+							<button title='Removes the step currently looking at' onclick='Prompt.removeStep()' class='prompt-steps-sub'>-</button>
 						</div>
 					</div>
 					<div class='step'>
 						<div>
-							<span onclick='prompt.previousStep()' class='arrow'>▲</span>
+							<span onclick='Prompt.previousStep()' class='arrow'>▲</span>
 							<span id='amountOfSteps' class='amountOfSteps'>1</span>
-							<span onclick='prompt.nextStep()' class='arrow'>▼</span>
+							<span onclick='Prompt.nextStep()' class='arrow'>▼</span>
 						</div>
-						<textarea name='steps' data-variable='steps' autocomplete='off' onkeyup='prompt.updateStep()' id='prompt-window-step' data-form='true'></textarea>
+						<textarea name='steps' data-variable='steps' autocomplete='off' onkeyup='Prompt.updateStep()' id='prompt-window-step' data-form='true'></textarea>
 					</div>
 				</div>
-				<button onclick='prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
+				<button onclick='Prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
 			`,
 			headerText: 'Add recipe'
 		},
@@ -315,8 +313,8 @@ var Prompt = {
 					<div class='prompt-ingredients-header'>
 						<p>Ingredients:</p>
 						<div>
-							<button title='Adds an ingredient to the end' onclick='prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
-							<button title='Removes the selected ingredients' onclick='prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
+							<button title='Adds an ingredient to the end' onclick='Prompt.addIngredient()' class='prompt-ingredients-add'>+</button>
+							<button title='Removes the selected ingredients' onclick='Prompt.removeIngredient()' class='prompt-ingredients-sub'>-</button>
 						</div>
 					</div>
 					<div id='prompt-ingredients' class='prompt-ingredients'>
@@ -330,20 +328,20 @@ var Prompt = {
 					<div class='prompt-steps-header'>
 						<p id='prompt-step-counter'>Steps (1):</p>
 						<div>
-							<button title='Adds a step to the end' onclick='prompt.addStep()' class='prompt-steps-add'>+</button>
-							<button title='Removes the step currently looking at' onclick='prompt.removeStep()' class='prompt-steps-sub'>-</button>
+							<button title='Adds a step to the end' onclick='Prompt.addStep()' class='prompt-steps-add'>+</button>
+							<button title='Removes the step currently looking at' onclick='Prompt.removeStep()' class='prompt-steps-sub'>-</button>
 						</div>
 					</div>
 					<div class='step'>
 						<div>
-							<span onclick='prompt.previousStep()' class='arrow'>▲</span>
+							<span onclick='Prompt.previousStep()' class='arrow'>▲</span>
 							<span id='amountOfSteps' class='amountOfSteps'>1</span>
-							<span onclick='prompt.nextStep()' class='arrow'>▼</span>
+							<span onclick='Prompt.nextStep()' class='arrow'>▼</span>
 						</div>
-						<textarea name='steps' data-variable='steps' autocomplete='off' onkeyup='prompt.updateStep()' id='prompt-window-step' data-form='true'>%dataStep%</textarea>
+						<textarea name='steps' data-variable='steps' autocomplete='off' onkeyup='Prompt.updateStep()' id='prompt-window-step' data-form='true'>%dataStep%</textarea>
 					</div>
 				</div>
-				<button onclick='prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
+				<button onclick='Prompt.getInput();' id='prompt-window-button' class='prompt-window-promptButton'>Submit</button>
 			`,
 			headerText: 'Edit recipe',
 			ingredientInput: `
@@ -525,10 +523,21 @@ var Prompt = {
 	addIngredient: function(){
 		var ingredientsDOM = document.getElementById('prompt-ingredients');
 
-		ingredientsDOM.innerHTML += `
-			<input placeholder='Please enter an ingredient' data-form='true' type='text' name='ingredientName' list='ingredients'>
-			<input placeholder='Enter amount' name='ingredientAmount' data-form='true' type='text'>
-		`;
+		var ingredientDOM = document.createElement('input');
+		ingredientDOM.placeholder = 'Please enter an ingredient';
+		ingredientDOM.dataset.form = 'true';
+		ingredientDOM.type = 'text';
+		ingredientDOM.name = 'ingredientName';
+		ingredientDOM.list = 'ingredients';
+
+		var amountDOM = document.createElement('input');
+		amountDOM.placeholder = 'Enter amount';
+		amountDOM.name = 'ingredientAmount';
+		amountDOM.dataset.form = 'true';
+		amountDOM.type = 'text';
+
+		ingredientsDOM.appendChild(ingredientDOM);
+		ingredientsDOM.appendChild(amountDOM);
 	},
 
 	/**
