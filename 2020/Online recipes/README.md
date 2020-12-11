@@ -33,15 +33,15 @@ If this gives you an error, try [this](https://stackoverflow.com/a/26735105).
 Login using the password you used in step 2
 When logged in psql.
 ```
-CREATE DATABASE recipeDB;
+CREATE DATABASE recipedb;
 ```
-You can use a different name of the DB. Just replace `recipeDB`. I will use `recipeDB`.
+You can use a different name of the DB. Just replace `recipedb`. I will use `recipedb`.
 
 5. Importing DB schema from repository
 ```
 git clone https://github.com/ItsOKayCZ/Web
 cd "Web/2020/Online recipes"
-psql -U postgresl recipeDB < DB.psql
+psql -U postgres recipedb < DB.psql
 ```
 When prompted, enter password.
 
