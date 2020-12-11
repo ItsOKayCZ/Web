@@ -1,3 +1,6 @@
 DBusername=''
 DBdatabase=''
 DBpassword=''
+authCookie=''
+username=''
+password=''
