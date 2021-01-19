@@ -165,8 +165,7 @@ class MainPlayer{
     }
 
     mousePressed({ type, originalEvent: event }){
-        console.log("TODO: Make the grapling hook shoot");
-        console.log(type, event);
+        this.grapler.shoot(type, event);
     }
 
     updatePos(){

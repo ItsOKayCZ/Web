@@ -1,5 +1,7 @@
 class Grapler{
 
+    hookIsMaxLength = false;
+
     pos = {
         x: 0,
         y: 0
@@ -29,8 +31,8 @@ class Grapler{
         if(mousePos.x == undefined && mousePos.y == undefined)
             return;
         
-        let angle = this.getAngle(mousePos, this.pos);
-        if(Math.abs(radToDeg(angle)) > 90){
+        let angle = Math.getAngle(mousePos, this.pos);
+        if(Math.abs(Math.radToDeg(angle)) > 90){
             this.sprite.scale.y = -1;
         } else {
             this.sprite.scale.y = 1;
@@ -38,14 +40,18 @@ class Grapler{
         this.sprite.rotation = angle;
     }
 
-    // https://stackoverflow.com/questions/9614109/how-to-calculate-an-angle-from-points
-    getAngle(pos1, pos2){
-        let dx = pos1.x - pos2.x;
-        let dy = pos1.y - pos2.y;
-
-        let theta = Math.atan2(dy, dx);
-
-        return theta;
+    shoot(type, event){
+        if(type == 'mousedown'){
+            if(this.hook == undefined){
+                let mousePos = {
+                    x: event.x,
+                    y: event.y
+                };
+                this.hook = new Hook(this, Math.getAngle(mousePos, this.pos));
+            }
+        } else if(this.hook != undefined){
+            this.hook.updateShooting(false);
+        }
     }
 
     update(){
@@ -54,5 +60,13 @@ class Grapler{
 
         this.updateRotation();
         this.updatePos();
+
+        if(this.hook != undefined){
+            let state = this.hook.update();
+            if(state)
+                this.hook = undefined;
+            else
+                this.hookIsMaxLength = this.hook.isMaxLength;
+        }
     }
 }

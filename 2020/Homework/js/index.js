@@ -18,7 +18,7 @@ window.onload = () => {
         width: WIDTH,
         height: HEIGHT,
         transparent: true,
-        antialias: true,
+        antialias: false,
         resolution: 1
     });
 
@@ -38,7 +38,7 @@ function setup(){
         height: 100,
         color: platformColor
     }))
-    platforms.push(new Platform(100, windowHeight - 200, {
+    platforms.push(new Platform(200, windowHeight - 400, {
         width: 50,
         height: 50,
         color: 0xff0000
@@ -94,6 +94,27 @@ function makePoint(x, y){
     app.stage.addChild(circle);
 }
 
-function radToDeg(rad){
+Math.radToDeg = (rad) => {
     return rad * (180 / Math.PI);
+}
+
+// https://stackoverflow.com/questions/9614109/how-to-calculate-an-angle-from-points
+Math.getAngle = (pos1, pos2) => {
+        let dx = pos1.x - pos2.x;
+        let dy = pos1.y - pos2.y;
+
+        let theta = Math.atan2(dy, dx);
+
+        return theta;
+}
+
+// https://gist.github.com/timohausmann/5003280
+Math.getDistance = (pos1, pos2) => {
+    let dx = pos2.x - pos1.x;
+    let dy = pos2.y - pos1.y;
+
+    dx *= dx;
+    dy *= dy;
+
+    return Math.sqrt(dx + dy);
 }
