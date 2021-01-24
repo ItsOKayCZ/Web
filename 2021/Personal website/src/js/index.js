@@ -85,7 +85,7 @@ async function writeHTML(){
 }
 
 async function loadHTML(){
-	let url = `${location.origin}/data/html.json`;
+	let url = 'data/html.json';
 
 	let response = await fetch(url);
 	DOM = await response.json();
