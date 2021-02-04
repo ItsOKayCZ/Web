@@ -1,0 +1,155 @@
+[
+	{
+		"target": ".playground",
+		"typingSpeed": 40,
+		"html": [
+			{
+				"displayTag": "body",
+				"tag": "div",
+				"type": "group",
+				"className": "body",
+				"displayClassName": false
+			}
+		]
+	},
+	{
+		"target": ".body",
+		"html": [
+			{
+				"tag": "h1",
+				"text": "Skills",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".body",
+		"html": [
+			{
+				"tag": "ul",
+				"type": "group",
+				"className": "skills"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "Python 3.x",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "C",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "C++",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "C#",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "HTML",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "CSS",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "Javascript (Typescript)",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "Node.js",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "jQuery",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "Vue.js",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "SQL",
+				"type": "text"
+			}
+		]
+	},
+	{
+		"target": ".skills",
+		"html": [
+			{
+				"tag": "li",
+				"text": "Strapi",
+				"type": "text"
+			}
+		]
+	}
+]

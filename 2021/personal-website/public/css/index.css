@@ -1,0 +1,71 @@
+@font-face{
+	font-family: Consolas;
+	src: url('../fonts/Consolas.ttf');
+}
+*{
+	padding: 0;
+	margin: 0;
+
+	font-family: Consolas;
+}
+label{
+	user-select: none;
+	cursor: pointer;
+}
+
+.testing{
+	display: none;
+}
+
+.playground, .testing{
+	padding: 5px;
+}
+.playground *, .testing *{
+	white-space: nowrap;
+	width: min-content;
+}
+.playground .inline *, .testing .inline *{
+	display: inline;
+	vertical-align: middle;
+}
+.playground .highlight-tag, .testing .highlight-tag{
+	color: #a2a2a2;
+	font-style: italic;
+	
+	font-size: 0.9em;
+
+	user-select: none;
+}
+.playground .highlight-tag.top-tag, .testing .highlight-tag.top-tag{
+	margin-bottom: 10px;
+}
+.playground .highlight-tag.bottom-tag, .testing .highlight-tag.bottom-tag{
+	margin-top: 10px;
+}
+.playground .highlight-tag.left-tag, .testing .highlight-tag.left-tag{
+	margin-right: 2px;
+}
+.playground .highlight-tag.right-tag, .testing .highlight-tag.right-tag{
+	margin-left: 0px;
+}
+
+.playground .links li, .testing .links li{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.playground .links li:hover, .testing .links li:hover{
+	opacity: 0.6;
+}
+
+.options{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.options .option{
+	display: flex;
+}
+.options .option label{
+	margin-left: 5px;
+}

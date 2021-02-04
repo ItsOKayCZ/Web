@@ -23,6 +23,7 @@ Home, About, Projects, Contact, Experience, Playground (?)
 - [x] Make an animation, how the page is coded
 
 ## Todo
+- [ ] Make the parsing system better
 - [ ] Make the design, how the page would look like
 
 ## Resources
