@@ -35,3 +35,4 @@ All of my HTML, CSS, JS projects
 - [Cypher](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Cypher/index.html)
 - [Steering behavior](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html)
 - [Number recognition](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Number%20recognition/static/index.html)
+- [Wave](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Wave/index.html)
