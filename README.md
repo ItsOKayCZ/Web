@@ -30,8 +30,9 @@ All of my HTML, CSS, JS projects
 - [Markdown parser](https://raw.githack.com/ItsOKayCZ/Web/master/2019/Markdown%20parser/index.html)
 
 ## 2020
-- [Personal website](https://itsokaycz.github.io/)
+- [Personal website](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Personal%20website/index.html)
 - [Algorithms and data structures](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Algorithms%20and%20data%20structures/index.html)
 - [Cypher](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Cypher/index.html)
 - [Steering behavior](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html)
 - [Number recognition](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Number%20recognition/static/index.html)
+- [Wave](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Wave/index.html)
