@@ -4,11 +4,8 @@
 ### Front-end:
 HTML, CSS, Javascript (THREE.js)
 
-### Back-end:
-Node.js(?)
-
 ## Sections
-Home, About, Projects, Contact, Experience, Playground (?)
+Home, Skills, Projects, Experience
 
 ## Ideas:
 - [ ] Website will be an interactive game with
@@ -22,9 +19,8 @@ Home, About, Projects, Contact, Experience, Playground (?)
 	- Using canvas, THREE.js and basic css (for screen transitions)
 - [x] Make an animation, how the page is coded
 
-## Todo
-- [ ] Make the parsing system better
-- [ ] Make the design, how the page would look like
+## Page ideas:
+- [ ] Make the room flood with water
 
 ## Resources
 THREE.js

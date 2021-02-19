@@ -1,0 +1,76 @@
+[
+	{
+		"target": ".playground",
+		"typingSpeed": 40,
+		"html": [
+			{
+				"displayTag": "body",
+				"tag": "div",
+				"type": "group",
+				"className": "body",
+				"displayClassName": false
+			}
+		]
+	},
+	{
+		"target": ".body",
+		"html": [
+			{
+				"tag": "ul",
+				"type": "group",
+				"className": "links",
+				"displayClassName": false,
+				"displayTag": "Navigation"
+			}
+		]
+	},
+	{
+		"typingSpeed": 25,
+		"target": ".links",
+		"html": [
+			{
+				"tag": "li",
+				"text": "Go back",
+				"type": "text",
+				"attributes": {
+					"onclick": "redirect('../')"
+				}
+			},
+			{
+				"tag": "li",
+				"text": "Experience",
+				"type": "text",
+				"attributes": {
+					"onclick": "redirect('experience')"
+				}
+			},
+			{
+				"tag": "li",
+				"text": "Contact",
+				"type": "text",
+				"attributes": {
+					"onclick": "redirect('contact')"
+				}
+			}
+		]
+	},
+	{
+		"typingSpeed": 40,
+		"target": ".body",
+		"html": [
+			{
+				"tag": "h1",
+				"text": "Projects",
+				"type": "text"
+			},
+			{
+				"tag": "div",
+				"type": "group",
+				"className": "projects",
+				"displayTag": "projects",
+				"displayClassName": false,
+				"onload": "displayProjects()"
+			}
+		]
+	}
+]

@@ -4,10 +4,11 @@ let charIndex = 0;
 let typingSpeed = 100;
 let animation = true;
 
-const TAB_SPACE = '&nbsp;';
-const TAB_SPACE_CHAR = '\t';
+const TAB_SPACE = '&nbsp;'.repeat(2);
+const TAB_SPACE_CHAR = '\t'.repeat(1);
 
 const DEBUG = true;
+const PAUSE = false;
 
 function htmlDecode(input){
 	if(typeof input === 'object'){
@@ -76,7 +77,8 @@ async function writeHTML(){
 				text,
 				className,
 				displayClassName,
-				events
+				attributes,
+				onload,
 			} = DOM[index].html[htmlIndex];
 
 			let indent = parseInt(targetDOM.parentNode.dataset.indent);
@@ -138,15 +140,15 @@ async function writeHTML(){
 				let content = document.createElement(tag);
 				content.innerText = text;
 
+				if(attributes != undefined){
+					for(let attribute in attributes){
+						content.setAttribute(attribute, attributes[attribute]);
+					}
+				}
+
 				container.appendChild(leftTag);
 				container.appendChild(content);
 				container.appendChild(rightTag);
-
-				if(events != undefined){
-					for(let e in events){
-						content.setAttribute('onclick', events[e]);
-					}
-				}
 
 				targetDOM.appendChild(container);
 			} else {
@@ -165,6 +167,12 @@ async function writeHTML(){
 					html = targetDOM.querySelector(tag);
 
 				html.parentNode.dataset.indent = indent + 1;
+
+				if(attributes != undefined){
+					for(let attribute in attributes){
+						html.setAttribute(attribute, attributes[attribute]);
+					}
+				}
 
 				let topTag = document.createElement('p');
 				topTag.classList.add('highlight-tag');
@@ -195,6 +203,9 @@ async function writeHTML(){
 				html.insertAdjacentElement('beforebegin', topTag);
 				html.insertAdjacentElement('afterend', bottomTag);
 			}
+
+			if(onload != undefined)
+				eval(onload);
 		}
 	}
 
@@ -202,6 +213,10 @@ async function writeHTML(){
 
 function disableAnimation(){
 	animation = !animation;
+
+	let url = new URL(window.location);
+	url.searchParams.set('animation', animation);
+	window.history.pushState({}, '', url);
 }
 
 async function loadHTML(){
@@ -230,10 +245,20 @@ function sleep(ms){
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function getQueryValue(key){
+	let queryString = location.search;
+	let params = new URLSearchParams(queryString);
+
+	return params.get(key);
+}
 
 window.onload = async function(){
 	await loadHTML();
-	animation = !document.querySelector('#disable-animation').checked;
 
-	writeHTML();
+	animation = getQueryValue('animation');
+	animation = animation == undefined ? true : (animation == 'true');
+	document.querySelector('#disable-animation').checked = !animation;
+
+	if(!PAUSE)
+		writeHTML();
 }

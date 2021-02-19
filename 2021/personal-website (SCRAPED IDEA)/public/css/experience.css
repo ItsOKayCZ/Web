@@ -1,0 +1,10 @@
+.playground .skills{
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-row-gap: 10px;
+
+	width: 100%;
+}
+.playground .skills li{
+	user-select: none;
+}

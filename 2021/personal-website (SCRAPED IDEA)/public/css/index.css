@@ -8,6 +8,7 @@
 
 	font-family: Consolas;
 }
+
 label{
 	user-select: none;
 	cursor: pointer;
@@ -24,12 +25,15 @@ label{
 	white-space: nowrap;
 	width: min-content;
 }
+.playground .body, .testing .body{
+	width: 100%;
+}
 .playground .inline *, .testing .inline *{
 	display: inline;
 	vertical-align: middle;
 }
 .playground .highlight-tag, .testing .highlight-tag{
-	color: #a2a2a2;
+	color: #d7d7d7;
 	font-style: italic;
 	
 	font-size: 0.9em;
@@ -49,23 +53,33 @@ label{
 	margin-left: 0px;
 }
 
+.playground .links, .testing .links{
+	display: flex;
+}
 .playground .links li, .testing .links li{
 	text-decoration: underline;
 	cursor: pointer;
+	user-select: none;
 }
 .playground .links li:hover, .testing .links li:hover{
 	opacity: 0.6;
 }
 
 .options{
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
 }
 
 .options .option{
+	background-color: white;
+
+	position: sticky;
+	top: 100%;
+
 	display: flex;
 }
 .options .option label{
 	margin-left: 5px;
+}
+
+.hidden{
+	display: none;
 }
