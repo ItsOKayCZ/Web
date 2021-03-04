@@ -7,10 +7,21 @@
 
 		<script src='js/three.js/build/three.js'></script>
 		<script src='js/additional.js'></script>
-		<script src='js/ScrollHandler.js'></script>
+		<script src='js/SceneManager.js'></script>
 		<script type='module' src='js/index.js'></script>
 	</head>
 	<body>
-		<div id='fakeScroll' class='scroll'></div>
+		<nav class='navigation'>
+			<button data-scene-id='0'>About me</button>
+			<button data-scene-id='1'>Skills</button>
+			<button data-scene-id='2'>Projects</button>
+			<button data-scene-id='3'>Contact</button>
+		</nav>
+		<div id='fakeScroll' class='scroll'>
+			<div class='scrollPart'></div>
+			<div class='scrollPart'></div>
+			<div class='scrollPart'></div>
+			<div class='scrollPart'></div>
+		</div>
 	</body>
 </html>

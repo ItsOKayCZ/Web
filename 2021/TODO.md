@@ -19,6 +19,16 @@ Home, Skills, Projects, Experience
 	- Using canvas, THREE.js and basic css (for screen transitions)
 - [x] Make an animation, how the page is coded
 
+## TODO:
+- [ ] Design the pages
+	- Overlay the THREE.js canvas with DOM
+	- Add text into the THREE.js scene
+- [ ] When the button is clicked, transition to the next scene
+- [ ] Make a transition between scenes (pages)
+	- Make the objects of 1 screne dissapear
+	- Make a camera move to the next scene
+	- Somekind of a easter egg transition
+
 ## Page ideas:
 - [ ] Make the room flood with water
 
