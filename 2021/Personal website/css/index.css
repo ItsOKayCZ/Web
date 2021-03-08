@@ -37,6 +37,8 @@ canvas{
 	align-items: center;
 	
 	padding-left: 10px;
+
+	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 .navigation button{
 	margin-right: 10px;

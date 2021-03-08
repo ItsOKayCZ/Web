@@ -47,11 +47,20 @@ class SceneManager{
 	}
 
 	onScroll(e){
-		if(this.scrollDOM.scrollTop > this.scrollOrigin){
-			this.partIndex++;
-		} else if(this.scrollDOM.scrollTop < this.scrollOrigin){
-			this.partIndex--;
+		let scrollTop = this.scrollDOM.scrollTop;
+		for(let i = 0; i < this.partOffsets.length; i++){
+			if(this.partOffsets[i + 1] == undefined && this.partOffsets[i] == scrollTop){
+				this.partIndex = i;
+			} else if(scrollTop >= this.partOffsets[i] && scrollTop < this.partOffsets[i + 1]){
+				this.partIndex = i;
+			}
 		}
+
+		// if(this.scrollDOM.scrollTop > this.scrollOrigin){
+		// 	this.partIndex++;
+		// } else if(this.scrollDOM.scrollTop < this.scrollOrigin){
+		// 	this.partIndex--;
+		// }
 
 		if(this.partIndex < 0)
 			this.partIndex = 0;
