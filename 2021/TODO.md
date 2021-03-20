@@ -23,7 +23,7 @@ Home, Skills, Projects, Experience
 - [ ] Design the pages
 	- Overlay the THREE.js canvas with DOM
 	- Add text into the THREE.js scene
-- [ ] When the button is clicked, transition to the next scene
+- [x] When the button is clicked, transition to the next scene
 - [ ] Make a transition between scenes (pages)
 	- Make the objects of 1 screne dissapear
 	- Make a camera move to the next scene

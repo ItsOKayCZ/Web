@@ -7,7 +7,7 @@ let animation = true;
 const TAB_SPACE = '&nbsp;'.repeat(2);
 const TAB_SPACE_CHAR = '\t'.repeat(1);
 
-const DEBUG = true;
+const DEBUG = false;
 const PAUSE = false;
 
 function htmlDecode(input){

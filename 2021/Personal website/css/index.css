@@ -67,6 +67,7 @@ canvas{
 }
 
 .scroll{
+	display: none;
 	position: relative;
 
 	width: 100%;
