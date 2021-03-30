@@ -23,12 +23,23 @@ function main(){
 		antialias: true
 	});
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMapType = THREE.PCFSoftShadowMap;
 	document.body.appendChild(renderer.domElement);
 
 	controls = new OrbitControls(camera, renderer.domElement);
 
 	loader = new GLTFLoader();
-	loader.load('models/Main scene.glb', function(gltf){
+	loader.load('models/Main scene.glb', (gltf) => {
+		gltf.scene.traverse(function(n) {
+			if(n.isMesh){
+				n.castShadow = true;
+				n.receiveShadow = true;
+
+				if(n.material.map) n.material.map.anisotropy = 1;
+			}
+		});
+
 		scene.add(gltf.scene);
 
 		sceneManager = new SceneManager({
@@ -40,19 +51,20 @@ function main(){
 		console.error(err);
 	});
 
-	let ambientLight = new THREE.AmbientLight(0x404040);
-	scene.add(ambientLight);
+	let hemiLight = new THREE.HemisphereLight(0xffffff, 1);
+	scene.add(hemiLight);
 
-	let spotLight = new THREE.SpotLight(0xffffff);
-	spotLight.position.set(0, 2, 0);
-	scene.add(spotLight);
+	let light = new THREE.SpotLight(0x404040, 1);
+	light.position.set(0, 2, 1);
+	light.castShadow = true;
+	light.shadow.bias = -0.00203;
+	light.shadow.mapSize.width = 4 * 1024;
+	light.shadow.mapSize.height = 4 * 1024;
+	scene.add(light);
 
-	let spotLightHelper = new THREE.SpotLightHelper(spotLight);
-	scene.add(spotLightHelper);
-
-	camera.position.y = 0.8;
+	camera.position.y = 1;
 	camera.position.z = 0.5;
-	camera.rotation.x = -0.4;
+	camera.rotation.x = -0.5;
 	console.log(scene);
 	// TODO: Change FOV on small devices
 	// Source: https://stackoverflow.com/questions/22212152/threejs-update-camera-fov
@@ -61,9 +73,13 @@ function main(){
 }
 
 function createCube(x, y, z, color){
-	const geometry = new THREE.BoxGeometry();
-	const material = new THREE.MeshBasicMaterial( { color: color } );
+	const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+	const material = new THREE.MeshStandardMaterial( { color: color } );
 	const cube = new THREE.Mesh( geometry, material );
+	cube.position.set(x, y, z);
+
+	cube.receiveShadow = true;
+	cube.castShadow = true;
 	scene.add( cube );
 }
 
