@@ -24,7 +24,6 @@ function main(){
 	});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.shadowMap.enabled = true;
-	renderer.shadowMapType = THREE.PCFSoftShadowMap;
 	document.body.appendChild(renderer.domElement);
 
 	controls = new OrbitControls(camera, renderer.domElement);

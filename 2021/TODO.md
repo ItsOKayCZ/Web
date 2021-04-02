@@ -14,6 +14,18 @@ About me, Skill, Projects, Contact
 - Maths
 - Games
 
+## Skill - Themes
+- Programming languages (Logos)
+
+## Projects - Themes
+- Zoom in computer screen and in a grid there will be the projects categorized in the same way as in github
+- Add gif previews of the projects
+- When click show an iframe of the full functioning project
+
+## Contact - Themes
+- You write into a letter that then gets "sent" using a carrier-pigeon flying away
+- If an error occures, the pigeon falls
+
 ## Page ideas:
 - [ ] Make the room flood with water
 - [ ] Make a bird with a postmail (That will be contacting me)
@@ -23,6 +35,8 @@ About me, Skill, Projects, Contact
 THREE.js
 - http://stemkoski.github.io/Three.js/
 - https://threejs.org/
+Physijs
+- http://chandlerprall.github.io/Physijs/
 Portfolios
 - https://guillaumegouessan.com
 - https://jacekjeznach.com/
