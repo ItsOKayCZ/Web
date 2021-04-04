@@ -9,6 +9,9 @@ let camera;
 let renderer;
 let controls;
 let loader;
+let raycast;
+let mouse = {x: 0, y: 0};
+
 function main(){
 
 	scene = new THREE.Scene();
@@ -26,7 +29,7 @@ function main(){
 	renderer.shadowMap.enabled = true;
 	document.body.appendChild(renderer.domElement);
 
-	controls = new OrbitControls(camera, renderer.domElement);
+	// controls = new OrbitControls(camera, renderer.domElement);
 
 	loader = new GLTFLoader();
 	loader.load('models/Main scene.glb', (gltf) => {
@@ -68,7 +71,47 @@ function main(){
 	// TODO: Change FOV on small devices
 	// Source: https://stackoverflow.com/questions/22212152/threejs-update-camera-fov
 
+	raycast = new THREE.Raycaster();
+	renderer.domElement.addEventListener('mousemove', setupRaycast, false);
+
 	render();
+}
+
+// Source: https://riptutorial.com/three-js/example/17088/object-picking---raycasting
+function setupRaycast(e){
+	mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+	raycast.setFromCamera(mouse, camera);
+
+	let currentSceneObjects = scene.getObjectByName(sceneManager.getCurrentSceneName());
+
+	let intersects = raycast.intersectObjects(currentSceneObjects.children, true);
+
+	let chosenObjects = [];
+	for(let intersectedObject of intersects){
+		let object = intersectedObject.object;
+
+		if(!isObjectInArray(chosenObjects, object))
+			chosenObjects.push(object);
+
+	}
+
+	console.log(chosenObjects.map(obj => obj.name));
+}
+
+function isObjectInArray(arr, checkObject){
+	for(let object of arr){
+		if(object.uuid == checkObject.uuid)
+			return true;
+	}
+
+	return false;
+}
+
+function render(){
+	requestAnimationFrame(render);
+	renderer.render(scene, camera);
 }
 
 function createCube(x, y, z, color){
@@ -80,10 +123,4 @@ function createCube(x, y, z, color){
 	cube.receiveShadow = true;
 	cube.castShadow = true;
 	scene.add( cube );
-}
-
-
-function render(){
-	requestAnimationFrame(render);
-	renderer.render(scene, camera);
 }

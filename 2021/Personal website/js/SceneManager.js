@@ -2,6 +2,7 @@ class SceneManager{
 	partIndex = 0;
 	partOffsets = [];
 	scrollOrigin = 0;
+	sceneNamePrefix = 'Scene';
 
 	constructor({ scene, parts, scrollDOMSelector }){
 		this.scene = scene;
@@ -31,6 +32,10 @@ class SceneManager{
 				this.changeScene(e);
 			}
 		}
+	}
+
+	getCurrentSceneName(){
+		return this.sceneNamePrefix + (this.partIndex + 1);
 	}
 
 	changeScene(e){
@@ -92,11 +97,11 @@ class SceneManager{
 	animationSpeed = 20;
 	displayScene(){
 		for(let i = 0; i < this.parts; i++){
-			let sceneObjects = this.scene.getObjectByName(`Scene${i + 1}`, true);
+			let sceneObjects = this.scene.getObjectByName(this.sceneNamePrefix + (i + 1), true);
 			sceneObjects.visible = false;
 		}
 
-		let mainObjects = this.scene.getObjectByName(`Scene${this.partIndex + 1}`);
+		let mainObjects = this.scene.getObjectByName(this.sceneNamePrefix + (this.partIndex + 1));
 		mainObjects.visible = true;
 	}
 }
