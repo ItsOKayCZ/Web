@@ -9,7 +9,6 @@ class SceneManager{
 
 		this.scrollDOM = document.querySelector(scrollDOMSelector);
 		this.parts = parts;
-		// this.setupParts();
 		this.partHeight = this.scrollDOM.children[0].clientHeight;
 
 		for(let i = 0; i < this.parts; i++){
@@ -18,7 +17,8 @@ class SceneManager{
 
 		this.setupEventsForNavButtons();
 
-		this.scrollDOM.onscroll = (e) => { this.onScroll(e); } ;
+		this.scrollDOM.addEventListener('scroll', (e) => { this.onScroll(e) });
+		// this.scrollDOM.onscroll = (e) => { this.onScroll(e); } ;
 
 		this.update();
 	}
@@ -43,7 +43,13 @@ class SceneManager{
 
 		this.partIndex = parseInt(button.dataset.sceneId);
 
+		this.updateScrollBar();
 		this.update();
+	}
+
+	updateScrollBar(){
+		this.scrollDOM.scrollTop = this.partHeight * this.partIndex;
+		this.scrollOrigin = this.scrollDOM.scrollTop;
 	}
 
 	update(){
@@ -60,12 +66,6 @@ class SceneManager{
 				this.partIndex = i;
 			}
 		}
-
-		// if(this.scrollDOM.scrollTop > this.scrollOrigin){
-		// 	this.partIndex++;
-		// } else if(this.scrollDOM.scrollTop < this.scrollOrigin){
-		// 	this.partIndex--;
-		// }
 
 		if(this.partIndex < 0)
 			this.partIndex = 0;
@@ -85,16 +85,6 @@ class SceneManager{
 		}
 	}
 
-	setupParts(){
-		for(let i = 0; i < this.parts; i++){
-			let partDOM = document.createElement('div');
-			partDOM.classList.add('scrollPart');
-
-			this.scrollDOM.appendChild(partDOM);
-		}
-	}
-	
-	animationSpeed = 20;
 	displayScene(){
 		for(let i = 0; i < this.parts; i++){
 			let sceneObjects = this.scene.getObjectByName(this.sceneNamePrefix + (i + 1), true);

@@ -23,6 +23,9 @@ canvas{
 
 	z-index: 1;
 }
+.hoverObject{
+	cursor: pointer;
+}
 
 .navigation{
 	width: 100%;
@@ -67,11 +70,12 @@ canvas{
 }
 
 .scroll{
+	position: relative;
+	left: calc(100% - 13px);
+
 	display: none;
 
-	position: relative;
-
-	width: 100%;
+	width: 13px;
 	height: calc(100% - 50px);
 
 	scroll-snap-type: y mandatory;

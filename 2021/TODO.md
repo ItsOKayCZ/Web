@@ -2,7 +2,7 @@
 
 ## Technology:
 ### Front-end:
-HTML, CSS, Javascript (THREE.js)
+HTML, CSS, Javascript (THREE.js (3D), TWEEN.js (animations, transitions))
 
 ## Sections
 About me, Skill, Projects, Contact
@@ -30,6 +30,9 @@ About me, Skill, Projects, Contact
 - [ ] Make the room flood with water
 - [ ] Make a bird with a postmail (That will be contacting me)
 - [ ] Make a meme on Pepa
+
+## Issues
+- [ ] Remove the scrollbar and instead make buttons on the buttons to go the the next of previous "page"
 
 ## Resources
 THREE.js

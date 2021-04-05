@@ -1,5 +1,6 @@
 import { GLTFLoader } from './three.js/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from './three.js/examples/jsm/controls/OrbitControls.js';
+import * as TWEEN from './tween.esm.js';
 window.onload = main;
 
 let sceneManager;
@@ -12,8 +13,9 @@ let loader;
 let raycast;
 let mouse = {x: 0, y: 0};
 
-function main(){
+const hoverColor = new THREE.Color(0x222222);
 
+function main(){
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color(0xffffff);
 
@@ -49,6 +51,8 @@ function main(){
 			parts: 4,
 			scrollDOMSelector: "#fakeScroll"
 		});
+
+		console.log(scene);
 	}, undefined, function(err){
 		console.error(err);
 	});
@@ -67,7 +71,6 @@ function main(){
 	camera.position.y = 1;
 	camera.position.z = 0.5;
 	camera.rotation.x = -0.5;
-	console.log(scene);
 	// TODO: Change FOV on small devices
 	// Source: https://stackoverflow.com/questions/22212152/threejs-update-camera-fov
 
@@ -94,10 +97,37 @@ function setupRaycast(e){
 
 		if(!isObjectInArray(chosenObjects, object))
 			chosenObjects.push(object);
-
 	}
 
-	console.log(chosenObjects.map(obj => obj.name));
+	for(let object of currentSceneObjects.children){
+		if(isObjectInArray(chosenObjects, object)){
+			renderer.domElement.classList.add('hoverObject');
+			changeEmissiveColor(object, hoverColor);
+		} else {
+			renderer.domElement.classList.remove('hoverObject');
+			changeEmissiveColor(object, new THREE.Color(0, 0, 0));
+		}
+	}
+	// console.log(chosenObjects.map(obj => obj.name));
+}
+
+function changeEmissiveColor(object, color){
+	if(object.material == undefined)
+		object = object.children[0];
+	console.log(object);
+
+	let originColor = object.material.emissive;
+
+	if(originColor.equals(color))
+		return;
+
+	 const tween = new TWEEN.Tween({ r: originColor.r, g: originColor.g, b: originColor.b })
+	 	.to(color, 100)
+	 	.easing(TWEEN.Easing.Quadratic.Out)
+	 	.onUpdate((tweenColor) => {
+
+	 		object.material.emissive = new THREE.Color(tweenColor.r, tweenColor.g, tweenColor.b).clone();
+	 	}).start();
 }
 
 function isObjectInArray(arr, checkObject){
@@ -109,8 +139,9 @@ function isObjectInArray(arr, checkObject){
 	return false;
 }
 
-function render(){
+function render(time){
 	requestAnimationFrame(render);
+	TWEEN.update(time);
 	renderer.render(scene, camera);
 }
 
