@@ -13,9 +13,13 @@ let loader;
 let raycast;
 let mouse = {x: 0, y: 0};
 
+let objectDescriptions = {};
+
 const hoverColor = new THREE.Color(0x222222);
 
-function main(){
+async function main(){
+	await loadObjectDescriptions();
+
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color(0xffffff);
 
@@ -80,6 +84,14 @@ function main(){
 	render();
 }
 
+async function loadObjectDescriptions(){
+	let URL = 'data/descriptions.json';
+
+	let res = await fetch(URL);
+
+	objectDescriptions = await res.json();
+}
+
 // Source: https://riptutorial.com/three-js/example/17088/object-picking---raycasting
 function setupRaycast(e){
 	mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
@@ -95,26 +107,53 @@ function setupRaycast(e){
 	for(let intersectedObject of intersects){
 		let object = intersectedObject.object;
 
-		if(!isObjectInArray(chosenObjects, object))
-			chosenObjects.push(object);
+		if(!isObjectInArray(chosenObjects, object)){
+			if(object.parent.type == 'Group')
+				chosenObjects.push(object.parent);
+			else
+				chosenObjects.push(object);
+		}
 	}
 
 	for(let object of currentSceneObjects.children){
 		if(isObjectInArray(chosenObjects, object)){
 			renderer.domElement.classList.add('hoverObject');
 			changeEmissiveColor(object, hoverColor);
+			displayDescriptionOfObject(object);
 		} else {
 			renderer.domElement.classList.remove('hoverObject');
 			changeEmissiveColor(object, new THREE.Color(0, 0, 0));
 		}
 	}
-	// console.log(chosenObjects.map(obj => obj.name));
+}
+
+function displayDescriptionOfObject(object){
+	let name = object.name;
+	if(objectDescriptions[name] == undefined){
+		console.warn('Missing header or description for hovered object');
+		return;
+	}
+
+	let { header, description } = objectDescriptions[name];
+
+	if(header == undefined){
+		console.warn('Missing header for hovered object');
+		return;
+	}
+	if(description == undefined){
+		console.warn('Missing description for hovered object');
+		return;
+	}
 }
 
 function changeEmissiveColor(object, color){
-	if(object.material == undefined)
-		object = object.children[0];
-	console.log(object);
+	if(object.material == undefined){
+		for(let obj of object.children){
+			changeEmissiveColor(obj, color);
+		}
+
+		return;
+	}
 
 	let originColor = object.material.emissive;
 
