@@ -35,7 +35,7 @@ async function main(){
 	renderer.shadowMap.enabled = true;
 	document.body.appendChild(renderer.domElement);
 
-	// controls = new OrbitControls(camera, renderer.domElement);
+	controls = new OrbitControls(camera, renderer.domElement);
 
 	loader = new GLTFLoader();
 	loader.load('models/Main scene.glb', (gltf) => {
@@ -57,6 +57,7 @@ async function main(){
 		});
 
 		console.log(scene);
+		testingTextOnMonitor();
 	}, undefined, function(err){
 		console.error(err);
 	});
@@ -82,6 +83,33 @@ async function main(){
 	renderer.domElement.addEventListener('mousemove', setupRaycast, false);
 
 	render();
+}
+
+function testingTextOnMonitor(){ // Debugging
+	let c = document.createElement('canvas');
+	let mesh = scene.getObjectByName('Screen', true);
+	console.log(mesh);
+	mesh.visible = false;
+
+	c.classList.add('testingCanvas');
+	document.body.appendChild(c);
+	let ctx = c.getContext('2d');
+
+	c.height = 100;
+	c.width = (c.height * 1.5) - 85;
+
+	ctx.fillStyle = '#ffffff';
+	ctx.fillRect(0, 0, c.width, c.height);
+
+	ctx.fillStyle = 'orange';
+	ctx.font = '10pt arial bold';
+	ctx.fillText('Testing', c.width - 50, c.height);
+
+	let mat = new THREE.MeshBasicMaterial();
+	mat.map = new THREE.CanvasTexture(c);
+	mat.map.needsUpdate = true;
+
+	mesh.material = mat;
 }
 
 async function loadObjectDescriptions(){
@@ -115,18 +143,29 @@ function setupRaycast(e){
 		}
 	}
 
+	let hoveredObject = null;
 	for(let object of currentSceneObjects.children){
 		if(isObjectInArray(chosenObjects, object)){
 			renderer.domElement.classList.add('hoverObject');
 			changeEmissiveColor(object, hoverColor);
-			displayDescriptionOfObject(object);
+
+			hoveredObject = object;
 		} else {
 			renderer.domElement.classList.remove('hoverObject');
 			changeEmissiveColor(object, new THREE.Color(0, 0, 0));
 		}
 	}
+
+	if(hoveredObject != null)
+		displayDescriptionOfObject(hoveredObject);
+	else
+		hideDescription();
+
 }
 
+function hideDescription(){
+	document.querySelector('.descriptionContainer').classList.remove('showDescriptionContainer');
+}
 function displayDescriptionOfObject(object){
 	let name = object.name;
 	if(objectDescriptions[name] == undefined){
@@ -144,6 +183,15 @@ function displayDescriptionOfObject(object){
 		console.warn('Missing description for hovered object');
 		return;
 	}
+
+	let descriptionDOM = document.querySelector('.descriptionContainer');
+	let descriptionHeaderDOM = descriptionDOM.querySelector('.header');
+	let descriptionTextDOM = descriptionDOM.querySelector('.text');
+
+	descriptionHeaderDOM.innerText = header;
+	descriptionTextDOM.innerText = description;
+
+	descriptionDOM.classList.add('showDescriptionContainer');
 }
 
 function changeEmissiveColor(object, color){
