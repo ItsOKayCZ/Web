@@ -124,8 +124,24 @@ canvas{
 	margin-bottom: 10px;
 }
 
-.testingCanvas{ /* Testing */
-	display: none;
+.projectsContainer{
+	background-color: #999999;
+
 	position: absolute;
-	top: 100px;
+	top: 50px;
+	left: 0;
+
+	width: 100%;
+	height: calc(100% - 50px);
+
+	z-index: 2;
+
+	transition: opacity 0.2s;
+
+	pointer-events: none;
+	opacity: 0;
+}
+.displayProjectsContainer{
+	pointer-events: all;
+	opacity: 1;
 }

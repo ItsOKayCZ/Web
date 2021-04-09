@@ -15,6 +15,9 @@ let mouse = {x: 0, y: 0};
 
 let objectDescriptions = {};
 
+const DEFAULT_CAMERA_POSITION = new THREE.Vector3(0, 1, 0.5);
+const DEFAULT_CAMERA_ROTATION = new THREE.Vector3(-0.5, 0, 0);
+
 const hoverColor = new THREE.Color(0x222222);
 
 async function main(){
@@ -53,11 +56,16 @@ async function main(){
 		sceneManager = new SceneManager({
 			scene: scene,
 			parts: 4,
-			scrollDOMSelector: "#fakeScroll"
+			scrollDOMSelector: "#fakeScroll",
+			sceneActions: {
+				'2': {
+					enter: zoomIntoComputerScreen,
+					exit: zoomOutFromComputerScreen,
+				},
+			}
 		});
 
 		console.log(scene);
-		testingTextOnMonitor();
 	}, undefined, function(err){
 		console.error(err);
 	});
@@ -73,9 +81,11 @@ async function main(){
 	light.shadow.mapSize.height = 4 * 1024;
 	scene.add(light);
 
-	camera.position.y = 1;
-	camera.position.z = 0.5;
-	camera.rotation.x = -0.5;
+	setupCamera();
+
+	// camera.position.y = 1;
+	// camera.position.z = 0.5;
+	// camera.rotation.x = -0.5;
 	// TODO: Change FOV on small devices
 	// Source: https://stackoverflow.com/questions/22212152/threejs-update-camera-fov
 
@@ -85,31 +95,74 @@ async function main(){
 	render();
 }
 
-function testingTextOnMonitor(){ // Debugging
-	let c = document.createElement('canvas');
-	let mesh = scene.getObjectByName('Screen', true);
-	console.log(mesh);
-	mesh.visible = false;
+function setupCamera(){
+	camera.position.copy(DEFAULT_CAMERA_POSITION);
+	camera.rotation.x = DEFAULT_CAMERA_ROTATION.x;
+	camera.rotation.y = DEFAULT_CAMERA_ROTATION.y;
+	camera.rotation.z = DEFAULT_CAMERA_ROTATION.z;
+}
 
-	c.classList.add('testingCanvas');
-	document.body.appendChild(c);
-	let ctx = c.getContext('2d');
+function moveCamera(newPosition, newRotation, onComplete=null){
+	let fromAttributes = {
+		posX: camera.position.x,
+		posY: camera.position.y,
+		posZ: camera.position.z,
 
-	c.height = 100;
-	c.width = (c.height * 1.5) - 85;
+		rotX: camera.rotation.x,
+		rotY: camera.rotation.y,
+		rotZ: camera.rotation.z,
+	};
 
-	ctx.fillStyle = '#ffffff';
-	ctx.fillRect(0, 0, c.width, c.height);
+	let toAttributes = {
+		posX: newPosition.x,
+		posY: newPosition.y,
+		posZ: newPosition.z,
 
-	ctx.fillStyle = 'orange';
-	ctx.font = '10pt arial bold';
-	ctx.fillText('Testing', c.width - 50, c.height);
+		rotX: newRotation.x,
+		rotY: newRotation.y,
+		rotZ: newRotation.z,
+	};
 
-	let mat = new THREE.MeshBasicMaterial();
-	mat.map = new THREE.CanvasTexture(c);
-	mat.map.needsUpdate = true;
+	const tween = new TWEEN.Tween(fromAttributes)
+		.to(toAttributes, 1000)
+		.easing(TWEEN.Easing.Quartic.InOut)
+		.onUpdate((tweenAttr) => {
+			camera.position.set(tweenAttr.posX, tweenAttr.posY, tweenAttr.posZ);
 
-	mesh.material = mat;
+			camera.rotation.x = tweenAttr.rotX;
+			camera.rotation.y = tweenAttr.rotY;
+			camera.rotation.z = tweenAttr.rotZ;
+		});
+
+	if(onComplete != null)
+		tween.onComplete(onComplete);
+
+	tween.start();
+}
+
+function displayProjects(){
+	let projectsContainer = document.querySelector('.projectsContainer');
+	projectsContainer.classList.add('displayProjectsContainer');
+}
+function hideProjects(){
+	let projectsContainer = document.querySelector('.projectsContainer');
+	projectsContainer.classList.remove('displayProjectsContainer');
+}
+function zoomIntoComputerScreen(){
+	let screenMesh = scene.getObjectByName('Screen', true);
+	console.log(screenMesh);
+
+	let position = screenMesh.position.clone();
+	position.y += 0.01;
+	position.z += 0.15;
+	let rotation = screenMesh.rotation.clone();
+
+	moveCamera(position, rotation, displayProjects);
+
+}
+function zoomOutFromComputerScreen(){
+	hideProjects();
+	moveCamera(DEFAULT_CAMERA_POSITION, DEFAULT_CAMERA_ROTATION);
 }
 
 async function loadObjectDescriptions(){

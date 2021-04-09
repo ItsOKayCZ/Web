@@ -1,10 +1,13 @@
 class SceneManager{
+	previousPartIndex = 0;
 	partIndex = 0;
 	partOffsets = [];
 	scrollOrigin = 0;
 	sceneNamePrefix = 'Scene';
 
-	constructor({ scene, parts, scrollDOMSelector }){
+	sceneActions = {};
+
+	constructor({ scene, parts, scrollDOMSelector, sceneActions }){
 		this.scene = scene;
 
 		this.scrollDOM = document.querySelector(scrollDOMSelector);
@@ -19,6 +22,8 @@ class SceneManager{
 
 		this.scrollDOM.addEventListener('scroll', (e) => { this.onScroll(e) });
 		// this.scrollDOM.onscroll = (e) => { this.onScroll(e); } ;
+
+		this.sceneActions = sceneActions || {};
 
 		this.update();
 	}
@@ -41,6 +46,7 @@ class SceneManager{
 	changeScene(e){
 		let button = e.target;
 
+		this.previousPartIndex = this.partIndex;
 		this.partIndex = parseInt(button.dataset.sceneId);
 
 		this.updateScrollBar();
@@ -55,6 +61,21 @@ class SceneManager{
 	update(){
 		this.displayScene();
 		this.updateNavButtons();
+		this.checkSceneActions();
+	}
+
+	checkSceneActions(){
+		if(this.previousPartIndex == this.partIndex)
+			return;
+
+		let previousSceneActions = this.sceneActions[this.previousPartIndex];
+		let currentSceneActions = this.sceneActions[this.partIndex];
+
+		if(previousSceneActions != undefined && previousSceneActions.exit != undefined)
+			previousSceneActions.exit();
+
+		if(currentSceneActions != undefined && currentSceneActions.enter != undefined)
+			currentSceneActions.enter();
 	}
 
 	onScroll(e){
@@ -66,6 +87,8 @@ class SceneManager{
 				this.partIndex = i;
 			}
 		}
+
+		this.previousPartIndex = this.partIndex;
 
 		if(this.partIndex < 0)
 			this.partIndex = 0;

@@ -31,9 +31,8 @@ About me, Skill, Projects, Contact
 # TODO
 - [x] Model some objects into the pages
 - [x] Add a hover event when hovered over the objects in the scene
-- [ ] Show a description of the object when hovered over it
+- [x] Show a description of the object when hovered over it
 	- [x] Show the descriptions in a sidepanel
-	- [ ] Show the descriptions on the computer screen
 - [ ] Make the *Projects* scene
 - [ ] Make the *Contact* scene
 - [ ] Make some transition when switching pages
