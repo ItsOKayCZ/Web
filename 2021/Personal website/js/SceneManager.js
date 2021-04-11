@@ -1,6 +1,6 @@
 class SceneManager{
 	previousPartIndex = 0;
-	partIndex = 0;
+	partIndex = 2;
 	partOffsets = [];
 	scrollOrigin = 0;
 	sceneNamePrefix = 'Scene';

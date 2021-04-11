@@ -5,6 +5,8 @@ window.onload = main;
 
 let sceneManager;
 
+let projectsInfo;
+
 let scene;
 let camera;
 let renderer;
@@ -83,16 +85,41 @@ async function main(){
 
 	setupCamera();
 
-	// camera.position.y = 1;
-	// camera.position.z = 0.5;
-	// camera.rotation.x = -0.5;
 	// TODO: Change FOV on small devices
 	// Source: https://stackoverflow.com/questions/22212152/threejs-update-camera-fov
 
 	raycast = new THREE.Raycaster();
 	renderer.domElement.addEventListener('mousemove', setupRaycast, false);
 
+	await loadProjects();
+
 	render();
+}
+
+async function loadProjects(){
+	let url = '/data/projects.json';
+
+	let res = await fetch(url);
+
+	projectsInfo = await res.json();
+
+	addProjectsToProjectContainer();
+}
+
+function addProjectsToProjectContainer(){
+	let projectContainerDOM = document.querySelector('.projectsContainer');
+
+	for(let project of projectsInfo){
+		let projectDOM = document.createElement('div');
+		projectDOM.classList.add('project');
+
+		let projectPreviewDOM = document.createElement('div');
+		projectPreviewDOM.classList.add('projectPreview');
+		projectPreviewDOM.style.backgroundImage = `url('${project.source.preview}')`;
+
+		projectDOM.appendChild(projectPreviewDOM);
+		projectContainerDOM.insertAdjacentElement('afterbegin', projectDOM);
+	}
 }
 
 function setupCamera(){
@@ -150,7 +177,6 @@ function hideProjects(){
 }
 function zoomIntoComputerScreen(){
 	let screenMesh = scene.getObjectByName('Screen', true);
-	console.log(screenMesh);
 
 	let position = screenMesh.position.clone();
 	position.y += 0.01;

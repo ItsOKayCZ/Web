@@ -13,6 +13,10 @@ html, body{
 	width: 100%;
 	height: 100%;
 }
+a{
+	text-decoration: none;
+	color: black;
+}
 
 body{
 	overflow-x: hidden;
@@ -140,6 +144,62 @@ canvas{
 
 	pointer-events: none;
 	opacity: 0;
+
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+.projectsContainer .project{
+	overflow: hidden;
+	cursor: pointer;
+}
+.projectsContainer .project .projectPreview{
+	background-size: cover;
+	background-position: center;
+
+	width: 100%;
+	height: 100%;
+	transition: transform 0.2s;
+}
+.projectsContainer .project:hover .projectPreview{
+	transform: scale(1.1);
+}
+.projectsContainer .github{
+	overflow: hidden;
+
+	grid-column-start: 3;
+	grid-column-end: 5;
+}
+.projectsContainer .github{
+	border-top: 1px solid white;
+	border-left: 1px solid white;
+}
+.projectsContainer .githubContainer{
+	width: 100%;
+	height: 100%;
+
+	background-color: black;
+
+	color: white;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-size: 1.3em;
+
+	user-select: none;
+
+	cursor: pointer;
+
+	transition: transform 0.4s;
+}
+.projectsContainer .github:hover .githubContainer{
+	transform: scale(1.1);
+}
+.projectsContainer .github .icon{
+	margin-right: 10px;
+	font-size: 2em;
 }
 .displayProjectsContainer{
 	pointer-events: all;
