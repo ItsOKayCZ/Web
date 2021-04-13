@@ -13,6 +13,7 @@ About me, Skill, Projects, Contact
 - Books
 - Maths
 - Games
+- Tea
 
 ## Skill - Themes
 - Programming languages (Logos)
@@ -33,17 +34,29 @@ About me, Skill, Projects, Contact
 - [x] Add a hover event when hovered over the objects in the scene
 - [x] Show a description of the object when hovered over it
 	- [x] Show the descriptions in a sidepanel
-- [ ] Make the *Projects* scene
+- [x] Make the *Projects* scene
+	- [x] Add a click me icon
+	- [x] Make a preview window of the project
+	- [x] Add a hover preview
+	- [ ] Add a animation, that the tiles are falling into place
+	- [ ] Cache the previews
+	- [ ] Add a loading screen when loading the project previews in the iframe
 - [ ] Make the *Contact* scene
+- [ ] Use netlify to host webpage
 - [ ] Make some transition when switching pages
 - [ ] Add some camera movement based on the movement of the mouse
 - [ ] Responsivness :/
 - [ ] Model some more objects
+- [ ] Make an interesting favicon
 
 ## Page ideas:
-- [ ] Make the room flood with water
+- [ ] There will be a cup of tea, when clicked on it will spill and the room will flood with tea/water
 - [ ] Make a meme on Pepa :)
 - [ ] When showing descriptions, show it on the computer screen
+- [ ] Add [this](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html) welcome screen
+
+## Bugs
+- [ ] When double clicked on Skill while being in Projects
 
 ## Resources
 THREE.js

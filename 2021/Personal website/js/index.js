@@ -92,8 +92,36 @@ async function main(){
 	renderer.domElement.addEventListener('mousemove', setupRaycast, false);
 
 	await loadProjects();
+	setupEvents();
+	cacheProjectPreviews();
 
 	render();
+}
+
+function cacheProjectPreviews(){
+	let urls = [];
+
+	// TODO: Cache the preview of the projects
+}
+
+function setupEvents(){
+	document.querySelector('.closeIcon').onclick = closePreviewWindow;
+
+	let projectDOMs = document.querySelectorAll('.project');
+	function changePreview(e){
+		let DOM = getParentByClass(e.target, 'project').children[0];
+		let projectData = JSON.parse(DOM.dataset.projectData);
+
+		let type = e.type;
+		if(type == 'mouseover')
+			DOM.style.backgroundImage = `url(${projectData.source.hover})`;
+		else if(type == 'mouseout')
+			DOM.style.backgroundImage = `url(${projectData.source.preview})`;
+	}
+	for(let projectDOM of projectDOMs){
+		projectDOM.onmouseover = changePreview;
+		projectDOM.onmouseout = changePreview;
+	}
 }
 
 async function loadProjects(){
@@ -116,10 +144,62 @@ function addProjectsToProjectContainer(){
 		let projectPreviewDOM = document.createElement('div');
 		projectPreviewDOM.classList.add('projectPreview');
 		projectPreviewDOM.style.backgroundImage = `url('${project.source.preview}')`;
+		projectPreviewDOM.dataset.projectData = JSON.stringify(project);
 
+		let clickContainer = document.createElement('div');
+		clickContainer.classList.add('clickContainer');
+
+		let mouseIcon = document.createElement('i');
+		mouseIcon.classList.add('clickIcon');
+		mouseIcon.classList.add('fas');
+		mouseIcon.classList.add('fa-hand-pointer');
+		clickContainer.appendChild(mouseIcon);
+
+		let clickMeText = document.createElement('p');
+		clickMeText.innerText = 'Click me';
+		clickContainer.appendChild(clickMeText);
+
+		let backgroundColorDOM = document.createElement('div');
+		backgroundColorDOM.classList.add('backgroundColorOpacity');
+		projectPreviewDOM.appendChild(backgroundColorDOM);
+
+		projectPreviewDOM.appendChild(clickContainer);
 		projectDOM.appendChild(projectPreviewDOM);
 		projectContainerDOM.insertAdjacentElement('afterbegin', projectDOM);
+
+		projectDOM.onclick = function(e){
+			let DOM = getParentByClass(e.target, 'projectPreview');
+			let projectData = JSON.parse(DOM.dataset.projectData);
+
+			setupPreviewWindow(projectData);
+		}
+
 	}
+}
+
+function setupPreviewWindow(projectData){
+	document.querySelector('#projectName').innerText = projectData.name;
+
+	document.querySelector('#previewIframe').src = projectData.link;
+
+	document.querySelector('#sourceCodeLink').href = projectData.code;
+	document.querySelector('#newTabLink').href = projectData.link;
+
+	document.querySelector('.previewContainer').style.display = 'flex';
+}
+
+function closePreviewWindow(){
+	document.querySelector('.previewContainer').style.display = '';
+}
+
+function getParentByClass(DOM, className){
+	while(DOM.parentElement != null){
+		if(DOM.classList.contains(className))
+			break;
+		DOM = DOM.parentElement;
+	}
+
+	return DOM;
 }
 
 function setupCamera(){

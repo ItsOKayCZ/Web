@@ -3,9 +3,10 @@
 		"name": "Merry Christmas wish",
 		"source": {
 			"preview": "/img/projectPreviews/MerryChristmasWish.png",
-			"hover": "/img/projectPreviews/MerryChrismtasWish.gif"
+			"hover": "/img/projectPreviews/MerryChristmasWish.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2016/Vanocni%20prani/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2016/Vanocni%20prani/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2016/Vanocni%20prani"
 	},
 	{
 		"name": "Asteroids",
@@ -13,7 +14,8 @@
 			"preview": "/img/projectPreviews/Asteroids.png",
 			"hover": "/img/projectPreviews/Asteroids.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Asteroids%20(remake)/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Asteroids%20(remake)/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2017/Asteroids%20(remake)"
 	},
 	{
 		"name": "Fireworks",
@@ -21,7 +23,8 @@
 			"preview": "/img/projectPreviews/Fireworks.png",
 			"hover": "/img/projectPreviews/Fireworks.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Fireworks/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Fireworks/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2017/Fireworks"
 	},
 	{
 		"name": "Smart rockets",
@@ -29,7 +32,8 @@
 			"preview": "/img/projectPreviews/SmartRockets.png",
 			"hover": "/img/projectPreviews/SmartRockets.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Smart%20rockets/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Smart%20rockets/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2017/Smart%20rockets"
 	},
 	{
 		"name": "Smart rockets with maze",
@@ -37,7 +41,8 @@
 			"preview": "/img/projectPreviews/SmartRocketsMaze.png",
 			"hover": "/img/projectPreviews/SmartRocketsMaze.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Smart%20rockets%20(maze)/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Smart%20rockets%20(maze)/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2017/Smart%20rockets%20(maze)"
 	},
 	{
 		"name": "Sierpenski triangle",
@@ -45,7 +50,8 @@
 			"preview": "/img/projectPreviews/SierpenskiTriangle.png",
 			"hover": "/img/projectPreviews/SierpenskiTriangle.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Sierpenski%20triangle/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2017/Sierpenski%20triangle/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2017/Sierpenski%20triangle"
 	},
 	{
 		"name": "Algorithms and data structures",
@@ -53,7 +59,8 @@
 			"preview": "/img/projectPreviews/Algorithms.png",
 			"hover": "/img/projectPreviews/Algorithms.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Algorithms%20and%20data%20structures/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Algorithms%20and%20data%20structures/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2020/Algorithms%20and%20data%20structures"
 	},
 	{
 		"name": "Number recognition",
@@ -61,7 +68,8 @@
 			"preview": "/img/projectPreviews/NumberRecognition.png",
 			"hover": "/img/projectPreviews/NumberRecognition.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Number%20recognition/static/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Number%20recognition/static/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2020/Number%20recognition"
 	},
 	{
 		"name": "Wave",
@@ -69,7 +77,8 @@
 			"preview": "/img/projectPreviews/Wave.png",
 			"hover": "/img/projectPreviews/Wave.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Wave/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Wave/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2020/Wave"
 	},
 	{
 		"name": "Steering behavior",
@@ -77,6 +86,7 @@
 			"preview": "/img/projectPreviews/SteeringBehavior.png",
 			"hover": "/img/projectPreviews/SteeringBehavior.gif"
 		},
-		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html"
+		"link": "https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html",
+		"code": "https://github.com/ItsOKayCZ/Web/tree/master/2020/Steering%20behavior"
 	}
 ]
