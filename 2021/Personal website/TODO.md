@@ -26,8 +26,9 @@ About me, Skill, Projects, Contact
 - When click show an iframe of the full functioning project
 
 ## Contact - Themes
-- You write into a letter that then gets "sent" using a carrier-pigeon flying away
-- If an error occures, the pigeon falls
+- --You write into a letter that then gets "sent" using a carrier-pigeon flying away--
+- --If an error occures, the pigeon falls
+- Add models of: Email, Linkedin, Twitter, Github
 
 # TODO
 - [x] Model some objects into the pages
@@ -41,22 +42,24 @@ About me, Skill, Projects, Contact
 	- [ ] Add a animation, that the tiles are falling into place
 	- [ ] Cache the previews
 	- [ ] Add a loading screen when loading the project previews in the iframe
-- [ ] Make the *Contact* scene
+- [x] Make the *Contact* scene
+- [ ] Implement the onwheel event, for going between pages
 - [ ] Use netlify to host webpage
 - [ ] Make some transition when switching pages
 - [ ] Add some camera movement based on the movement of the mouse
 - [ ] Responsivness :/
 - [ ] Model some more objects
+- [ ] Implement SEO
 - [ ] Make an interesting favicon
 
 ## Page ideas:
 - [ ] There will be a cup of tea, when clicked on it will spill and the room will flood with tea/water
-- [ ] Make a meme on Pepa :)
 - [ ] When showing descriptions, show it on the computer screen
 - [ ] Add [this](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html) welcome screen
 
 ## Bugs
 - [ ] When double clicked on Skill while being in Projects
+- [ ] When hovering the linkedin icon, the hover class isn't applied
 
 ## Resources
 THREE.js
