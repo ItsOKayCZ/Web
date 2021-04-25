@@ -6,5 +6,15 @@
 	"Javascript_logo": {
 		"header": "Javascript",
 		"description": "Javascript is my most used programming langauge"
+	},
+
+	"Mailbox": {
+		"link": "mailto:oldrich.krupauer@gmail.com"
+	},
+	"Linkedin_logo": {
+		"link": "https://www.linkedin.com/in/oldrich-krupauer/"
+	},
+	"Github_logo": {
+		"link": "https://github.com/ItsOKayCZ/"
 	}
 }

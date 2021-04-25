@@ -1,6 +1,7 @@
 import { GLTFLoader } from './three.js/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from './three.js/examples/jsm/controls/OrbitControls.js';
 import * as TWEEN from './tween.esm.js';
+import SceneManager from './SceneManager.js';
 window.onload = main;
 
 let sceneManager;
@@ -68,6 +69,7 @@ async function main(){
 		});
 
 		console.log(scene);
+		setupEvents();
 	}, undefined, function(err){
 		console.error(err);
 	});
@@ -85,14 +87,11 @@ async function main(){
 
 	setupCamera();
 
-	// TODO: Change FOV on small devices
-	// Source: https://stackoverflow.com/questions/22212152/threejs-update-camera-fov
-
 	raycast = new THREE.Raycaster();
 	renderer.domElement.addEventListener('mousemove', setupRaycast, false);
+	renderer.domElement.addEventListener('click', setupRaycast, false);
 
 	await loadProjects();
-	setupEvents();
 	cacheProjectPreviews();
 
 	render();
@@ -104,7 +103,7 @@ function cacheProjectPreviews(){
 	// TODO: Cache the preview of the projects
 }
 
-function setupEvents(){
+function setupProjectEvents(){
 	document.querySelector('.closeIcon').onclick = closePreviewWindow;
 
 	let projectDOMs = document.querySelectorAll('.project');
@@ -122,6 +121,21 @@ function setupEvents(){
 		projectDOM.onmouseover = changePreview;
 		projectDOM.onmouseout = changePreview;
 	}
+}
+function setupObjectLinksEvents(){
+	for(const objName of Object.keys(objectDescriptions)){
+		const obj = objectDescriptions[objName];
+		if(!obj.link)
+			continue;
+
+		scene.getObjectByName(objName, true).onclick = function(){
+			window.open(obj.link, '_blank');
+		};
+	}
+}
+function setupEvents(){
+	setupProjectEvents();
+	setupObjectLinksEvents();
 }
 
 async function loadProjects(){
@@ -256,19 +270,29 @@ function hideProjects(){
 	projectsContainer.classList.remove('displayProjectsContainer');
 }
 function zoomIntoComputerScreen(){
-	let screenMesh = scene.getObjectByName('Screen', true);
+	const promise = new Promise((resolve, reject) => {
+		let screenMesh = scene.getObjectByName('Screen', true);
 
-	let position = screenMesh.position.clone();
-	position.y += 0.01;
-	position.z += 0.15;
-	let rotation = screenMesh.rotation.clone();
+		let position = screenMesh.position.clone();
+		position.y += 0.01;
+		position.z += 0.15;
+		let rotation = screenMesh.rotation.clone();
 
-	moveCamera(position, rotation, displayProjects);
+		moveCamera(position, rotation, () => {
+			displayProjects();
+			resolve();
+		});
+	});
 
+	return promise;
 }
 function zoomOutFromComputerScreen(){
-	hideProjects();
-	moveCamera(DEFAULT_CAMERA_POSITION, DEFAULT_CAMERA_ROTATION);
+	const promise = new Promise((resolve, reject) => {
+		hideProjects();
+		moveCamera(DEFAULT_CAMERA_POSITION, DEFAULT_CAMERA_ROTATION, resolve);
+	});
+
+	return promise;
 }
 
 async function loadObjectDescriptions(){
@@ -305,20 +329,24 @@ function setupRaycast(e){
 	let hoveredObject = null;
 	for(let object of currentSceneObjects.children){
 		if(isObjectInArray(chosenObjects, object)){
-			renderer.domElement.classList.add('hoverObject');
 			changeEmissiveColor(object, hoverColor);
 
 			hoveredObject = object;
 		} else {
-			renderer.domElement.classList.remove('hoverObject');
 			changeEmissiveColor(object, new THREE.Color(0, 0, 0));
 		}
 	}
 
-	if(hoveredObject != null)
+	if(hoveredObject != null && e.type == 'click' && hoveredObject.onclick)
+		hoveredObject.onclick();
+
+	if(hoveredObject != null){
+		renderer.domElement.classList.add('hoverObject');
 		displayDescriptionOfObject(hoveredObject);
-	else
+	} else {
+		renderer.domElement.classList.remove('hoverObject');
 		hideDescription();
+	}
 
 }
 
@@ -327,19 +355,13 @@ function hideDescription(){
 }
 function displayDescriptionOfObject(object){
 	let name = object.name;
-	if(objectDescriptions[name] == undefined){
-		console.warn('Missing header or description for hovered object');
+	if(!objectDescriptions[name]){
 		return;
 	}
 
 	let { header, description } = objectDescriptions[name];
 
-	if(header == undefined){
-		console.warn('Missing header for hovered object');
-		return;
-	}
-	if(description == undefined){
-		console.warn('Missing description for hovered object');
+	if(!header || !description){
 		return;
 	}
 

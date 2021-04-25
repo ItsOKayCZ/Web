@@ -1,4 +1,6 @@
-class SceneManager{
+import * as TWEEN from './tween.esm.js';
+
+export default class SceneManager{
 	previousPartIndex = 0;
 	partIndex = 0;
 	partOffsets = [];
@@ -6,6 +8,9 @@ class SceneManager{
 	sceneNamePrefix = 'Scene';
 
 	sceneActions = {};
+
+	isAnimation = false;
+	isSceneAnimation = false;
 
 	constructor({ scene, parts, scrollDOMSelector, sceneActions }){
 		this.scene = scene;
@@ -20,7 +25,6 @@ class SceneManager{
 
 		this.setupEventsForNavButtons();
 
-		this.scrollDOM.addEventListener('scroll', (e) => { this.onScroll(e) });
 		// this.scrollDOM.onscroll = (e) => { this.onScroll(e); } ;
 
 		this.sceneActions = sceneActions || {};
@@ -44,18 +48,13 @@ class SceneManager{
 	}
 
 	changeScene(e){
-		let button = e.target;
+		if(this.isAnimation || this.isSceneAnimation)
+			return;
 
 		this.previousPartIndex = this.partIndex;
-		this.partIndex = parseInt(button.dataset.sceneId);
+		this.partIndex = parseInt(e.target.dataset.sceneId);
 
-		this.updateScrollBar();
 		this.update();
-	}
-
-	updateScrollBar(){
-		this.scrollDOM.scrollTop = this.partHeight * this.partIndex;
-		this.scrollOrigin = this.scrollDOM.scrollTop;
 	}
 
 	update(){
@@ -71,32 +70,33 @@ class SceneManager{
 		let previousSceneActions = this.sceneActions[this.previousPartIndex];
 		let currentSceneActions = this.sceneActions[this.partIndex];
 
+		this.isSceneAnimation = true;
+		let didEnterFinish = false;
+		let didExitFinish = false;
+
 		if(previousSceneActions != undefined && previousSceneActions.exit != undefined)
-			previousSceneActions.exit();
+			previousSceneActions.exit()
+				.then(() => {
+					didExitFinish = true;
+					this.changeSceneAnimationState(!(didEnterFinish && didExitFinish));
+				});
+		else
+			didExitFinish = true;
 
 		if(currentSceneActions != undefined && currentSceneActions.enter != undefined)
-			currentSceneActions.enter();
+			currentSceneActions.enter()
+				.then(() => {
+					didEnterFinish = true;
+					this.changeSceneAnimationState(!(didEnterFinish && didExitFinish));
+				});
+		else
+			didEnterFinish = true;
+
+		this.changeSceneAnimationState(!(didEnterFinish && didExitFinish));
 	}
 
-	onScroll(e){
-		let scrollTop = this.scrollDOM.scrollTop;
-		for(let i = 0; i < this.partOffsets.length; i++){
-			if(this.partOffsets[i + 1] == undefined && this.partOffsets[i] == scrollTop){
-				this.partIndex = i;
-			} else if(scrollTop >= this.partOffsets[i] && scrollTop < this.partOffsets[i + 1]){
-				this.partIndex = i;
-			}
-		}
-
-		this.previousPartIndex = this.partIndex;
-
-		if(this.partIndex < 0)
-			this.partIndex = 0;
-		else if(this.partIndex >= this.parts)
-			this.partIndex = this.parts - 1;
-
-		this.update();
-		this.scrollOrigin = this.scrollDOM.scrollTop;
+	changeSceneAnimationState(state){
+		this.isSceneAnimation = state;
 	}
 
 	updateNavButtons(){
@@ -109,12 +109,44 @@ class SceneManager{
 	}
 
 	displayScene(){
-		for(let i = 0; i < this.parts; i++){
-			let sceneObjects = this.scene.getObjectByName(this.sceneNamePrefix + (i + 1), true);
-			sceneObjects.visible = false;
+		for(let i = 1; i <= this.parts; i++){
+			let sceneObjects = this.scene.getObjectByName(this.sceneNamePrefix + i, true);
+
+			if(i != this.partIndex + 1){
+				if(sceneObjects.visible)
+					this.setOpacityOfScene(sceneObjects, 1, 0);
+			} else if(i == this.partIndex + 1){
+				this.setOpacityOfScene(sceneObjects, 0, 1);
+			}
 		}
 
-		let mainObjects = this.scene.getObjectByName(this.sceneNamePrefix + (this.partIndex + 1));
-		mainObjects.visible = true;
+		// let mainObjects = this.scene.getObjectByName(this.sceneNamePrefix + (this.partIndex + 1));
+		// mainObjects.visible = true;
+	}
+
+	setOpacityOfScene(sceneObjects, fromOpacity, toOpacity, delay=200){
+		new TWEEN.Tween({ opacity: fromOpacity })
+		.to({ opacity: toOpacity }, delay)
+		.easing(TWEEN.Easing.Linear.None)
+		.onUpdate((tweenAttr) => {
+			sceneObjects.traverse((obj) => {
+				if(obj.material){
+					obj.material.transparent = true;
+					obj.material.opacity = tweenAttr.opacity;
+				}
+			})
+
+			this.isAnimation = true;
+		})
+		.onStart(() => {
+			sceneObjects.visible = fromOpacity > 0 || toOpacity != 0;
+
+			this.isAnimation = true;
+		})
+		.onComplete(() => {
+			sceneObjects.visible = toOpacity != 0;
+
+			this.isAnimation = false;
+		}).start();
 	}
 }

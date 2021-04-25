@@ -43,10 +43,9 @@ About me, Skill, Projects, Contact
 	- [ ] Cache the previews
 	- [ ] Add a loading screen when loading the project previews in the iframe
 - [x] Make the *Contact* scene
-- [ ] Implement the onwheel event, for going between pages
-- [ ] Use netlify to host webpage
 - [ ] Make some transition when switching pages
 - [ ] Add some camera movement based on the movement of the mouse
+- [ ] Use netlify to host webpage
 - [ ] Responsivness :/
 - [ ] Model some more objects
 - [ ] Implement SEO
@@ -60,6 +59,7 @@ About me, Skill, Projects, Contact
 ## Bugs
 - [ ] When double clicked on Skill while being in Projects
 - [ ] When hovering the linkedin icon, the hover class isn't applied
+- [ ] Resize the canvas, when the window is resized
 
 ## Resources
 THREE.js
