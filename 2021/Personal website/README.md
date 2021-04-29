@@ -51,20 +51,20 @@ About me, Skill, Projects, Contact
 
 ## Page ideas:
 - [ ] There will be a cup of tea, when clicked on it will spill and the room will flood with tea/water
-- [ ] When showing descriptions, show it on the computer screen
-- [ ] Add [this](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html) welcome screen
+- [ ] ~~Add [this](https://raw.githack.com/ItsOKayCZ/Web/master/2020/Steering%20behavior/index.html) welcome screen~~
 
 ## Bugs
-- [ ] When double clicked on Skill while being in Projects
-- [ ] When hovering the linkedin icon, the hover class isn't applied
+- [x] When double clicked on Skill while being in Projects
+- [x] When hovering the linkedin icon, the hover class isn't applied
 - [ ] Resize the canvas, when the window is resized
 
 ## Resources
 THREE.js
 - http://stemkoski.github.io/Three.js/
-- https://threejs.org/
+- https://threejs.org/  
 Physijs
-- http://chandlerprall.github.io/Physijs/
+- http://chandlerprall.github.io/Physijs/  
 Portfolios
 - https://guillaumegouessan.com
 - https://jacekjeznach.com/
+- https://bruno-simon.com/
