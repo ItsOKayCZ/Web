@@ -59,9 +59,9 @@ About me, Skill, Projects, Contact
 - [ ] Resize the canvas, when the window is resized
 
 ## Resources
-THREE.js
+- THREE.js
 	- http://stemkoski.github.io/Three.js/
-	- https://threejs.org/  
+	- https://threejs.org/docs  
 - Physijs
 	- http://chandlerprall.github.io/Physijs/  
 Portfolios
