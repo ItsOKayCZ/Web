@@ -60,11 +60,11 @@ About me, Skill, Projects, Contact
 
 ## Resources
 THREE.js
-- http://stemkoski.github.io/Three.js/
-- https://threejs.org/  
-Physijs
-- http://chandlerprall.github.io/Physijs/  
+	- http://stemkoski.github.io/Three.js/
+	- https://threejs.org/  
+- Physijs
+	- http://chandlerprall.github.io/Physijs/  
 Portfolios
-- https://guillaumegouessan.com
-- https://jacekjeznach.com/
-- https://bruno-simon.com/
+	- https://guillaumegouessan.com
+	- https://jacekjeznach.com/
+	- https://bruno-simon.com/
