@@ -64,7 +64,7 @@ About me, Skill, Projects, Contact
 	- https://threejs.org/docs  
 - Physijs
 	- http://chandlerprall.github.io/Physijs/  
-Portfolios
+- Portfolios
 	- https://guillaumegouessan.com
 	- https://jacekjeznach.com/
 	- https://bruno-simon.com/
