@@ -3,6 +3,7 @@ import * as TWEEN from './tween.esm.js';
 export default class SceneManager{
 	previousPartIndex = 0;
 	partIndex = 0;
+	displayedSceneIndex = 0;
 	partOffsets = [];
 	scrollOrigin = 0;
 	sceneNamePrefix = 'Scene';
@@ -25,11 +26,9 @@ export default class SceneManager{
 
 		this.setupEventsForNavButtons();
 
-		// this.scrollDOM.onscroll = (e) => { this.onScroll(e); } ;
-
 		this.sceneActions = sceneActions || {};
 
-		this.update();
+		this.update(true);
 	}
 
 	setupEventsForNavButtons(){
@@ -47,6 +46,10 @@ export default class SceneManager{
 		return this.sceneNamePrefix + (this.partIndex + 1);
 	}
 
+	getDisplayedSceneIndex(){
+		return this.displayedSceneIndex;
+	}
+
 	changeScene(e){
 		if(this.isAnimation || this.isSceneAnimation)
 			return;
@@ -57,8 +60,8 @@ export default class SceneManager{
 		this.update();
 	}
 
-	update(){
-		this.displayScene();
+	update(firstTime=false){
+		this.displayScene(firstTime);
 		this.updateNavButtons();
 		this.checkSceneActions();
 	}
@@ -74,14 +77,18 @@ export default class SceneManager{
 		let didEnterFinish = false;
 		let didExitFinish = false;
 
-		if(previousSceneActions != undefined && previousSceneActions.exit != undefined)
+		if(previousSceneActions != undefined && previousSceneActions.exit != undefined){
+			this.displayedSceneIndex = this.previousPartIndex;
 			previousSceneActions.exit()
 				.then(() => {
 					didExitFinish = true;
 					this.changeSceneAnimationState(!(didEnterFinish && didExitFinish));
+					this.displayedSceneIndex = this.partIndex;
 				});
-		else
+		} else {
 			didExitFinish = true;
+			this.displayedSceneIndex = this.partIndex;
+		}
 
 		if(currentSceneActions != undefined && currentSceneActions.enter != undefined)
 			currentSceneActions.enter()
@@ -108,20 +115,19 @@ export default class SceneManager{
 		}
 	}
 
-	displayScene(){
+	displayScene(withoutAnimation=false){
 		for(let i = 1; i <= this.parts; i++){
 			let sceneObjects = this.scene.getObjectByName(this.sceneNamePrefix + i, true);
 
 			if(i != this.partIndex + 1){
-				if(sceneObjects.visible)
+				if(withoutAnimation)
+					sceneObjects.visible = false;
+				else if(sceneObjects.visible)
 					this.setOpacityOfScene(sceneObjects, 1, 0);
 			} else if(i == this.partIndex + 1){
 				this.setOpacityOfScene(sceneObjects, 0, 1);
 			}
 		}
-
-		// let mainObjects = this.scene.getObjectByName(this.sceneNamePrefix + (this.partIndex + 1));
-		// mainObjects.visible = true;
 	}
 
 	setOpacityOfScene(sceneObjects, fromOpacity, toOpacity, delay=200){

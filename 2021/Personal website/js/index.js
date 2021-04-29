@@ -4,6 +4,9 @@ import * as TWEEN from './tween.esm.js';
 import SceneManager from './SceneManager.js';
 window.onload = main;
 
+const PAUSE = false;
+const dontMoveCameraOnSceneIndex = [2];
+
 let sceneManager;
 
 let projectsInfo;
@@ -15,11 +18,16 @@ let controls;
 let loader;
 let raycast;
 let mouse = {x: 0, y: 0};
+const cameraMouse = {
+	x: 0,
+	y: 0,
+};
 
 let objectDescriptions = {};
 
 const DEFAULT_CAMERA_POSITION = new THREE.Vector3(0, 1, 0.5);
-const DEFAULT_CAMERA_ROTATION = new THREE.Vector3(-0.5, 0, 0);
+const DEFAULT_CAMERA_LOOK_POSITION = new THREE.Vector3(0, 0, -1.5);
+const DEFAULT_CAMERA_ROTATION = new THREE.Vector3();
 
 const hoverColor = new THREE.Color(0x222222);
 
@@ -88,13 +96,20 @@ async function main(){
 	setupCamera();
 
 	raycast = new THREE.Raycaster();
-	renderer.domElement.addEventListener('mousemove', setupRaycast, false);
+	renderer.domElement.addEventListener('mousemove', (e) => {
+		onDocumentMouseMove(e);
+		setupRaycast(e);
+	}, false);
 	renderer.domElement.addEventListener('click', setupRaycast, false);
 
 	await loadProjects();
 	cacheProjectPreviews();
 
 	render();
+}
+
+function onDocumentMouseMove(e){
+	cameraMouse.x = (e.clientX - window.innerWidth / 2);
 }
 
 function cacheProjectPreviews(){
@@ -218,9 +233,8 @@ function getParentByClass(DOM, className){
 
 function setupCamera(){
 	camera.position.copy(DEFAULT_CAMERA_POSITION);
-	camera.rotation.x = DEFAULT_CAMERA_ROTATION.x;
-	camera.rotation.y = DEFAULT_CAMERA_ROTATION.y;
-	camera.rotation.z = DEFAULT_CAMERA_ROTATION.z;
+	camera.lookAt(DEFAULT_CAMERA_LOOK_POSITION);
+	DEFAULT_CAMERA_ROTATION.copy(camera.rotation);
 }
 
 function moveCamera(newPosition, newRotation, onComplete=null){
@@ -306,7 +320,7 @@ async function loadObjectDescriptions(){
 // Source: https://riptutorial.com/three-js/example/17088/object-picking---raycasting
 function setupRaycast(e){
 	mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+  mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
 
 	raycast.setFromCamera(mouse, camera);
 
@@ -407,10 +421,34 @@ function isObjectInArray(arr, checkObject){
 	return false;
 }
 
+function moveCameraAroundCenterPoint(newPosition, lookAtPosition){
+	new TWEEN.Tween({
+		position: JSON.parse(JSON.stringify(camera.position)),
+	})
+	.to({
+		position: JSON.parse(JSON.stringify(newPosition))
+	}, 100)
+	.easing(TWEEN.Easing.Linear.None)
+	.onUpdate((tweenAttr) => {
+		camera.position.set(tweenAttr.position.x, tweenAttr.position.y, tweenAttr.position.z);
+
+		camera.lookAt(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
+	}).start();
+}
+
 function render(time){
-	requestAnimationFrame(render);
+
+
+	const newCameraPosition = camera.position.clone();
+	newCameraPosition.x = (cameraMouse.x - newCameraPosition.x) * 0.001;
+	if(!dontMoveCameraOnSceneIndex.includes(sceneManager.getDisplayedSceneIndex()) && !newCameraPosition.equals(camera.position))
+		moveCameraAroundCenterPoint(newCameraPosition, DEFAULT_CAMERA_LOOK_POSITION);
+
 	TWEEN.update(time);
 	renderer.render(scene, camera);
+
+	if(!PAUSE)
+		requestAnimationFrame(render);
 }
 
 function createCube(x, y, z, color){

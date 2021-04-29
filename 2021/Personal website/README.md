@@ -26,8 +26,8 @@ About me, Skill, Projects, Contact
 - When click show an iframe of the full functioning project
 
 ## Contact - Themes
-- --You write into a letter that then gets "sent" using a carrier-pigeon flying away--
-- --If an error occures, the pigeon falls
+- ~~You write into a letter that then gets "sent" using a carrier-pigeon flying away~~
+- ~~If an error occures, the pigeon falls~~
 - Add models of: Email, Linkedin, Twitter, Github
 
 # TODO
@@ -43,13 +43,11 @@ About me, Skill, Projects, Contact
 	- [ ] Cache the previews
 	- [ ] Add a loading screen when loading the project previews in the iframe
 - [x] Make the *Contact* scene
-- [ ] Make some transition when switching pages
-- [ ] Add some camera movement based on the movement of the mouse
-- [ ] Use netlify to host webpage
+- [x] Make some transition when switching pages
+- [x] Add some camera movement based on the movement of the mouse
 - [ ] Responsivness :/
 - [ ] Model some more objects
-- [ ] Implement SEO
-- [ ] Make an interesting favicon
+- [ ] ~~Make an interesting favicon~~
 
 ## Page ideas:
 - [ ] There will be a cup of tea, when clicked on it will spill and the room will flood with tea/water
