@@ -77,7 +77,6 @@ async function main(){
 		});
 
 		console.log(scene);
-		setupEvents();
 	}, undefined, function(err){
 		console.error(err);
 	});
@@ -103,6 +102,7 @@ async function main(){
 	renderer.domElement.addEventListener('click', setupRaycast, false);
 
 	await loadProjects();
+	setupEvents();
 	cacheProjectPreviews();
 
 	render();
@@ -122,20 +122,20 @@ function setupProjectEvents(){
 	document.querySelector('.closeIcon').onclick = closePreviewWindow;
 
 	let projectDOMs = document.querySelectorAll('.project');
-	function changePreview(e){
-		let DOM = getParentByClass(e.target, 'project').children[0];
-		let projectData = JSON.parse(DOM.dataset.projectData);
-
-		let type = e.type;
-		if(type == 'mouseover')
-			DOM.style.backgroundImage = `url(${projectData.source.hover})`;
-		else if(type == 'mouseout')
-			DOM.style.backgroundImage = `url(${projectData.source.preview})`;
-	}
 	for(let projectDOM of projectDOMs){
 		projectDOM.onmouseover = changePreview;
 		projectDOM.onmouseout = changePreview;
 	}
+}
+function changePreview(e){
+	let DOM = getParentByClass(e.target, 'project').children[0];
+	let projectData = JSON.parse(DOM.dataset.projectData);
+
+	let type = e.type;
+	if(type == 'mouseover')
+		DOM.style.backgroundImage = `url(${projectData.source.hover})`;
+	else if(type == 'mouseout')
+		DOM.style.backgroundImage = `url(${projectData.source.preview})`;
 }
 function setupObjectLinksEvents(){
 	for(const objName of Object.keys(objectDescriptions)){
