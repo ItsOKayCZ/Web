@@ -4,7 +4,7 @@ import * as TWEEN from './tween.esm.js';
 import SceneManager from './SceneManager.js';
 window.onload = main;
 
-const PAUSE = false;
+let PAUSE_RENDERING = false;
 const dontMoveCameraOnSceneIndex = [2];
 
 let sceneManager;
@@ -49,7 +49,7 @@ async function main(){
 	renderer.shadowMap.enabled = true;
 	document.body.appendChild(renderer.domElement);
 
-	controls = new OrbitControls(camera, renderer.domElement);
+	// controls = new OrbitControls(camera, renderer.domElement);
 
 	loader = new GLTFLoader();
 	loader.load('models/Main scene.glb', (gltf) => {
@@ -77,6 +77,9 @@ async function main(){
 		});
 
 		console.log(scene);
+		setupObjectLinksEvents();
+
+		render();
 	}, undefined, function(err){
 		console.error(err);
 	});
@@ -102,20 +105,32 @@ async function main(){
 	renderer.domElement.addEventListener('click', setupRaycast, false);
 
 	await loadProjects();
-	setupEvents();
-	cacheProjectPreviews();
+	setupProjectEvents();
 
+	window.onresize = () => {
+		resizeCanvas();
+		checkIfWideScreen();
+	};
+}
+
+function checkIfWideScreen(){
+	if(window.innerWidth <= 600){
+		PAUSE_RENDERING = true;
+	} else {
+		PAUSE_RENDERING = false;
+		requestAnimationFrame(render);
+	}
+}
+
+function resizeCanvas(){
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
 	render();
 }
 
 function onDocumentMouseMove(e){
 	cameraMouse.x = (e.clientX - window.innerWidth / 2);
-}
-
-function cacheProjectPreviews(){
-	let urls = [];
-
-	// TODO: Cache the preview of the projects
 }
 
 function setupProjectEvents(){
@@ -147,10 +162,6 @@ function setupObjectLinksEvents(){
 			window.open(obj.link, '_blank');
 		};
 	}
-}
-function setupEvents(){
-	setupProjectEvents();
-	setupObjectLinksEvents();
 }
 
 async function loadProjects(){
@@ -437,8 +448,6 @@ function moveCameraAroundCenterPoint(newPosition, lookAtPosition){
 }
 
 function render(time){
-
-
 	const newCameraPosition = camera.position.clone();
 	newCameraPosition.x = (cameraMouse.x - newCameraPosition.x) * 0.001;
 	if(!dontMoveCameraOnSceneIndex.includes(sceneManager.getDisplayedSceneIndex()) && !newCameraPosition.equals(camera.position))
@@ -447,7 +456,7 @@ function render(time){
 	TWEEN.update(time);
 	renderer.render(scene, camera);
 
-	if(!PAUSE)
+	if(!PAUSE_RENDERING)
 		requestAnimationFrame(render);
 }
 
