@@ -8,17 +8,28 @@ HTML, CSS, Javascript (THREE.js (3D), TWEEN.js (animations, transitions))
 About me, Skill, Projects, Contact
 
 ## About me - Themes
-- Chess
-- Computer
-- Books
-- Maths
-- Games
-- Tea
+- [ ] Chess
+- [x] Computer
+- [x] Books
+- [ ] Maths
+- [ ] Games
+- [ ] Tea
 
 ## Skill - Themes
 - Programming languages (Logos)
 - When scrolled to the scene, all of the logos of the programming languages and frameworks will fall on the desk
 - They will have physics and will be able to be dragged around
+- Models
+	- [x] Javascript
+	- [ ] Typescript
+	- [ ] Vue.js
+	- [ ] HTML
+	- [ ] CSS
+	- [ ] Linux (Tux)
+	- [ ] Node.js
+	- [ ] C++
+	- [ ] C
+	- [ ] Python
 
 ## Projects - Themes
 - Zoom into the computer screen and in a grid there will be the projects categorized in the same way as in github
@@ -45,7 +56,7 @@ About me, Skill, Projects, Contact
 - [x] Make the *Contact* scene
 - [x] Make some transition when switching pages
 - [x] Add some camera movement based on the movement of the mouse
-- [x] Responsivness :/
+- [ ] Responsivness :/
 - [ ] Model some more objects
 - [ ] ~~Make an interesting favicon~~
 
