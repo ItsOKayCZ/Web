@@ -8,12 +8,11 @@ HTML, CSS, Javascript (THREE.js (3D), TWEEN.js (animations, transitions))
 About me, Skill, Projects, Contact
 
 ## About me - Themes
-- [ ] Chess
+- [x] Chess
 - [x] Computer
 - [x] Books
-- [ ] Maths
-- [ ] Games
-- [ ] Tea
+- [x] Games
+- [x] Tea
 
 ## Skill - Themes
 - Programming languages (Logos)

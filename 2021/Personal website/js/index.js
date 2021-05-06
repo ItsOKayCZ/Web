@@ -47,6 +47,7 @@ async function main(){
 	});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.shadowMap.enabled = true;
+	renderer.toneMapping = THREE.CineonToneMapping;
 	document.body.appendChild(renderer.domElement);
 
 	// controls = new OrbitControls(camera, renderer.domElement);
@@ -57,6 +58,11 @@ async function main(){
 			if(n.isMesh){
 				n.castShadow = true;
 				n.receiveShadow = true;
+
+				if(n.userData.opacity){
+					n.material.transparent = true;
+					n.material.opacity = n.userData.opacity;
+				}
 
 				if(n.material.map) n.material.map.anisotropy = 1;
 			}
@@ -87,7 +93,7 @@ async function main(){
 	let hemiLight = new THREE.HemisphereLight(0xffffff, 1);
 	scene.add(hemiLight);
 
-	let light = new THREE.SpotLight(0x404040, 1);
+	let light = new THREE.SpotLight(0xe5e5e5, 1);
 	light.position.set(0, 2, 1);
 	light.castShadow = true;
 	light.shadow.bias = -0.00203;
