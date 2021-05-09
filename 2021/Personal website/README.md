@@ -20,15 +20,11 @@ About me, Skill, Projects, Contact
 - They will have physics and will be able to be dragged around
 - Models
 	- [x] Javascript
-	- [ ] Typescript
-	- [ ] Vue.js
-	- [ ] HTML
-	- [ ] CSS
-	- [ ] Linux (Tux)
-	- [ ] Node.js
-	- [ ] C++
-	- [ ] C
-	- [ ] Python
+	- [x] Typescript
+	- [x] Vue.js
+	- [x] Node.js
+	- [x] C++
+	- [x] Blender
 
 ## Projects - Themes
 - Zoom into the computer screen and in a grid there will be the projects categorized in the same way as in github

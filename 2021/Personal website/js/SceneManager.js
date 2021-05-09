@@ -1,9 +1,9 @@
 import * as TWEEN from './tween.esm.js';
 
 export default class SceneManager{
-	previousPartIndex = 0;
 	partIndex = 0;
-	displayedSceneIndex = 0;
+	previousPartIndex = this.partIndex;
+	displayedSceneIndex = this.partIndex;
 	partOffsets = [];
 	scrollOrigin = 0;
 	sceneNamePrefix = 'Scene';
