@@ -1,11 +1,48 @@
 {
 	"Books": {
 		"header": "Books",
-		"description": "I read books everyday"
+		"description": "I love reading books, I read everyday before I go to bed\n\nMy favorite books are: The Witcher, Robinson Crusoe, Twenty Thousand Leagues Under the Seas"
+	},
+	"Chess": {
+		"header": "Chess",
+		"description": "I play chess occasionally on chess.com"
+	},
+	"Cup": {
+		"header": "Tea",
+		"description": "I like tea, especially cinnamon flavored."
+	},
+	"Pacman": {
+		"header": "Games",
+		"description": "I like playing games."
+	},
+
+	"Blender_logo": {
+		"header": "Blender",
+		"description": "I've been learning blender for about a year now. I have applied my experience on this project, because everything is modeled by me using blender."
+	},
+	"C++_logo": {
+		"header": "C++",
+		"description": "C++ is one of the first programming languages I have learnt. I have used it mostly for game development using SFML and I have experience in Qt aswell"
 	},
 	"Javascript_logo": {
 		"header": "Javascript",
 		"description": "Javascript is my most used programming langauge"
+	},
+	"Nodejs_logo": {
+		"header": "Node.js",
+		"description": "I use node.js quite a lot and use it almost for all of my projects."
+	},
+	"Python_logo": {
+		"header": "Python 3.x",
+		"description": "I used python alot while learning binary exploitation and while learning AI using tensorflow."
+	},
+	"Typescript_logo": {
+		"header": "Typescript",
+		"description": "I use typescript mostly at work."
+	},
+	"VueJs_logo": {
+		"header": "Vue.js",
+		"description": "I use Vue.js at my work aswell, but now recently trying to integrate into my own projects aswell."
 	},
 
 	"Mailbox": {

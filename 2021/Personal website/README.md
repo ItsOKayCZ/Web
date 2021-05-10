@@ -51,8 +51,8 @@ About me, Skill, Projects, Contact
 - [x] Make the *Contact* scene
 - [x] Make some transition when switching pages
 - [x] Add some camera movement based on the movement of the mouse
-- [ ] Responsivness :/
-- [ ] Model some more objects
+- [x] Responsivness :/
+- [x] Model some more objects
 - [ ] ~~Make an interesting favicon~~
 
 ## Page ideas:

@@ -82,7 +82,6 @@ async function main(){
 			}
 		});
 
-		console.log(scene);
 		setupObjectLinksEvents();
 
 		render();
